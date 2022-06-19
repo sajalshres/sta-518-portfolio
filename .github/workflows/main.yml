@@ -6,7 +6,7 @@ on:
     branches: [main]
   workflow_dispatch:
 
-name: Deploy
+name: deploy-portfolio
 
 jobs:
   deploy:

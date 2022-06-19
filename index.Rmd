@@ -1,7 +1,7 @@
 ---
-title: "*"
+title: "STA518 Stats with R: Portfolio"
 description: |
-  Welcome to the website. I hope you enjoy it!
+  Welcome to my portfolio. Work in Progress.
 site: distill::distill_website
 ---
 
