@@ -1,5 +1,4 @@
-# Workflow taken from: https://github.com/WarwickRUG/wrug_website/blob/main/.github/workflows/distill-deploy.yml
-
+# Reference: https://github.com/r-lib/actions/blob/v2/examples/shiny-deploy.yaml
 on:
   push:
     branches: [main]
@@ -10,7 +9,7 @@ on:
 name: Deploy
 
 jobs:
-  distill_deploy:
+  deploy:
     runs-on: ubuntu-latest
     env:
       GITHUB_PAT: ${{ secrets.GH_TOKEN }}
@@ -24,9 +23,14 @@ jobs:
           use-public-rspm: true
 
       - uses: r-lib/actions/setup-renv@v2
+      
+      - name: Install distill
+        run: install.packages("distill")
+        shell: Rscript {0}
 
       - name: Build site
-        run: Rscript -e 'rmarkdown::render_site()'
+        run: rmarkdown::render_site()
+        shell: Rscript {0}
 
       - name: Deploy to GitHub pages 🚀
         uses: JamesIves/github-pages-deploy-action@4.1.4
