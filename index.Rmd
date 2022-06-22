@@ -3,7 +3,7 @@ title: "STA518 Stats with R: Portfolio"
 description: |
   Welcome to my portfolio. Work in Progress.
 output:
-  distil::distill_article:
+  distill::distill_article:
     toc: true
     toc_depth: 2
 ---
