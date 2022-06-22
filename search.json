@@ -6,15 +6,15 @@
       "description": "Some additional details about the website",
       "author": [],
       "contents": "\n\n\n\n",
-      "last_modified": "2022-06-19T22:31:03+00:00"
+      "last_modified": "2022-06-22T22:29:34+00:00"
     },
     {
       "path": "index.html",
       "title": "STA518 Stats with R: Portfolio",
       "description": "Welcome to my portfolio. Work in Progress.\n",
       "author": [],
-      "contents": "\n\n\n\n",
-      "last_modified": "2022-06-19T22:31:03+00:00"
+      "contents": "\nThis is a test\n\n\n\n",
+      "last_modified": "2022-06-22T22:29:34+00:00"
     }
   ],
   "collections": []
