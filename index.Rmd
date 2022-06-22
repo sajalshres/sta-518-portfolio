@@ -45,7 +45,7 @@ Answer each of the following questions with one sentence including a brief expla
 
 3. What Else?
 
-## Supporting Artifcacts
+## Supporting Artifacts
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam sit amet luctus orci. Donec eleifend malesuada nisi, sed rhoncus leo facilisis vel. Vivamus ac convallis felis. Fusce a diam aliquet, dictum lorem ac, dignissim felis. Maecenas congue ut enim ut tincidunt. Ut id ipsum ornare, aliquet risus at, consequat ex. Sed dignissim ex mauris. Integer dapibus ante at dictum lacinia. Ut convallis posuere justo vitae scelerisque. Nulla elit felis, ultrices vulputate turpis id, luctus accumsan nulla. Maecenas sagittis nisl a orci pellentesque pulvinar. Pellentesque ultricies arcu scelerisque, gravida leo non, pharetra eros. Sed auctor, sem id pretium vehicula, urna tellus placerat mauris, quis ultricies tortor tortor id arcu. Maecenas id lacus facilisis sem iaculis hendrerit.
 
