@@ -7,6 +7,14 @@ navbar:
   right:
     - text: "Home"
       href: index.html
+    - text: "Essays"
+      href: essays.html
+    - text: "Reflection"
+      href: final_grade_reflection.html
+    - text: "Artifacts"
+      href: supporting_artifacts.html
     - text: "About"
       href: about.html
+    - icon: fab fa-github
+      href: https://github.com/sajalshres/sta-518-portfolio
 output: distill::distill_article
