@@ -2,7 +2,10 @@
 title: "STA518 Stats with R: Portfolio"
 description: |
   Welcome to my portfolio. Work in Progress.
-site: distill::distill_website
+output:
+  distil::distill_article:
+    toc: true
+    toc_depth: 2
 ---
 
 ```{r setup, include=FALSE}
@@ -15,4 +18,23 @@ knitr::opts_chunk$set(echo = FALSE)
 # https://rstudio.github.io/distill/publish_website.html#github-pages
 ```
 
-## This is a test
+## Essays
+
+### Growth as a Data Person
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam sit amet luctus orci. Donec eleifend malesuada nisi, sed rhoncus leo facilisis vel. Vivamus ac convallis felis. Fusce a diam aliquet, dictum lorem ac, dignissim felis. Maecenas congue ut enim ut tincidunt. Ut id ipsum ornare, aliquet risus at, consequat ex. Sed dignissim ex mauris. Integer dapibus ante at dictum lacinia. Ut convallis posuere justo vitae scelerisque. Nulla elit felis, ultrices vulputate turpis id, luctus accumsan nulla. Maecenas sagittis nisl a orci pellentesque pulvinar. Pellentesque ultricies arcu scelerisque, gravida leo non, pharetra eros. Sed auctor, sem id pretium vehicula, urna tellus placerat mauris, quis ultricies tortor tortor id arcu. Maecenas id lacus facilisis sem iaculis hendrerit.
+
+### To Be Determined
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam sit amet luctus orci. Donec eleifend malesuada nisi, sed rhoncus leo facilisis vel. Vivamus ac convallis felis. Fusce a diam aliquet, dictum lorem ac, dignissim felis. Maecenas congue ut enim ut tincidunt. Ut id ipsum ornare, aliquet risus at, consequat ex. Sed dignissim ex mauris. Integer dapibus ante at dictum lacinia. Ut convallis posuere justo vitae scelerisque. Nulla elit felis, ultrices vulputate turpis id, luctus accumsan nulla. Maecenas sagittis nisl a orci pellentesque pulvinar. Pellentesque ultricies arcu scelerisque, gravida leo non, pharetra eros. Sed auctor, sem id pretium vehicula, urna tellus placerat mauris, quis ultricies tortor tortor id arcu. Maecenas id lacus facilisis sem iaculis hendrerit.
+
+## Final Grade Reflection
+
+1. What Grade Did You Earn?
+
+2. How Did You Demonstrate That Grade?
+
+3. What Else?
+
+## Supporting Artifcacts
+
