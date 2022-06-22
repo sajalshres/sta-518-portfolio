@@ -5,7 +5,7 @@ description: |
 output:
   distill::distill_article:
     toc: true
-    toc_depth: 2
+    toc_depth: 3
 ---
 
 ```{r setup, include=FALSE}
@@ -27,6 +27,12 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam sit amet luctus o
 ### To Be Determined
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam sit amet luctus orci. Donec eleifend malesuada nisi, sed rhoncus leo facilisis vel. Vivamus ac convallis felis. Fusce a diam aliquet, dictum lorem ac, dignissim felis. Maecenas congue ut enim ut tincidunt. Ut id ipsum ornare, aliquet risus at, consequat ex. Sed dignissim ex mauris. Integer dapibus ante at dictum lacinia. Ut convallis posuere justo vitae scelerisque. Nulla elit felis, ultrices vulputate turpis id, luctus accumsan nulla. Maecenas sagittis nisl a orci pellentesque pulvinar. Pellentesque ultricies arcu scelerisque, gravida leo non, pharetra eros. Sed auctor, sem id pretium vehicula, urna tellus placerat mauris, quis ultricies tortor tortor id arcu. Maecenas id lacus facilisis sem iaculis hendrerit.
+
+### Answer each of the following questions with one sentence including a brief explanation.
+    - What was the most difficult part of the class for you? List a general topic, a specific problem, a kind of work we did, etc. and explain why.
+    - What was the easiest part of the class for you? Explain why
+    - What part of the class surprised or interested you the most? Explain why.
+    - Give one piece of advice to a student just beginning a semester of STA 418/518 that will help them be successful in learning.
 
 ## Final Grade Reflection
 
