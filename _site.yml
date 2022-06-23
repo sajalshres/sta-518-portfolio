@@ -1,14 +1,22 @@
 name: "Stats with R"
 title: "Stats With R Portfolio"
+theme: theme.css
 description: |
   *
 output_dir: "docs"
 navbar:
+  logo:
+    image: images/logo.png
+    href: https://sajalshres.github.io/sta-518-portfolio
   right:
     - text: "Home"
       href: index.html
     - text: "Essays"
-      href: essays.html
+      menu:
+        - text: "Growth as a Data Person"
+          href: growth_as_data_person.html
+        - text: "Lightning Round"
+          href: lightning_round.html
     - text: "Reflection"
       href: final_grade_reflection.html
     - text: "Artifacts"

@@ -1,0 +1,35 @@
+---
+title: "Essays"
+author:
+  - name: Sajal Shrestha 
+    url: https://sajalshres.github.io
+date: "`r Sys.Date()`"
+output: distill::distill_article
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+# Lightning Round
+
+Answer each of the following questions with one sentence including a brief explanation.
+
+## What was the most difficult part of the class for you? List a general topic, a specific problem, a kind of work we did, etc. and explain why.
+
+Answer
+
+## What was the easiest part of the class for you? Explain why
+
+Answer
+
+## What part of the class surprised or interested you the most? Explain why.
+
+Answer
+
+## Give one piece of advice to a student just beginning a semester of STA 418/518 that will help them be successful in learning.
+
+Answer
+
+
+

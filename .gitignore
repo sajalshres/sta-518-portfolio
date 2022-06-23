@@ -41,3 +41,6 @@ vignettes/*.pdf
 # output
 docs/
 _site/
+
+# HTML
+.DS_Store
