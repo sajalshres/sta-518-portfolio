@@ -16,13 +16,37 @@ knitr::opts_chunk$set(echo = FALSE)
 
 # Final Grade Reflection
 
-1. What Grade Did You Earn?
+## 1. What Grade Did You Earn?
 
-2. How Did You Demonstrate That Grade?
+I would grade myself an **'A'**. I have completed all the class activities, readings, and preparations on the blackboard. I think R has a very steep learning curve, but I am making good progress and am optimistic about being a decent R programmer by the end of this course. Even though there is so much to learn in the upcoming weeks, I feel confident in doing initial work for my final project, such as loading raw data, detecting missing values, identifying outliers in the dataset and perform preliminary analysis.
 
-3. What Else?
+## 2. How Did You Demonstrate That Grade?
 
+### Import, manage and clean data
 
+- I can import data from various sources such as text, csv, excel files and load it into the R data structure such as data frame(tibble). I can manage the data using the functions such as `mutate()`, `select()`, `filter()`, `summarise()` and `arrange()` in the **dplyr** package.
 
+- I am working on the Airbnb dataset for Chicago city to process the property listings, neighborhoods, and reviews. 
 
+### Create graphical displays and numberical summaries of data for exploratory analysis and presentations
+
+- I have created visualization for various tasks using graphs such as pie chart, bar chart, scatter plot, box plots and so on using ggplot2 package. I have applied various ggplot2 theme to match the style and create aesthetically pleasing visualizations. I have also created tables that can provide the numerical summaries to highlight important features of the dataset.
+
+### Write R programs for simulations from probability models and randomization-based experiments
+
+- I plan on developing R programs to simulate probability models and complete randomization-based experiments.
+
+### Use source documentation and other resources to troubleshoot and extend R programs
+
+- I have been reading the source documentation and learning resources such as [R for Data Science](https://r4ds.had.co.nz/index.html), [R Manuals](https://cran.r-project.org/manuals.html) and YouTube. The Help tab on RStudio application been super useful in quickly reading the documentation and usage information for specific functions or library.
+
+- I am collaborating with my team on troubleshooting on various issues and helping them when needed. I also ask for help on specific issues when I am stuck. I plan on collaborating more as I am learning different ways to troubleshoot and strengthen my skills.
+
+### Write clear, efficient, and well-documented R programs.
+
+- I can knit markdown using Rmarkdown package and create professional reports in R.
+
+- I plan on exploring more about the best practices in R programming such as naming convention, organizing a large project files, coding style, and writing packages.
+
+- I aim to further aim this objective by writing various R scripts and work on web application that can help in write well documented and efficient R code.
 
