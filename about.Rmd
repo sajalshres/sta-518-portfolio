@@ -1,10 +1,11 @@
 ---
-title: "About this site"
+title: "About"
 description: |
-  Some additional details about the website
+  Additional details about portfolio
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
+Work In Progress

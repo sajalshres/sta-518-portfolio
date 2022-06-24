@@ -26,7 +26,7 @@ I would grade myself an **'A'**. I have completed all the class activities, read
 
 - I can import data from various sources such as text, csv, excel files and load it into the R data structure such as data frame(tibble). I can manage the data using the functions such as `mutate()`, `select()`, `filter()`, `summarise()` and `arrange()` in the **dplyr** package.
 
-- I am working on the Airbnb dataset for Chicago city to process the property listings, neighborhoods, and reviews. 
+- I am working on the Airbnb dataset for Chicago city to process the property listings, neighborhoods, and reviews. I want to create a function that can scrape the data for multiple cities on demand. Scraping data would allow me to get updated data in my project. As a stretch goal, I also want to save the scraped data into a database application like MongoDB or PostGreSQL.
 
 ### Create graphical displays and numberical summaries of data for exploratory analysis and presentations
 
@@ -38,15 +38,17 @@ I would grade myself an **'A'**. I have completed all the class activities, read
 
 ### Use source documentation and other resources to troubleshoot and extend R programs
 
-- I have been reading the source documentation and learning resources such as [R for Data Science](https://r4ds.had.co.nz/index.html), [R Manuals](https://cran.r-project.org/manuals.html) and YouTube. The Help tab on RStudio application been super useful in quickly reading the documentation and usage information for specific functions or library.
+- I have been reading the source documentation and learning resources such as [R for Data Science](https://r4ds.had.co.nz/index.html), [R Manuals](https://cran.r-project.org/manuals.html) and YouTube. The Help tab on RStudio application been super useful in quickly reading the documentation and find usage information for specific functions or library.
 
 - I am collaborating with my team on troubleshooting on various issues and helping them when needed. I also ask for help on specific issues when I am stuck. I plan on collaborating more as I am learning different ways to troubleshoot and strengthen my skills.
 
 ### Write clear, efficient, and well-documented R programs.
 
-- I can knit markdown using Rmarkdown package and create professional reports in R.
+- I can knit markdown using [Rmarkdown](https://rmarkdown.rstudio.com/) package and create professional reports in R.
 
 - I plan on exploring more about the best practices in R programming such as naming convention, organizing a large project files, coding style, and writing packages.
 
-- I aim to further aim this objective by writing various R scripts and work on web application that can help in write well documented and efficient R code.
+- If possible, I am also interested in doing code reviews. I beleive reviewing other's code will help us become a better programmer and improve our skiils to identify issues, learn from others and create better documentation.
+
+- I aim to further achieve this objective by writing various R scripts and work on web application that can help in write well documented and efficient R code.
 
