@@ -21,7 +21,7 @@ The most difficult part for me is the fact that R programming is quite different
 
 ### What was the easiest part of the class for you? Explain why
 
-The easiest part for me is working with Markdown and Github. The class activities and preparations have helped me a lot to grasp the concept. Even though sometimes I struggle with some concepts, I can work with my team and Dr.Bradford to sort out my confusion. I am quite pleased with the progress I am making with this course. 
+The easiest part for me is working with Markdown and Github. This is due to the initial phases of our class focused on working on markdowns and collaborating on Github. The class activities and preparations have helped me a lot to grasp the concept. Even though sometimes I struggle with some concepts, I can work with my team and Dr.Bradford to sort out my confusion. I am quite pleased with the progress I am making with this course. 
 
 ### What part of the class surprised or interested you the most? Explain why.
 
