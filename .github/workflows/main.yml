@@ -24,8 +24,8 @@ jobs:
 
       - uses: r-lib/actions/setup-renv@v2
       
-      - name: Install distill
-        run: install.packages("distill")
+      - name: Install Packages
+        run: install.packages(c("distill", "tidyverse")
         shell: Rscript {0}
 
       - name: Build site
