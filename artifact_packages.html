@@ -2474,9 +2474,43 @@ Artifacts
 </div>
 
 <div class="d-article">
-<h2 id="packages">Packages</h2>
-<p>TODO: Add artifacts</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<h2 id="load-libraries">Load Libraries</h2>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://devtools.r-lib.org/'>devtools</a></span><span class='op'>)</span></span></code></pre>
+</div>
+</div>
+<h2 id="load-my-custom-package">Load my custom package</h2>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://remotes.r-lib.org/reference/install_github.html'>install_github</a></span><span class='op'>(</span><span class='st'>"sajalshres/SearchGithubRespositories"</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code>* checking for file ‘/tmp/Rtmp5nabUB/remotes9a7c68541788/sajalshres-SearchGithubRespositories-3f7fad7/DESCRIPTION’ ... OK
+* preparing ‘SearchGithubRespositories’:
+* checking DESCRIPTION meta-information ... OK
+* checking for LF line-endings in source and make files and shell scripts
+* checking for empty or unneeded directories
+* building ‘SearchGithubRespositories_0.0.1.tar.gz’</code></pre>
+</div>
+<h2 id="sample-usage">Sample usage</h2>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'>SearchGithubRespositories</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/SearchGithubRespositories/man/version.html'>version</a></span><span class='op'>(</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code>[1] &quot;Version: 0.0.1&quot;</code></pre>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>response</span> <span class='op'>&lt;-</span> <span class='fu'>SearchGithubRespositories</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/SearchGithubRespositories/man/search_github_repositories.html'>search_github_repositories</a></span><span class='op'>(</span>query <span class='op'>=</span> <span class='st'>"sta-518"</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code>[1] &quot;Url is https://api.github.com /search/repositories ?q=sta-518&amp;sort=stars&amp;order=desc&quot;
+[1] &quot;Search for sta-518 found 141 results&quot;</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>response</span><span class='op'>$</span><span class='va'>total_count</span></span></code></pre>
+</div>
+<pre><code>[1] 141</code></pre>
+</div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
 </div>

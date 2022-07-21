@@ -2474,9 +2474,73 @@ Artifacts
 </div>
 
 <div class="d-article">
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://httr.r-lib.org/'>httr</a></span><span class='op'>)</span></span></code></pre>
+</div>
+</div>
 <h2 id="functions">Functions</h2>
-<p>TODO: Add artifacts</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>search_github_repositories</span> <span class='op'>&lt;-</span></span>
+<span>  <span class='kw'>function</span><span class='op'>(</span><span class='va'>query</span>, <span class='va'>sort</span> <span class='op'>=</span> <span class='st'>"stars"</span>, <span class='va'>order</span> <span class='op'>=</span> <span class='st'>"desc"</span><span class='op'>)</span> <span class='op'>{</span></span>
+<span>    <span class='co'># urls</span></span>
+<span>    <span class='va'>github_api_url</span> <span class='op'>&lt;-</span> <span class='st'>"https://api.github.com"</span></span>
+<span>    <span class='va'>search_endpoint</span> <span class='op'>&lt;-</span> <span class='st'>"/search/repositories"</span></span>
+<span>    </span>
+<span>    <span class='co'># build query params</span></span>
+<span>    <span class='va'>query_params</span> <span class='op'>&lt;-</span></span>
+<span>      <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='st'>"?q="</span>, <span class='va'>query</span><span class='op'>)</span>,</span>
+<span>            <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='st'>"sort="</span>, <span class='va'>sort</span><span class='op'>)</span>,</span>
+<span>            <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='st'>"order="</span>, <span class='va'>order</span><span class='op'>)</span>,</span>
+<span>            sep <span class='op'>=</span> <span class='st'>"&amp;"</span><span class='op'>)</span></span>
+<span>    </span>
+<span>    <span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span><span class='op'>(</span><span class='st'>"Url is"</span>,<span class='va'>github_api_url</span>, <span class='va'>search_endpoint</span>, <span class='va'>query_params</span><span class='op'>)</span><span class='op'>)</span></span>
+<span>    </span>
+<span>    <span class='co'># make http request to Github Api</span></span>
+<span>    <span class='va'>response</span> <span class='op'>&lt;-</span></span>
+<span>      <span class='fu'>httr</span><span class='fu'>::</span><span class='fu'><a href='https://httr.r-lib.org/reference/GET.html'>GET</a></span><span class='op'>(</span>url <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='va'>github_api_url</span>, <span class='va'>search_endpoint</span>, <span class='va'>query_params</span><span class='op'>)</span><span class='op'>)</span></span>
+<span>    </span>
+<span>    <span class='va'>response_status_code</span> <span class='op'>&lt;-</span> <span class='fu'>httr</span><span class='fu'>::</span><span class='fu'><a href='https://httr.r-lib.org/reference/status_code.html'>status_code</a></span><span class='op'>(</span><span class='va'>response</span><span class='op'>)</span></span>
+<span>    </span>
+<span>    <span class='co'># Stop if unexpected status code</span></span>
+<span>    <span class='kw'>if</span> <span class='op'>(</span><span class='va'>response_status_code</span> <span class='op'>!=</span> <span class='fl'>200</span><span class='op'>)</span> <span class='op'>{</span></span>
+<span>      <span class='kw'><a href='https://rdrr.io/r/base/stop.html'>stop</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='st'>"Unexpected status"</span>, <span class='va'>response_status_code</span>, <span class='st'>"encountered"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span>    <span class='op'>}</span></span>
+<span>    </span>
+<span>    <span class='co'># Parse the JSON response</span></span>
+<span>    <span class='va'>response_parsed</span> <span class='op'>&lt;-</span> <span class='fu'>httr</span><span class='fu'>::</span><span class='fu'><a href='https://httr.r-lib.org/reference/content.html'>content</a></span><span class='op'>(</span><span class='va'>response</span>, as <span class='op'>=</span> <span class='st'>"parsed"</span><span class='op'>)</span></span>
+<span>    </span>
+<span>    <span class='co'># Print stats</span></span>
+<span>    <span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span><span class='op'>(</span></span>
+<span>      <span class='st'>"Search for"</span>,</span>
+<span>      <span class='va'>query</span>,</span>
+<span>      <span class='st'>"found"</span>,</span>
+<span>      <span class='va'>response_parsed</span><span class='op'>$</span><span class='va'>total_count</span>,</span>
+<span>      <span class='st'>"results"</span></span>
+<span>    <span class='op'>)</span><span class='op'>)</span></span>
+<span>    </span>
+<span>    <span class='kw'><a href='https://rdrr.io/r/base/function.html'>return</a></span><span class='op'>(</span><span class='va'>response_parsed</span><span class='op'>)</span></span>
+<span>  <span class='op'>}</span></span></code></pre>
+</div>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'># Search for repositories with name sta-518</span></span>
+<span><span class='va'>search_response</span> <span class='op'>&lt;-</span> <span class='fu'>search_github_repositories</span><span class='op'>(</span>query <span class='op'>=</span> <span class='st'>"sta-518"</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code>[1] &quot;Url is https://api.github.com /search/repositories ?q=sta-518&amp;sort=stars&amp;order=desc&quot;
+[1] &quot;Search for sta-518 found 141 results&quot;</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>search_response</span><span class='op'>$</span><span class='va'>items</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span><span class='op'>$</span><span class='va'>full_name</span></span></code></pre>
+</div>
+<pre><code>[1] &quot;gvsu-sta518/community&quot;</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>search_response</span><span class='op'>$</span><span class='va'>items</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span><span class='op'>$</span><span class='va'>owner</span><span class='op'>$</span><span class='va'>url</span></span></code></pre>
+</div>
+<pre><code>[1] &quot;https://api.github.com/users/gvsu-sta518&quot;</code></pre>
+</div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
 </div>

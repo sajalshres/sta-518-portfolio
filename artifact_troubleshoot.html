@@ -2474,9 +2474,16 @@ Artifacts
 </div>
 
 <div class="d-article">
-<h2 id="source-documentation-and-troubleshooting">Source Documentation and Troubleshooting</h2>
-<p>TODO: Add artifacts</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<p>Coming from mindset of Python programming and having a limited knowledge of R, I faced a lot of challenges and issues when developing my projects and exploring R. Moreover, I also found identifying error message to be a time-consuming activity. I did a lot of search using Google, explored stackoverflow.com and used source documentation of libraries/packages. After a while, I got much better at detecting and fixing common errors by writing and practicing more R code.</p>
+<p>For me, the most common error was Syntax errors. I would often miss to load the library, forget about closing a bracket or misspell the words. One best practice to quickly identify the error was to break the code into multiple lines.</p>
+<p>For example, consider below code:</p>
+<pre><code>Orange %&gt;% select(Tree, age, circumference) %&gt;% group_by(Tree) %&gt;% summarize(avg_circumference=mean(circumference))</code></pre>
+<p>The above code is much less readable as everything is in single-line. Breaking above code into multiple lines can significantly imporve readability and at the same time identifying issues can be easier.</p>
+<pre><code>Orange %&gt;%
+  select(Tree, age, circumference) %&gt;%
+  group_by(Tree) %&gt;%
+  summarize(avg_circumference=mean(circumference))</code></pre>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
 </div>

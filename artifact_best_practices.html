@@ -2474,8 +2474,27 @@ Artifacts
 </div>
 
 <div class="d-article">
-<h2 id="efficient-and-well-documented-r-programs">Efficient and Well-documented R Programs</h2>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<h2 id="introduction">Introduction</h2>
+<p>I have dedicated myself to spend good amount of time writing R code that included scripts, functions, packages, <code>rmarkdown</code> files and so on. I have developed my portfolio website using <code>distill</code> library that uses <code>rmarkdown</code> to generate html files. By making use of <code>rmarkdown</code> files, I’ve learned to include markdown contents, code chucks with inline code, tables, figures, output formats etc.</p>
+<h2 id="naming-conventions">Naming Conventions</h2>
+<p>I’ve learned about various naming conventions that can be used with R such as camelCase, snake_case, PascalCase etc. I’ve found that R doesn’t have a stict naming conventions like Java, Python. But it is best to use conventions that yeilds meaningful and readable names. The <code>snake_case</code> works best for me as I find it more readable and easier for my issues. For funtion names, I prefer to use lower case with periods like test.case1.</p>
+<h2 id="project-structure">Project Structure</h2>
+<p>I have also learned to structure a R project. A good content organizations can help us to quickly navigate in a complex enterprise projects and can be scaled very easily. For my final project, I’ve used below structure:</p>
+<pre><code>sta-518-project
+  |--- app
+  |--- docs
+  |--- scripts
+  |--- data
+  |.   |--- raw
+  |.   |--- processed
+  |--- .gitignore
+  |--- README.md</code></pre>
+<h2 id="functions-and-packages">Functions and Packages</h2>
+<p>Functions and packages helps to breakdown complex piece of code into a single tasks that can be reused multiple times with out duplicating them. When developing ShinyApp for my project, I’ve created functions and scripts that can be used to complete various tasks for analysis. To accomplish this, I’ve used <code>source</code> function that helpe to resue function that is created in another R script.</p>
+<h2 id="documenting-code">Documenting Code</h2>
+<p>I believe the most important aspect of documenting your code is to introduce comments. Comments helps to summarize the piece of code, provides notes to any important decision made or explain why something is implemented the way it is. It acts as a note for self in the future and make collaborating with other much easier.</p>
+<p>In addition, it is best to name the chuck of code when using R Markdown. The rstudio can make navigation much easier and we can generate table of content.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
 </div>
