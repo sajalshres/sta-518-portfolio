@@ -11,7 +11,32 @@ output: distill::distill_article
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## Packages
+## Load Libraries
 
-TODO: Add artifacts
+```{r load-packages}
+library(devtools)
+```
+
+## Load my custom package
+
+```{r load-custom-package}
+install_github("sajalshres/SearchGithubRespositories")
+```
+
+## Sample usage
+
+```{r custom-package-usage}
+
+SearchGithubRespositories::version()
+
+```
+
+```{r custom-package-usage-2}
+
+response <- SearchGithubRespositories::search_github_repositories(query = "sta-518")
+response$total_count
+
+```
+
+
 

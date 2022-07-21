@@ -11,7 +11,61 @@ output: distill::distill_article
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## Simulation
+## Load Packages
 
-TODO: Add artifacts
+```{r load-package}
+library(tidyverse)
+```
+
+## Data Overview
+
+```{r storms-dataset}
+knitr::kable(head(storms))
+```
+
+```{r}
+# Data overview
+mean(storms$pressure)
+sd(storms$pressure)
+```
+
+```{r storm-pressure-simulation}
+pressure_samp_1000 <- tibble(
+  values = rnorm(n = 1000, mean = 990, sd = 19)
+)
+pressure_samp_1000$values
+```
+
+```{r}
+summary(pressure_samp_1000$values)
+```
+
+```{r}
+ggplot(pressure_samp_1000, aes(x = values)) +
+  geom_histogram(
+    aes(y = ..count.. / sum(..count..)),
+    fill = "white",
+    color = "black",
+    binwidth = 3
+  ) +
+  stat_function(
+    fun = function(x)
+      dnorm(x, mean = 990, sd = 19) * 3,
+    color = "#0065a4",
+    size = 2,
+    alpha = 0.4
+  ) +
+  geom_vline(
+    xintercept = mean(pressure_samp_1000$values),
+    color = "#a43f00",
+    size = 2
+  ) +
+  theme_minimal() +
+  labs(y = "proportion")
+```
+
+```{r}
+ggplot(pressure_samp_1000, aes(y=values)) + 
+  geom_boxplot()
+```
 
