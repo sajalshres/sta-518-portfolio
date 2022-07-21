@@ -20,7 +20,25 @@ navbar:
     - text: "Reflection"
       href: final_grade_reflection.html
     - text: "Artifacts"
-      href: supporting_artifacts.html
+      menu:
+        - text: "Final Project"
+          href: artifact_project.html
+        - text: "Data Management"
+          href: artifact_manage_data.html
+        - text: "Graphical Visualizations and Summaries"
+          href: artifact_graphical_and_numerical_summaries.html
+        - text: "Simulations"
+          href: artifact_simulation.html
+        - text: "Boostrapping"
+          href: artifact_boostrapping.html
+        - text: "Troubleshoot R Programs"
+          href: artifact_troubleshoot.html
+        - text: "Functions"
+          href: artifact_functions.html
+        - text: "Packages"
+          href: artifact_packages.html
+        - text: "Efficient and Well-documented Code"
+          href: artifact_best_practices.html
     - text: "About"
       href: about.html
     - icon: fab fa-github

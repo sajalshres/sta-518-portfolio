@@ -1,0 +1,17 @@
+---
+title: "Final Project"
+author:
+  - name: Sajal Shrestha 
+    url: https://sajalshres.github.io
+date: "`r Sys.Date()`"
+output: distill::distill_article
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Airbnb Analsysis Web App
+
+Github Link: [Analysis of Airbnb listings](https://github.com/sajalshres/sta-518-project)
+

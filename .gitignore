@@ -44,3 +44,6 @@ _site/
 
 # HTML
 .DS_Store
+
+# data
+data/

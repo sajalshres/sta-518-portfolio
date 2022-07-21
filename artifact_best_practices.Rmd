@@ -1,0 +1,15 @@
+---
+title: "Efficient and Well-documented R Programs"
+author:
+  - name: Sajal Shrestha 
+    url: https://sajalshres.github.io
+date: "`r Sys.Date()`"
+output: distill::distill_article
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Efficient and Well-documented R Programs
+
