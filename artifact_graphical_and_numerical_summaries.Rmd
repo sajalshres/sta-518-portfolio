@@ -11,8 +11,73 @@ output: distill::distill_article
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## Graphical Visualizations and Summaries
+```{r load-package}
+library(tidyverse)
+```
 
-TODO: Add artifacts
+For creating graphical visualizations, I've used ggplot2 library. Using the library, I've generated numerous visualizations such as bar chart(`geom_bar`), boxplots(`geom_boxplot`), histogram(`geom_histogram`), scatter plots(`geom_point`).
 
 
+```{r visual-missing-values, echo = FALSE, fig.height = 5}
+missing_stat <- listings_missing_data %>%
+  gather(key = "key", value = "val") %>%
+  mutate(isna = is.na(val)) %>%
+  group_by(key) %>%
+  mutate(total = n()) %>%
+  group_by(key, total, isna) %>%
+  summarise(num.isna = n()) %>%
+  mutate(pct = num.isna / total * 100)
+
+levels <-
+  (missing_stat  %>% filter(isna == T) %>% arrange(desc(pct)))$key
+
+percentage.plot <- missing_stat %>%
+  ggplot() +
+  geom_bar(aes(
+    x = reorder(key, desc(pct)),
+    y = pct,
+    fill = isna
+  ),
+  stat = 'identity',
+  alpha = 0.8) +
+  scale_x_discrete(limits = levels) +
+  scale_fill_manual(
+    name = "",
+    values = c('steelblue', 'tomato3'),
+    labels = c("Present", "Missing")
+  ) +
+  coord_flip() +
+  labs(title = "Percentage of missing values", x =
+         'Variable', y = "% of missing values")
+
+percentage.plot
+```
+
+For the above graphs, I've used ggplot2 library to generate a flipped bar graph to identify the percentage of missing values in the Airbnb dataset. We can identify that the columns neighbourhood_group_cleansed, calendar_updated and bathrooms are empty. Similarly, neighbourhood, overview and host_about has large portions of missing values as well.
+
+```{r fig.align="center", echo = FALSE,fig.width = 12}
+top_hosts <- listings %>%
+  select(host_id, host_name) %>%
+  mutate(name = paste0(host_name, "\n", "(", host_id, ")")) %>%
+  count(name, sort = TRUE, name = "count") %>%
+  slice(1:10)
+
+ggplot(top_hosts, aes(x=reorder(as.factor(name), -count), y=count)) + 
+  geom_bar(stat = "identity", width = 0.5) +
+  xlab("Host Name") +
+  ylab("Listings")
+```
+Similarly, the bar chart shows the top hosts in Chicago city. We can observe that host with name Rob and id 3965428 has the most number of listings of property.
+
+```{r fig.align="center", echo = FALSE, fig.height = 10}
+# Compare neighbourhood and prices
+neighbourhood_price <- listings %>%
+  select(neighbourhood, price) %>%
+  mutate(price = log1p(as.numeric(price)))
+
+neighbourhood_price %>% 
+  ggplot(aes(x=neighbourhood, y=price, fill=neighbourhood)) +
+  geom_boxplot(show.legend = FALSE) + coord_flip() 
+```
+
+I've also created a box plot chart that provides insights on the neighborhood and prices.

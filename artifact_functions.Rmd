@@ -18,6 +18,14 @@ library(httr)
 
 ## Functions
 
+I have also built a user defined function that is used to search the github repositories. The function `search_github_repositories` accepts three parameters:
+
+- **query**: The search keywords.
+- **sort**: Sorts the results of your query by number of stars, forks, or help-wanted-issues
+- **order**: Determines whether the first search result returned is the highest number of matches (desc) or lowest number of matches (asc).
+
+The function makes an http request using the `httr` library to the github api endpoint. Next, the status code is checked and upon success, the response is parsed.
+
 ```{r user-function-definition}
 search_github_repositories <-
   function(query, sort = "stars", order = "desc") {
@@ -60,6 +68,8 @@ search_github_repositories <-
     return(response_parsed)
   }
 ```
+
+The below code chuck demonstrate how to call the created function.
 
 ```{r user-function-call}
 # Search for repositories with name sta-518
