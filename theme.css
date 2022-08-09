@@ -76,8 +76,18 @@ d-appendix {
 /*-- Additional custom styles --*/
 /* Add any additional CSS rules below                      */
 
-.distill-site-header .logo img {
-    max-height: 50px;
-    width: auto;
-    margin-bottom: -14px;
+p {
+  text-align: justify;
 }
+
+.distill-site-header .logo img {
+  max-height: 50px;
+  width: auto;
+  margin-bottom: -14px;
+}
+
+d-article div.sourceCode {
+  background-color: #f1f3f5;
+}
+
+

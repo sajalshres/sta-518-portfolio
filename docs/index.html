@@ -90,27 +90,27 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--radix_placeholder_meta_tags-->
   <title>Stats With R Portfolio: STA518 Stats with R: Portfolio</title>
 
-  <meta property="description" itemprop="description" content="Welcome to my portfolio. Work in Progress."/>
+  <meta property="description" itemprop="description" content="Welcome to my portfolio."/>
 
 
 
   <!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
   <meta property="og:title" content="Stats With R Portfolio: STA518 Stats with R: Portfolio"/>
   <meta property="og:type" content="article"/>
-  <meta property="og:description" content="Welcome to my portfolio. Work in Progress."/>
+  <meta property="og:description" content="Welcome to my portfolio."/>
   <meta property="og:locale" content="en_US"/>
   <meta property="og:site_name" content="Stats With R Portfolio"/>
 
   <!--  https://dev.twitter.com/cards/types/summary -->
   <meta property="twitter:card" content="summary"/>
   <meta property="twitter:title" content="Stats With R Portfolio: STA518 Stats with R: Portfolio"/>
-  <meta property="twitter:description" content="Welcome to my portfolio. Work in Progress."/>
+  <meta property="twitter:description" content="Welcome to my portfolio."/>
 
   <!--/radix_placeholder_meta_tags-->
   <!--radix_placeholder_rmarkdown_metadata-->
 
   <script type="text/json" id="radix-rmarkdown-metadata">
-  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","output"]}},"value":[{"type":"character","attributes":{},"value":["STA518 Stats with R: Portfolio"]},{"type":"character","attributes":{},"value":["Welcome to my portfolio. Work in Progress.\n"]},{"type":"character","attributes":{},"value":["distill::distill_article"]}]}
+  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","output"]}},"value":[{"type":"character","attributes":{},"value":["STA518 Stats with R: Portfolio"]},{"type":"character","attributes":{},"value":["Welcome to my portfolio.\n"]},{"type":"character","attributes":{},"value":["distill::distill_article"]}]}
   </script>
   <!--/radix_placeholder_rmarkdown_metadata-->
   <!--radix_placeholder_navigation_in_header-->
@@ -2222,11 +2222,21 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   /*-- Additional custom styles --*/
   /* Add any additional CSS rules below                      */
 
+  p {
+    text-align: justify;
+  }
+
   .distill-site-header .logo img {
-      max-height: 50px;
-      width: auto;
-      margin-bottom: -14px;
-  }</style>
+    max-height: 50px;
+    width: auto;
+    margin-bottom: -14px;
+  }
+
+  d-article div.sourceCode {
+    background-color: #f1f3f5;
+  }
+
+  </style>
   <style type="text/css">
   /* base style */
 
@@ -2402,7 +2412,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <!--radix_placeholder_front_matter-->
 
 <script id="distill-front-matter" type="text/json">
-{"title":"STA518 Stats with R: Portfolio","description":"Welcome to my portfolio. Work in Progress.","authors":[]}
+{"title":"STA518 Stats with R: Portfolio","description":"Welcome to my portfolio.","authors":[]}
 </script>
 
 <!--/radix_placeholder_front_matter-->
@@ -2424,11 +2434,11 @@ Essays
 <span class="down-arrow">&#x25BE;</span>
 </button>
 <div class="nav-dropdown-content">
-<a href="growth_as_data_person.html">Growth as a Data Person</a>
-<a href="lightning_round.html">Lightning Round</a>
+<a href="essay_growth_as_data_person.html">Growth as a Data Person</a>
+<a href="essay_lightning_round.html">Lightning Round</a>
 </div>
 </div>
-<a href="final_grade_reflection.html">Reflection</a>
+<a href="reflection.html">Reflection</a>
 <div class="nav-dropdown">
 <button class="nav-dropbtn">
 Artifacts
@@ -2437,17 +2447,20 @@ Artifacts
 </button>
 <div class="nav-dropdown-content">
 <a href="artifact_project.html">Final Project</a>
-<a href="artifact_manage_data.html">Data Management</a>
-<a href="artifact_graphical_and_numerical_summaries.html">Graphical Visualizations and Summaries</a>
-<a href="artifact_simulation.html">Simulations</a>
-<a href="artifact_boostrapping.html">Boostrapping</a>
-<a href="artifact_troubleshoot.html">Troubleshoot R Programs</a>
-<a href="artifact_functions.html">Functions</a>
-<a href="artifact_packages.html">Packages</a>
-<a href="artifact_best_practices.html">Efficient and Well-documented Code</a>
+<a href="artifact_1_manage_data.html">Data Management</a>
+<a href="artifact_2_graphical_and_numerical_summaries.html">Graphical Visualizations and Summaries</a>
+<a href="artifact_3_simulation.html">Simulations</a>
+<a href="artifact_4_boostrapping.html">Boostrapping</a>
+<a href="artifact_5_troubleshoot.html">Troubleshoot R Programs</a>
+<a href="artifact_6_functions.html">Functions</a>
+<a href="artifact_7_packages.html">Packages</a>
+<a href="artifact_8_best_practices.html">Efficient and Well-documented Code</a>
 </div>
 </div>
 <a href="about.html">About</a>
+<a href="attribution.html">
+<i class="fa fa-hand-holding-heart" aria-hidden="true"></i>
+</a>
 <a href="https://github.com/sajalshres/sta-518-portfolio">
 <i class="fab fa-github" aria-hidden="true"></i>
 </a>
@@ -2463,7 +2476,7 @@ Artifacts
 <h1>STA518 Stats with R: Portfolio</h1>
 <!--radix_placeholder_categories-->
 <!--/radix_placeholder_categories-->
-<p><p>Welcome to my portfolio. Work in Progress.</p></p>
+<p><p>Welcome to my portfolio.</p></p>
 </div>
 
 
@@ -2472,7 +2485,8 @@ Artifacts
 <ul>
 <li>Essays
 <ul>
-<li><a href="growth_as_data_person.html">Growth as a Data Person</a></li>
+<li><a href="growth_as_data_person.html">Growth as a Data
+Person</a></li>
 <li><a href="lightning_round.html">Lightning Round</a></li>
 </ul></li>
 <li><a href="final_grade_reflection.html">Self Reflection</a></li>
@@ -2480,17 +2494,21 @@ Artifacts
 <ul>
 <li><a href="artifact_project.html">Final Project</a></li>
 <li><a href="artifact_manage_data.html">Data Management</a></li>
-<li><a href="artifact_graphical_and_numerical_summaries.html">Graphical Visualizations and Summaries</a></li>
+<li><a href="artifact_graphical_and_numerical_summaries.html">Graphical
+Visualizations and Summaries</a></li>
 <li><a href="artifact_simulation.html">Simulations</a></li>
 <li><a href="artifact_boostrapping.html">Boostrapping</a></li>
-<li><a href="artifact_troubleshoot.html">Troubleshoot R Programs</a></li>
+<li><a href="artifact_troubleshoot.html">Troubleshoot R
+Programs</a></li>
 <li><a href="artifact_functions.html">Functions</a></li>
 <li><a href="artifact_packages.html">Packages</a></li>
-<li><a href="artifact_best_practices.html">Efficient and Well-documented Code</a></li>
+<li><a href="artifact_best_practices.html">Efficient and Well-documented
+Code</a></li>
 </ul></li>
 <li><a href="about.html">About</a></li>
 </ul>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
 </div>

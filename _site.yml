@@ -14,33 +14,35 @@ navbar:
     - text: "Essays"
       menu:
         - text: "Growth as a Data Person"
-          href: growth_as_data_person.html
+          href: essay_growth_as_data_person.html
         - text: "Lightning Round"
-          href: lightning_round.html
+          href: essay_lightning_round.html
     - text: "Reflection"
-      href: final_grade_reflection.html
+      href: reflection.html
     - text: "Artifacts"
       menu:
         - text: "Final Project"
           href: artifact_project.html
         - text: "Data Management"
-          href: artifact_manage_data.html
+          href: artifact_1_manage_data.html
         - text: "Graphical Visualizations and Summaries"
-          href: artifact_graphical_and_numerical_summaries.html
+          href: artifact_2_graphical_and_numerical_summaries.html
         - text: "Simulations"
-          href: artifact_simulation.html
+          href: artifact_3_simulation.html
         - text: "Boostrapping"
-          href: artifact_boostrapping.html
+          href: artifact_4_boostrapping.html
         - text: "Troubleshoot R Programs"
-          href: artifact_troubleshoot.html
+          href: artifact_5_troubleshoot.html
         - text: "Functions"
-          href: artifact_functions.html
+          href: artifact_6_functions.html
         - text: "Packages"
-          href: artifact_packages.html
+          href: artifact_7_packages.html
         - text: "Efficient and Well-documented Code"
-          href: artifact_best_practices.html
+          href: artifact_8_best_practices.html
     - text: "About"
       href: about.html
+    - icon: fa fa-hand-holding-heart
+      href: attribution.html
     - icon: fab fa-github
       href: https://github.com/sajalshres/sta-518-portfolio
 output: distill::distill_article

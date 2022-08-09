@@ -1,11 +1,31 @@
 ---
-title: "About"
-description: |
-  Additional details about portfolio
+title: "Sajal Shrestha"
+output: distill::distill_article
 ---
+ 
+## 🙂 About
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
-```
+![](images/sajal.jpeg){width=30%}
 
-Work In Progress
+My name is Sajal. The phonetic spelling of my name is **sa-jal**. I love writing code and learning things about it.
+
+Reach out to me at:
+
+- [Linkedin](https://linkedin.com/in/sajalshres/)
+- [Github](https://github.com/sajalshres/)
+- [Twitter](https://twitter.com/sajalshres)
+- [Email](mailto:sajal.shres@gmail.com)
+
+## 🎓 Education
+
+**Grand Valley State University** | Grand Rapids, MI
+
+M.S in Data Science and Analytics | December 2021 - Present
+
+## 👨‍💻 Experience
+
+**Cotiviti** | Senior Software Engineer | Mar 2019 - Dec 2021
+
+**Cotiviti** | Devops Engineer | Apr 2017 - Nov 2020
+
+**Cerner** | System Engineer | Jan 2016 - Apr 2017

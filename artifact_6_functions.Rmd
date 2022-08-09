@@ -1,0 +1,80 @@
+---
+title: "Functions"
+author:
+  - name: Sajal Shrestha 
+    url: https://sajalshres.github.io
+date: "`r Sys.Date()`"
+output: distill::distill_article
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r load-packages}
+library(httr)
+```
+
+
+## Functions
+
+I have also built a user defined function that is used to search the github repositories. The function `search_github_repositories` accepts three parameters:
+
+- **query**: The search keywords.
+- **sort**: Sorts the results of your query by number of stars, forks, or help-wanted-issues
+- **order**: Determines whether the first search result returned is the highest number of matches (desc) or lowest number of matches (asc).
+
+The function makes an http request using the `httr` library to the github api endpoint. Next, the status code is checked and upon success, the response is parsed.
+
+```{r user-function-definition}
+search_github_repositories <-
+  function(query, sort = "stars", order = "desc") {
+    # urls
+    github_api_url <- "https://api.github.com"
+    search_endpoint <- "/search/repositories"
+    
+    # build query params
+    query_params <-
+      paste(paste0("?q=", query),
+            paste0("sort=", sort),
+            paste0("order=", order),
+            sep = "&")
+    
+    print(paste("Url is",github_api_url, search_endpoint, query_params))
+    
+    # make http request to Github Api
+    response <-
+      httr::GET(url = paste0(github_api_url, search_endpoint, query_params))
+    
+    response_status_code <- httr::status_code(response)
+    
+    # Stop if unexpected status code
+    if (response_status_code != 200) {
+      stop(paste0("Unexpected status", response_status_code, "encountered"))
+    }
+    
+    # Parse the JSON response
+    response_parsed <- httr::content(response, as = "parsed")
+    
+    # Print stats
+    print(paste(
+      "Search for",
+      query,
+      "found",
+      response_parsed$total_count,
+      "results"
+    ))
+    
+    return(response_parsed)
+  }
+```
+
+The below code chuck demonstrate how to call the created function.
+
+```{r user-function-call}
+# Search for repositories with name sta-518
+search_response <- search_github_repositories(query = "sta-518")
+search_response$items[[1]]$full_name
+search_response$items[[1]]$owner$url
+```
+

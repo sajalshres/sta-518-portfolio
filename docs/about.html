@@ -88,29 +88,26 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 
 
   <!--radix_placeholder_meta_tags-->
-  <title>Stats With R Portfolio: About</title>
+  <title>Stats With R Portfolio: Sajal Shrestha</title>
 
-  <meta property="description" itemprop="description" content="Additional details about portfolio"/>
 
 
 
   <!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
-  <meta property="og:title" content="Stats With R Portfolio: About"/>
+  <meta property="og:title" content="Stats With R Portfolio: Sajal Shrestha"/>
   <meta property="og:type" content="article"/>
-  <meta property="og:description" content="Additional details about portfolio"/>
   <meta property="og:locale" content="en_US"/>
   <meta property="og:site_name" content="Stats With R Portfolio"/>
 
   <!--  https://dev.twitter.com/cards/types/summary -->
   <meta property="twitter:card" content="summary"/>
-  <meta property="twitter:title" content="Stats With R Portfolio: About"/>
-  <meta property="twitter:description" content="Additional details about portfolio"/>
+  <meta property="twitter:title" content="Stats With R Portfolio: Sajal Shrestha"/>
 
   <!--/radix_placeholder_meta_tags-->
   <!--radix_placeholder_rmarkdown_metadata-->
 
   <script type="text/json" id="radix-rmarkdown-metadata">
-  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description"]}},"value":[{"type":"character","attributes":{},"value":["About"]},{"type":"character","attributes":{},"value":["Additional details about portfolio"]}]}
+  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","output"]}},"value":[{"type":"character","attributes":{},"value":["Sajal Shrestha"]},{"type":"character","attributes":{},"value":["distill::distill_article"]}]}
   </script>
   <!--/radix_placeholder_rmarkdown_metadata-->
   <!--radix_placeholder_navigation_in_header-->
@@ -2222,11 +2219,21 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   /*-- Additional custom styles --*/
   /* Add any additional CSS rules below                      */
 
+  p {
+    text-align: justify;
+  }
+
   .distill-site-header .logo img {
-      max-height: 50px;
-      width: auto;
-      margin-bottom: -14px;
-  }</style>
+    max-height: 50px;
+    width: auto;
+    margin-bottom: -14px;
+  }
+
+  d-article div.sourceCode {
+    background-color: #f1f3f5;
+  }
+
+  </style>
   <style type="text/css">
   /* base style */
 
@@ -2402,7 +2409,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <!--radix_placeholder_front_matter-->
 
 <script id="distill-front-matter" type="text/json">
-{"title":"About","description":"Additional details about portfolio","authors":[]}
+{"title":"Sajal Shrestha","authors":[]}
 </script>
 
 <!--/radix_placeholder_front_matter-->
@@ -2424,11 +2431,11 @@ Essays
 <span class="down-arrow">&#x25BE;</span>
 </button>
 <div class="nav-dropdown-content">
-<a href="growth_as_data_person.html">Growth as a Data Person</a>
-<a href="lightning_round.html">Lightning Round</a>
+<a href="essay_growth_as_data_person.html">Growth as a Data Person</a>
+<a href="essay_lightning_round.html">Lightning Round</a>
 </div>
 </div>
-<a href="final_grade_reflection.html">Reflection</a>
+<a href="reflection.html">Reflection</a>
 <div class="nav-dropdown">
 <button class="nav-dropbtn">
 Artifacts
@@ -2437,17 +2444,20 @@ Artifacts
 </button>
 <div class="nav-dropdown-content">
 <a href="artifact_project.html">Final Project</a>
-<a href="artifact_manage_data.html">Data Management</a>
-<a href="artifact_graphical_and_numerical_summaries.html">Graphical Visualizations and Summaries</a>
-<a href="artifact_simulation.html">Simulations</a>
-<a href="artifact_boostrapping.html">Boostrapping</a>
-<a href="artifact_troubleshoot.html">Troubleshoot R Programs</a>
-<a href="artifact_functions.html">Functions</a>
-<a href="artifact_packages.html">Packages</a>
-<a href="artifact_best_practices.html">Efficient and Well-documented Code</a>
+<a href="artifact_1_manage_data.html">Data Management</a>
+<a href="artifact_2_graphical_and_numerical_summaries.html">Graphical Visualizations and Summaries</a>
+<a href="artifact_3_simulation.html">Simulations</a>
+<a href="artifact_4_boostrapping.html">Boostrapping</a>
+<a href="artifact_5_troubleshoot.html">Troubleshoot R Programs</a>
+<a href="artifact_6_functions.html">Functions</a>
+<a href="artifact_7_packages.html">Packages</a>
+<a href="artifact_8_best_practices.html">Efficient and Well-documented Code</a>
 </div>
 </div>
 <a href="about.html">About</a>
+<a href="attribution.html">
+<i class="fa fa-hand-holding-heart" aria-hidden="true"></i>
+</a>
 <a href="https://github.com/sajalshres/sta-518-portfolio">
 <i class="fab fa-github" aria-hidden="true"></i>
 </a>
@@ -2460,16 +2470,36 @@ Artifacts
 <!--/radix_placeholder_site_before_body-->
 
 <div class="d-title">
-<h1>About</h1>
+<h1>Sajal Shrestha</h1>
 <!--radix_placeholder_categories-->
 <!--/radix_placeholder_categories-->
-<p><p>Additional details about portfolio</p></p>
+
 </div>
 
 
 <div class="d-article">
-<p>Work In Progress</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<h2 id="about">🙂 About</h2>
+<p><img src="images/sajal.jpeg" style="width:30.0%" /></p>
+<p>My name is Sajal. The phonetic spelling of my name is
+<strong>sa-jal</strong>. I love writing code and learning things about
+it.</p>
+<p>Reach out to me at:</p>
+<ul>
+<li><a href="https://linkedin.com/in/sajalshres/">Linkedin</a></li>
+<li><a href="https://github.com/sajalshres/">Github</a></li>
+<li><a href="https://twitter.com/sajalshres">Twitter</a></li>
+<li><a href="mailto:sajal.shres@gmail.com">Email</a></li>
+</ul>
+<h2 id="education">🎓 Education</h2>
+<p><strong>Grand Valley State University</strong> | Grand Rapids, MI</p>
+<p>M.S in Data Science and Analytics | December 2021 - Present</p>
+<h2 id="experience">👨‍💻 Experience</h2>
+<p><strong>Cotiviti</strong> | Senior Software Engineer | Mar 2019 - Dec
+2021</p>
+<p><strong>Cotiviti</strong> | Devops Engineer | Apr 2017 - Nov 2020</p>
+<p><strong>Cerner</strong> | System Engineer | Jan 2016 - Apr 2017</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
 </div>

@@ -1,0 +1,504 @@
+---
+title: "Graphical Visualizations and Summaries"
+author:
+  - name: Sajal Shrestha 
+    url: https://sajalshres.github.io
+date: "`r Sys.Date()`"
+output: 
+  distill::distill_article:
+    highlight: breezedark
+    highlight_downlit: false
+    code_folding: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = TRUE,
+  warning = FALSE,
+  message = FALSE
+)
+```
+
+Initially, let's load the `tidyverse` package and all the dataset in the `Global Environment` using `load_data.R` module.
+
+```{r load-package-and-modules, message = FALSE}
+library(tidyverse)
+library(rmarkdown)
+library(GGally)
+library(waffle)
+
+# Load all the data modules into the environment
+source(here::here("modules", "load_data.R"))
+
+# Load airbnb data
+load_airbnb_data()
+```
+
+For creating graphical visualizations, I've used ggplot2 library. Using the library, I have generated numerous visualizations such as bar chart(`geom_bar`), boxplots(`geom_boxplot`), histogram(`geom_histogram`), scatter plots(`geom_point`). 
+
+For my final project, I was interested in finding the missing values when importing the data as they are important when doing exploratory data analysis. At first, I used `dplyr::summarise_all()` method to find the count of missing values and transposed the missing values using built-in `t` transpose function.
+
+```{r visual-missing-values-count}
+
+missing_values_summary <- listings_raw %>%
+  summarise(across(everything(), ~ sum(is.na(.))))
+  
+
+missing_values_summary <- as_tibble(
+  cbind(
+    columns = names(missing_values_summary), t(missing_values_summary))
+  ) %>%
+  rename(missing_values = V2) %>%
+  mutate(across(missing_values, as.integer)) %>%
+  arrange(desc(missing_values))
+
+missing_values_summary %>% 
+  paged_table(options = list(rows.print = 15))
+```
+
+After generating summaries for the missing values, I created the visualization that demonstrate the proportion of missing values using `ggplot2` library.
+
+```{r visual-missing-values, echo = TRUE, layout="l-body-outset", fig.height = 5}
+missing_stat <- listings_raw %>%
+  gather(key = "key", value = "val") %>%
+  mutate(isna = is.na(val)) %>%
+  group_by(key) %>%
+  mutate(total = n()) %>%
+  group_by(key, total, isna) %>%
+  summarise(num.isna = n()) %>%
+  mutate(percentage = num.isna / total * 100)
+
+levels <-
+  (missing_stat %>% filter(isna == T) %>% arrange(desc(percentage)))$key
+
+missing_stat %>%
+  ggplot(aes(x = reorder(key, desc(percentage)), y = percentage, fill = isna)) +
+  geom_bar(stat = "identity", alpha = 0.8) +
+  scale_x_discrete(limits = levels) +
+  scale_fill_manual(
+    name = "",
+    values = c("#0086ff", "#ff9d00"),
+    labels = c("Present", "Missing")
+  ) +
+  # Apply custom theme
+  theme(
+    axis.text.x = element_text(size = 6, face = "bold"),
+    axis.text.y = element_text(size = 6, face = "bold"),
+    axis.title.x = element_text(size = 8),
+    axis.title.y = element_text(size = 8),
+    plot.title = element_text(size = 10, hjust = 0.5)
+  ) +
+  # Add x axis label
+  xlab("Columns") +
+  # Add y axis label
+  ylab("% of missing values") +
+  # Add title
+  ggtitle("Proportion of missing values in listings data") +
+  coord_flip()
+```
+
+In the above visualization, We can identify that the columns `neighbourhood_group_cleansed`, `calendar_updated` and `bathrooms` are completely empty and can be discarded safely. Similarly, `neighbourhood`, `overview` and `host_about` has large portions of missing values as well.
+
+```{r visual-top-hosts, fig.align="center", echo = TRUE, layout="l-body-outset", fig.width = 12, fig.height = 10}
+# Generate data for top hosts
+top_hosts <- listings %>%
+  select(host_id, host_name) %>%
+  mutate(name = paste0(host_name, "\n", "(", host_id, ")")) %>%
+  count(name, sort = TRUE, name = "count") %>%
+  slice(1:10)
+
+# Render bar chart
+top_hosts %>%
+  # Feed the data to ggplot function
+  ggplot(
+    aes(
+      x = reorder(as.factor(name), -count),
+      y = count,
+      fill = reorder(name, count)
+    )
+  ) +
+  # Add bar line with no legend
+  geom_bar(stat = "identity", width = 0.6, alpha = .8, show.legend = FALSE) +
+  # Add label to each bar to show count
+  geom_label(
+    mapping = aes(label = count), size = 10, fill = "#FFFFFF", fontface = "bold"
+  ) +
+  # Fill the color with highest value with red to draw attention
+  scale_fill_manual(values = rep(c("#2C3E50", "#E74C3C"), times = c(9, 1))) +
+  # Apply custom theme
+  theme(
+    axis.text.x = element_text(size = 9, face = "bold"),
+    axis.text.y = element_text(size = 8, face = "bold"),
+    axis.title.x = element_text(size = 10),
+    axis.title.y = element_text(size = 10),
+    plot.title = element_text(size = 12, hjust = 0.5)
+  ) +
+  # Add x axis label
+  xlab("Hosts") +
+  # Add y axis label
+  ylab("Listings") +
+  # Add title
+  ggtitle("Top 10 hosts in Chicago") +
+  # Flip the co-ordinates
+  coord_flip()
+```
+
+The above bar chart shows the top hosts in Chicago city. We can observe that host with name Rob and id 3965428 has the most number of listings of property.
+
+
+
+```{r fig.align="center", echo = TRUE, fig.height = 8}
+# Generate data for expensive neighbourhoods
+expensive_neighbourhoods <- listings %>%
+    select(neighbourhood, price) %>%
+    group_by(neighbourhood) %>%
+    summarise(average_price = mean(price)) %>%
+    arrange(desc(average_price)) %>%
+    slice(1:10)
+
+# Compare neighbourhood and prices
+neighbourhood_price <- listings %>%
+  select(neighbourhood, price) %>%
+  filter(neighbourhood %in% expensive_neighbourhoods$neighbourhood) %>%
+  mutate(price = log1p(as.numeric(price)))
+
+neighbourhood_price %>%
+  ggplot(aes(x = neighbourhood, y = price, fill = neighbourhood)) +
+  geom_boxplot(show.legend = FALSE) +
+  # Apply custom theme
+  theme(
+    axis.text.x = element_text(size = 8, face = "bold"),
+    axis.text.y = element_text(size = 8, face = "bold"),
+    axis.title.x = element_text(size = 10),
+    axis.title.y = element_text(size = 10),
+    plot.title = element_text(size = 12, hjust = 0.5)
+  ) +
+  # Add x axis label
+  xlab("Neighbourhoods") +
+  # Add y axis label
+  ylab("Price") +
+  # Add title
+  ggtitle("Distribution of price for top 10 expensive neighbourhoods") +
+  # Flip the coordinates
+  coord_flip()
+```
+
+```{r data-happiness-report-2021}
+happiness_2021 <- readr::read_csv(
+  here::here("data", "world_happiness_report_2021.csv")
+)
+happiness_all <- readr::read_csv(
+  here::here("data", "world_happiness_report.csv")
+)
+
+happiness_2021 <- happiness_2021 %>%
+  rename_with(.fn = ~ tolower(.x)) %>%
+  select(!starts_with("Explained by")) %>%
+  select(!"dystopia + residual") %>%
+  rename_with(.fn = ~ gsub(" ", "_", .x))
+
+happiness_all <- happiness_all %>%
+  rename_with(.fn = ~ tolower(gsub(" ", "_", .x)))
+```
+
+```{r visual-happiness-report-correlation, layout="l-body-outset", fig.height = 3}
+happiness_2021 %>%
+  # Rename the columns to fit in the visualization
+  select(
+    corruption = perceptions_of_corruption,
+    generosity = generosity,
+    freedom = freedom_to_make_life_choices,
+    life_expectancy = healthy_life_expectancy,
+    social_support = social_support,
+    gdp_per_capita = logged_gdp_per_capita,
+    happiness = ladder_score
+  ) %>%
+  # Render the correlation graph
+  ggcorr(
+    method = c("everything", "pearson"),
+    size = 3,
+    hjust = 0.77,
+    low = "#CD5C5C",
+    mid = "white",
+    high = "#9FE2BF",
+    label = TRUE,
+    label_size = 3,
+    layout.exp = 1
+  ) +
+  ggtitle("Correlation Matrix") +
+  theme(
+    plot.title = element_text(size = 10, hjust = 0.5),
+    legend.text = element_text(size = 8)
+  )
+```
+
+```{r visual-happiness-report-comparision-data}
+# dimensions
+dimensions <- c(
+  "ladder_score",
+  "logged_gdp_per_capita",
+  "social_support",
+  "healthy_life_expectancy",
+  "freedom_to_make_life_choices",
+  "generosity",
+  "perceptions_of_corruption"
+)
+
+happiness_2021_tranformed <- happiness_2021 %>%
+  select(country = country_name, all_of(dimensions)) %>%
+  mutate(absence_of_corruption = 1 - perceptions_of_corruption) %>%
+  pivot_longer(
+    cols = c(all_of(dimensions), "absence_of_corruption"),
+    names_to = "dimension",
+    values_to = "score"
+  ) %>%
+  filter(dimension != "perceptions_of_corruption") %>%
+  group_by(dimension) %>%
+  mutate(
+    min_value = min(score),
+    max_value = max(score)
+  ) %>%
+  mutate(score_pct = (score - min_value) / (max_value - min_value)) %>%
+  ungroup()
+
+
+# map country to regions
+country_region <- happiness_2021 %>%
+  select(country = country_name, region = regional_indicator) %>%
+  unique()
+
+happiness_waffle <- happiness_2021_tranformed %>%
+    filter(dimension == 'ladder_score') %>%
+    left_join(country_region, by = 'country') %>%
+    mutate(score_bin = cut(score, seq(2,8, 1), right = FALSE)) %>%
+    group_by(region) %>%
+    mutate(region_avg = mean(score)) %>%
+    ungroup() %>%
+    mutate(region = reorder(region, region_avg)) %>%
+    count(region, score_bin, name = "count") %>%
+    arrange(score_bin, count)
+
+score_levels = levels(happiness_waffle$score_bin)
+```
+
+
+```{r visual-happiness-report-comparision, layout="l-body-outset", fig.height = 5}
+
+pal <- colorRampPalette(
+  c(
+    "#BF360C", # Dark muted color to represent saddness 
+    "white", # Middle point
+    "#FFBF00" # Yellow color represents happiness
+  )
+)
+
+ggplot(happiness_waffle, aes(fill = score_bin, values = count)) +
+  geom_waffle(color = "white", size = .3, n_rows = 6, flip = TRUE) +
+  facet_wrap(
+    ~region, nrow = 2, strip.position = "bottom", labeller = label_wrap_gen()
+  ) +
+  scale_x_discrete() +
+  scale_y_continuous(
+    labels = function(x) x * 6, # make this multiplyer the same as n_rows
+    expand = c(0, 0.2),
+    limits = c(0, 7)
+  ) +
+  scale_fill_manual(
+    name = "Yellow suggests more happiness",
+    values = pal(6),
+    labels = c("", "", "", "", "", "")
+  ) +
+  labs(
+    title = "Happiness by World Region",
+    caption = "1 Square Box = 1 Country",
+    y = NULL
+  ) +
+  theme(
+    plot.title = element_text(size = 12, hjust = 0.5),
+    plot.caption = element_text(size = 8),
+    axis.text.y = element_blank(),
+    strip.text.x = element_text(size = 6, hjust = 0.5),
+    legend.position = "bottom",
+    legend.key.size = unit(0.5, "cm"),
+    legend.title = element_text(size = 8, hjust = 0.5),
+  ) +
+  guides(fill = guide_legend(reverse = FALSE, nrow = 1, byrow = TRUE))
+```
+
+```{r visual-happiness-report-comparision-year-data, layout="l-body-outset", fig.height = 5}
+
+happiness_covid_2019_2020 <- happiness_all %>%
+  filter(year >= 2019) %>%
+  left_join(country_region, by = c("country_name" = "country")) %>%
+  select(country = country_name, region, year, ladder = life_ladder) %>%
+  pivot_wider(
+    names_from = "year",
+    names_prefix = "year",
+    values_from = "ladder"
+  ) %>%
+  filter(!is.na(year2019) & !is.na(year2020)) %>%
+  group_by(region) %>%
+  summarize(
+    happiness_2019 = mean(year2019, na.rm = TRUE),
+    happiness_2020 = mean(year2020, na.rm = TRUE)
+  ) %>%
+  mutate(diff = happiness_2020 - happiness_2019) %>%
+  arrange(diff) %>%
+  mutate(region = factor(region, levels = region))
+
+happiness_covid_2019_2020 <- happiness_covid_2019_2020 %>%
+  pivot_longer(cols = c(happiness_2019, happiness_2020)) %>%
+  rename(happiness = value) %>%
+  mutate(year = as.factor(parse_integer(str_extract(name, "\\d*\\.?\\d+")))) %>%
+  mutate(x_pos = happiness + (diff/2)) %>%
+  select(!name)
+
+happiness_covid_2019 <- happiness_covid_2019_2020 %>% filter(year == 2019)
+happiness_covid_2020 <- happiness_covid_2019_2020 %>% filter(year == 2020)
+
+```
+
+```{r visual-happiness-report-comparision-year-graph, layout="l-body-outset", fig.width=8}
+
+ggplot(happiness_covid_2019_2020) +
+  geom_segment(
+    data = happiness_covid_2019,
+    x = happiness_covid_2019$happiness,
+    y = happiness_covid_2019$region,
+    xend = happiness_covid_2020$happiness,
+    yend = happiness_covid_2020$region,
+    color = "#aeb6bf",
+    size = 6,
+    # Note that I sized the segment to fit the points
+    alpha = .5
+  ) +
+  geom_point(
+    data = happiness_covid_2019_2020,
+    aes(x = happiness, y = region, color = year),
+    size = 6,
+    show.legend = TRUE
+  ) +
+  geom_text(
+    data = happiness_covid_2019,
+    aes(
+      label = paste("D: ", round(diff, 2)),
+      x = x_pos,
+      y = region
+    ),
+    color = "#4a4e4d",
+    size = 2
+  ) +
+  geom_text(
+    data = happiness_covid_2019 %>% filter(diff > 0),
+    color = "black",
+    size = 2,
+    hjust = 2,
+    aes(
+      x = happiness,
+      y = region,
+      label = round(happiness, 2)
+    )
+  ) +
+  geom_text(
+    data = happiness_covid_2020 %>% filter(diff > 0),
+    color = "black",
+    size = 2,
+    hjust = -1,
+    aes(
+      x = happiness,
+      y = region,
+      label = round(happiness, 2)
+    )
+  ) +
+  geom_text(
+    data = happiness_covid_2019 %>% filter(diff < 0),
+    color = "black",
+    size = 2,
+    hjust = -1,
+    aes(
+      x = happiness,
+      y = region,
+      label = round(happiness, 2)
+    )
+  ) +
+  geom_text(
+    data = happiness_covid_2020 %>% filter(diff < 0),
+    color = "black",
+    size = 2,
+    hjust = 2,
+    aes(
+      x = happiness,
+      y = region,
+      label = round(happiness, 2)
+    )
+  ) +
+  # color points
+  scale_color_manual(values = c("#CD5C5C", "#9FE2BF")) +
+  labs(
+    x = NULL,
+    y = NULL,
+    title = "Comparision of Happiness: pre-COVID(2019) to amongst-COVID(2020)"
+  ) +
+  theme(
+    axis.text.x = element_text(size = 5, face = "bold"),
+    axis.text.y = element_text(size = 6, face = "bold"),
+    plot.title = element_text(size = 10, hjust = 0.5),
+  )
+
+```
+
+I've also created a box plot chart that provides insights on the neighborhood and prices.
+
+Further, I generated additional summaries for the dataset.
+
+```{r numerical-summaries-airbnb-listings}
+
+listings_summary <- listings %>%
+  group_by(neighbourhood) %>%
+  summarise(
+    mean_price = mean(price),
+    median_price = median(price),
+    minimum_price = min(price),
+    maximum_price = max(price),
+    sd_price = sd(price)
+  )
+
+listings_summary %>% 
+  paged_table(options = list(rows.print = 15))
+```
+
+```{r numerical-summaries-worldhappiness}
+
+happiness_all %>%
+  group_by(country_name) %>%
+  summarise(
+    num_of_years = n(),
+    mean_life_ladder = mean(life_ladder),
+    median_life_ladder = median(life_ladder),
+    sd_life_ladder = sd(life_ladder)
+  ) %>%
+  paged_table(options = list(rows.print = 15))
+
+```
+
+```{r clean-up, echo = FALSE, message = FALSE, warning = FALSE, results = 'hide'}
+cleanup_variables = c(
+  "expensive_neighbourhoods",
+  "listings",
+  "reviews",
+  "neighbourhood_price",
+  "missing_stat",
+  "missing_values_summary",
+  "top_hosts",
+  "happiness_2021",
+  "happiness_all",
+  "happiness_2021_tranformed",
+  "happiness_covid_2019_2020",
+  "happiness_covid_2019",
+  "happiness_covid_2020",
+  "happiness_waffle",
+  "country_region"
+)
+rm(list = cleanup_variables)
+```
+

@@ -1,0 +1,749 @@
+---
+title: "Final Grade Reflection"
+author:
+  - name: Sajal Shrestha 
+    url: https://sajalshres.github.io
+date: "`r Sys.Date()`"
+output: 
+  distill::distill_article:
+    toc: true
+    toc_depth: 2
+    toc_float: true
+    highlight: breezedark
+    highlight_downlit: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = TRUE,
+  warning = FALSE,
+  message = FALSE
+)
+```
+
+```{r load-package-and-modules, message = FALSE}
+library(tidyverse)
+library(rmarkdown)
+library(GGally)
+library(waffle)
+```
+
+# 1. What Grade Did You Earn?
+
+I have completed all the class activities, readings, and preparations provided on the blackboard. As I have advanced through the course, I've learned from basic to advanced concepts of R programming. I have applied all my learning in the portfolio and final project showcasing all the required goals. Likewise, my final project follows all the major guidelines and creative constraints set collaboratively with colleagues.  I think R has a very steep learning curve, but I believe that I've made good progress and I am optimistic about being a decent R programmer as I am at the end of this course. Even though, I know that I've just scratched the surface into the world of R, I am confident that I can take any challenges/projects in future and I look forward to exploring further. Therefore, I would grade myself an **'A'**.
+
+# 2. How Did You Demonstrate That Grade?
+
+## 2.1 Import, manage and clean data
+
+I can import data from various sources such as text, csv, excel files and load it into the R data structure such as modern `tibble` data frame or base `data.frame`. I can manage the dataset using the functions such as `mutate()`, `select()`, `filter()`, `summarise()` and `arrange()` in the **dplyr** package.
+
+For my final project, I worked on the Airbnb dataset for multiple cities to process the property listings, neighbourhoods, and reviews. To achieve this, I created a custom scrape function: [scrape.R](https://github.com/sajalshres/sta-518-project/blob/main/modules/scrape.R) and a [etl(extract-transform-load)](https://github.com/sajalshres/sta-518-project/blob/main/etl/main.R) command line tool for managing data. For portfolio demonstration, I am using *Chicago** dataset as it is very close to Grand Rapids and plan on visiting someday.
+
+### 2.1.1 Import Data
+
+I imported the Airbnb data set for the Chicago city in to the dataframe for my final project. Below is the code to import into the dataframe.
+
+```{r import-data-airbnb, message=FALSE, code_folding=FALSE}
+download_files <- function(base_url, file_names) {
+  for (file_name in file_names) {
+    dest_file <- paste("data", file_name, sep = "/")
+
+    print(paste("Downloading file:", dest_file))
+    if (!file.exists(dest_file)) {
+      httr::GET(
+        url = paste(base_url, file_name, sep = "/"),
+        httr::write_disk(paste("data", file_name, sep = "/"), overwrite = TRUE),
+        httr::progress()
+      )
+    } else {
+      print(paste("Download skipped. File aready exists:", dest_file))
+    }
+  }
+}
+
+# Set the base url
+airbnb_base_url <-
+  "http://data.insideairbnb.com/united-states/il/chicago/2022-06-10/data"
+
+# Download the files
+download_files(
+  base_url = base_airbnb_url,
+  file_names = c("listings.csv.gz", "reviews.csv.gz")
+)
+
+# Import data
+listings_raw <-
+  readr::read_csv(here::here("data", "listings.csv.gz"))
+
+reviews_raw <- readr::read_csv(here::here("data", "reviews.csv.gz"))
+```
+
+### 2.1.2 Manage Data
+
+The Airbnb dataset has more than 80 columns. I choose only the required columns and removed unwanted columns using `dplyr::select` function.
+
+```{r manage-data-airbnb}
+# Manage listings data
+listings <- listings_raw %>%
+  # Isolate required columns
+  select(
+    id,
+    name,
+    description,
+    neighbourhood_cleansed,
+    latitude,
+    longitude,
+    property_type,
+    room_type,
+    accommodates,
+    bathrooms_text,
+    bedrooms,
+    beds,
+    amenities,
+    price
+  )
+  
+# Manage hosts data
+hosts <- listings_raw %>%
+  # Select all columns that starts with host
+  select(id, dplyr::starts_with("host")) %>%
+  # Rename id to listing_id
+  rename(listing_id = id)
+```
+
+### 2.1.3 Clean Data
+
+The Airbnb dataset has some columns that were in unexpected format. I have fixed those columns using `dplyr::mutate` function. Also, some of the columns had un-necessary pre-fixes. I renamed them using `dplyr::rename_with` and `dplyr::rename` function. Lastly, I relocated some columns using `dplyr::relocate` for better readability.
+
+```{r clean-data-airbnb}
+listings <- listings %>%
+  # Convert bathrooms to number type
+  mutate(
+    bathrooms = parse_number(str_extract(bathrooms_text, "\\d*\\.?\\d+")),
+    .after = beds
+  ) %>%
+  # Convert price to number type
+  mutate(price = parse_number(price), ) %>%
+  # Remove unwanted columns
+  select(!bathrooms_text) %>%
+  # Rename neighbourhood
+  rename(neighbourhood = neighbourhood_cleansed)
+
+
+hosts <- hosts %>%
+  # Remove dublicate instances
+  distinct(host_id, .keep_all = TRUE) %>%
+  # Modify since format to date
+  mutate(
+    host_since = format(as.Date(host_since), "%m/%d/%Y"),
+    .after = host_name
+  ) %>%
+  # Remove unwanted columns
+  select(
+    !c(
+      "host_url",
+      "host_thumbnail_url",
+      "host_picture_url",
+      "host_listings_count",
+      "host_total_listings_count"
+    )
+  ) %>%
+  # Relocate listing_id to second column
+  relocate(listing_id, .after = host_id)
+```
+
+
+Some of the rows had empty strings or labelled with "N/A" value. I replaced them with `NA` and dropped the data for some of the columns which had `NA`.
+
+```{r clean-data-airbnb-na-values}
+# Replace empty values with NA
+listings[listings == ""] <- NA
+hosts[hosts == ""] <- NA
+
+# Replace N/A values with NA
+listings[listings == "N/A"] <- NA
+hosts[hosts == "N/A"] <- NA
+
+# Drop rows with NA for critical columns
+listings <- listings %>% drop_na(c("id", "name"))
+hosts <- hosts %>% drop_na(c("host_id"))
+```
+
+Also, I detected some noise in the dataset where the location was from wrong countries, city or state. I used `dplyr::filter` function to remove such noises.
+
+```{r clean-data-airbnb-noises}
+hosts <- hosts %>%
+  filter(
+    host_location == "Chicago, Illinois, United States"
+  )
+```
+
+For my final project, since I was using custom [`etl`](https://github.com/sajalshres/sta-518-project/blob/main/etl/main.R) command-line utility with scraper built using `rvest`, I modified above code to support for different location based on city:
+
+```{r clean-data-airbnb-noises-2}
+hosts <- hosts %>%
+    filter(
+      host_location == names(which.max(table(host_location)))
+    )
+```
+
+Furthermore, I combined listings, and hosts data sources as required using `dplyr::left_join()` function.
+
+```{r manage-data-airbnb-combine}
+combined_listings <- listings %>%
+  select(id, price) %>%
+  left_join(
+    hosts %>% select(host_id, listing_id, host_name, host_location), 
+    by = c("id" = "listing_id"), 
+    suffix = c("", "")
+  ) %>%
+  drop_na(c("host_id"))
+
+combined_listings %>% 
+  paged_table(options = list(rows.print = 15))
+```
+
+### 2.1.4 Mini Project - World Happiness Report
+
+For additional analysis, I also imported excel files from the [worldhappiness.report](https://worldhappiness.report/).
+
+```{r manage-data-worldhappiness, message = FALSE}
+# Import data
+worldhappiness_2021 <- readr::read_csv(
+  here::here("data", "world_happiness_report_2021.csv")
+)
+worldhappiness_all <- readr::read_csv(
+  here::here("data", "world_happiness_report.csv")
+)
+
+worldhappiness_2021 <- worldhappiness_2021 %>%
+  rename_with(.fn = ~ tolower(.x)) %>%
+  select(!starts_with("Explained by")) %>%
+  select(!"dystopia + residual") %>%
+  rename_with(.fn = ~ gsub(" ", "_", .x))
+
+worldhappiness_all <- worldhappiness_all %>%
+  rename_with(.fn = ~ tolower(gsub(" ", "_", .x)))
+```
+
+
+```{r clean-up, echo = FALSE, message = FALSE, warning = FALSE, results = 'hide'}
+clean_up_variables = c(
+  "combined_listings",
+  "hosts",
+  "listings",
+  "listings_raw",
+  "reviews_raw",
+  "worldhappiness_2021",
+  "worldhappiness_all"
+)
+
+rm(list = clean_up_variables)
+```
+
+## 2.2 Create graphical displays and numberical summaries of data for exploratory analysis and presentations
+
+For creating graphical visualizations, I have used `ggplot2` library. Using the library, I have generated numerous visualizations such as bar chart(`geom_bar`), box plots(`geom_boxplot`), histogram(`geom_histogram`), scatter plots(`geom_point`), dumbbell plots(`geom_segment`). In addition, I have also used `GGally` library's function `ggcorr()` to generate correlation matrix. Likewise, I utilized `waffle` library to generate waffle square chart using `geom_waffle()` function.
+
+First of all, let's load the dataset into the `Global Environment` using `load_data.R` module.
+
+```{r visual-load-modules, message = FALSE}
+# Load all the data modules into the environment
+source(here::here("modules", "load_data.R"))
+
+# Load airbnb data
+load_airbnb_data()
+```
+
+For my final project, I was interested in finding the missing values when importing the data as they are important when doing exploratory data analysis. At first, I used `dplyr::summarise_all()` method to find the count of missing values and transposed the missing values using built-in `t` transpose function.
+
+```{r visual-missing-values-count}
+missing_values_summary <- listings_raw %>%
+  summarise(across(everything(), ~ sum(is.na(.))))
+
+missing_values_summary <- as_tibble(
+  cbind(
+    columns = names(missing_values_summary), t(missing_values_summary))
+  ) %>%
+  rename(missing_values = V2) %>%
+  mutate(across(missing_values, as.integer)) %>%
+  arrange(desc(missing_values))
+
+missing_values_summary %>% 
+  paged_table(options = list(rows.print = 15))
+```
+
+Numerical summaries can be great to understand the dataset but graphical visualization can add more information. After generating summaries for the missing values, I created the visualization that demonstrate the proportion of missing values using `ggplot2` library.
+
+```{r visual-missing-values, echo = TRUE, layout="l-body-outset", fig.height = 5}
+missing_stat <- listings_raw %>%
+  gather(key = "key", value = "val") %>%
+  mutate(isna = is.na(val)) %>%
+  group_by(key) %>%
+  mutate(total = n()) %>%
+  group_by(key, total, isna) %>%
+  summarise(num.isna = n()) %>%
+  mutate(percentage = num.isna / total * 100)
+
+levels <-
+  (missing_stat %>% filter(isna == T) %>% arrange(desc(percentage)))$key
+
+missing_stat %>%
+  ggplot(aes(x = reorder(key, desc(percentage)), y = percentage, fill = isna)) +
+  geom_bar(stat = "identity", alpha = 0.8) +
+  scale_x_discrete(limits = levels) +
+  scale_fill_manual(
+    name = "",
+    values = c("#0086ff", "#ff9d00"),
+    labels = c("Present", "Missing")
+  ) +
+  # Apply custom theme
+  theme(
+    axis.text.x = element_text(size = 6, face = "bold"),
+    axis.text.y = element_text(size = 6, face = "bold"),
+    axis.title.x = element_text(size = 8),
+    axis.title.y = element_text(size = 8),
+    plot.title = element_text(size = 10, hjust = 0.5),
+    plot.caption = element_text(size = 10, hjust = 0.5),
+  ) +
+  labs(
+    # Add x axis label
+    x = "Columns",
+    # Add y axis label
+    y = "% of missing values",
+    # Add title
+    title = "Proportion of missing values in Airbnb data",
+    # Add subtitle
+    caption = "Figure 1 Proportion of missing values in Airbnb data"
+  ) +
+  coord_flip()
+```
+
+In the above visualization, We can identify that the columns `neighbourhood_group_cleansed`, `calendar_updated` and `bathrooms` are completely empty and can be discarded safely. Similarly, `neighbourhood`, `overview` and `host_about` has large portions of missing values as well.
+
+I as interesting in finding the top Airbnb hosts in Chicago that had the most listings. For achieiving this tasks, I generated the data for top hosts using `dplyr` library and generated the bar chart using `ggplot2` library as below:
+
+```{r visual-top-hosts, fig.align="center", echo = TRUE, layout="l-body-outset", fig.width = 12, fig.height = 10}
+# Generate data for top hosts
+top_hosts <- listings %>%
+  select(host_id, host_name) %>%
+  mutate(name = paste0(host_name, "\n", "(", host_id, ")")) %>%
+  count(name, sort = TRUE, name = "count") %>%
+  slice(1:10)
+
+# Render bar chart
+top_hosts %>%
+  # Feed the data to ggplot function
+  ggplot(
+    aes(
+      x = reorder(as.factor(name), -count),
+      y = count,
+      fill = reorder(name, count)
+    )
+  ) +
+  # Add bar line with no legend
+  geom_bar(stat = "identity", width = 0.6, alpha = .8, show.legend = FALSE) +
+  # Add label to each bar to show count
+  geom_label(
+    mapping = aes(label = count), size = 10, fill = "#FFFFFF", fontface = "bold"
+  ) +
+  # Fill the color with highest value with red to draw attention
+  scale_fill_manual(values = rep(c("#2C3E50", "#E74C3C"), times = c(9, 1))) +
+  # Apply custom theme
+  theme(
+    axis.text.x = element_text(size = 9, face = "bold"),
+    axis.text.y = element_text(size = 8, face = "bold"),
+    axis.title.x = element_text(size = 10),
+    axis.title.y = element_text(size = 10),
+    plot.title = element_text(size = 12, hjust = 0.5),
+    plot.caption = element_text(size = 10, hjust = 0.5),
+  ) +
+  labs(
+    # Add x axis label
+    x = "Hosts",
+    # Add y axis label
+    y = "Listings",
+    # Add title
+    title = "Top 10 Airbnb hosts in Chicago",
+    # Add subtitle
+    caption = "Figure 2 Top 10 Airbnb hosts in Chicago"
+  ) +
+  # Flip the co-ordinates
+  coord_flip()
+```
+
+The above bar chart shows the top hosts in Chicago city. We can observe that host with name `Rob` and id `3965428` has the most number of listings of property. I have also used `ggplot2::scale_fill_manual` function to map red color to highest host with most listing that will allow the viewers to quickly draw attention. Similarly, `ggplot2::theme` function is used to generate a custom theme.
+
+Similarly, for the next tasks, I created a box plot visualization using `ggplot2::geom_boxplot` function to analyze the price of top expensive neighbourhoods.
+
+```{r fig.align="center", echo = TRUE, fig.height = 8}
+# Generate data for expensive neighbourhoods
+expensive_neighbourhoods <- listings %>%
+    select(neighbourhood, price) %>%
+    group_by(neighbourhood) %>%
+    summarise(average_price = mean(price)) %>%
+    arrange(desc(average_price)) %>%
+    slice(1:10)
+
+# Compare neighbourhood and prices
+neighbourhood_price <- listings %>%
+  select(neighbourhood, price) %>%
+  filter(neighbourhood %in% expensive_neighbourhoods$neighbourhood) %>%
+  mutate(price = log1p(as.numeric(price)))
+
+neighbourhood_price %>%
+  ggplot(aes(x = neighbourhood, y = price, fill = neighbourhood)) +
+  geom_boxplot(show.legend = FALSE) +
+  # Apply custom theme
+  theme(
+    axis.text.x = element_text(size = 8, face = "bold"),
+    axis.text.y = element_text(size = 8, face = "bold"),
+    axis.title.x = element_text(size = 10),
+    axis.title.y = element_text(size = 10),
+    plot.title = element_text(size = 12, hjust = 0.5),
+    plot.caption = element_text(size = 10, hjust = 0.5),
+  ) +
+  labs(
+    # Add x axis label
+    x = "Neighbourhoods",
+    # Add y axis label
+    y = "Price",
+    # Add title
+    title = "Distribution of price for top 10 expensive neighbourhoods",
+    # Add subtitle
+    caption = "Figure 3 Distribution of price for top 10 expensive neighbourhoods"
+  ) +
+  # Flip the coordinates
+  coord_flip()
+```
+From the above box plot graph, we have good sense of how the data is spread across. We can also observe outliers in prices for some neighbourhoods like Near North side which can skew the distribution of the data. We can also observe that the loop neighbourhood has the highest median price.
+
+For the World Happiness dataset, I was curious in finding the correlation between various variables. First, I imported the data using `reader::read_csv` function and managed the data using `dplyr` library.
+
+```{r data-happiness-report-2021}
+happiness_2021 <- readr::read_csv(
+  here::here("data", "world_happiness_report_2021.csv")
+)
+happiness_all <- readr::read_csv(
+  here::here("data", "world_happiness_report.csv")
+)
+
+happiness_2021 <- happiness_2021 %>%
+  rename_with(.fn = ~ tolower(.x)) %>%
+  select(!starts_with("Explained by")) %>%
+  select(!"dystopia + residual") %>%
+  rename_with(.fn = ~ gsub(" ", "_", .x))
+
+happiness_all <- happiness_all %>%
+  rename_with(.fn = ~ tolower(gsub(" ", "_", .x)))
+```
+
+Next, I generated the correlation matrix using `GGally::ggcorr` function as below:
+
+```{r visual-happiness-report-correlation, layout="l-body-outset", fig.height = 3}
+happiness_2021 %>%
+  # Rename the columns to fit in the visualization
+  select(
+    Corruption = perceptions_of_corruption,
+    Generosity = generosity,
+    Freedom = freedom_to_make_life_choices,
+    Life.Expectancy = healthy_life_expectancy,
+    Social.Support = social_support,
+    GDP = logged_gdp_per_capita,
+    Happiness = ladder_score
+  ) %>%
+  # Render the correlation graph
+  ggcorr(
+    method = c("everything", "pearson"),
+    size = 3,
+    hjust = 0.77,
+    low = "#CD5C5C",
+    mid = "white",
+    high = "#9FE2BF",
+    label = TRUE,
+    label_size = 3,
+    layout.exp = 1
+  ) +
+  # Apply custom theme
+  theme(
+    plot.title = element_text(size = 10, hjust = 0.5),
+    legend.text = element_text(size = 8),
+    plot.caption = element_text(size = 10, hjust = 0.5),
+  ) +
+  labs(
+    title = "Correlation Matrx",
+    caption = "Figure 4 Identify correlation of Happiness with different variables"
+  )
+```
+
+From the above correlation matrix graph, we can identify that happiness mostly correlates with GDP, Social Support, Life Expectancy and Freedom.
+
+Similarly, I was also interested in finding the regions that had the most happiest countries. To achieve this, I used `waffle::geom_waffle()` to generate a squate chart visualizations that helped me to identify the parts of a whole for world happiness data.
+
+The `dplyr` library is used to generate the data as below:
+
+```{r visual-happiness-report-comparision-data, code_folding=FALSE}
+# dimensions
+dimensions <- c(
+  "ladder_score",
+  "logged_gdp_per_capita",
+  "social_support",
+  "healthy_life_expectancy",
+  "freedom_to_make_life_choices",
+  "generosity",
+  "perceptions_of_corruption"
+)
+
+happiness_2021_tranformed <- happiness_2021 %>%
+  select(country = country_name, all_of(dimensions)) %>%
+  mutate(absence_of_corruption = 1 - perceptions_of_corruption) %>%
+  pivot_longer(
+    cols = c(all_of(dimensions), "absence_of_corruption"),
+    names_to = "dimension",
+    values_to = "score"
+  ) %>%
+  filter(dimension != "perceptions_of_corruption") %>%
+  group_by(dimension) %>%
+  mutate(
+    min_value = min(score),
+    max_value = max(score)
+  ) %>%
+  mutate(score_pct = (score - min_value) / (max_value - min_value)) %>%
+  ungroup()
+
+
+# map country to regions
+country_region <- happiness_2021 %>%
+  select(country = country_name, region = regional_indicator) %>%
+  unique()
+
+happiness_waffle <- happiness_2021_tranformed %>%
+    filter(dimension == 'ladder_score') %>%
+    left_join(country_region, by = 'country') %>%
+    mutate(score_bin = cut(score, seq(2,8, 1), right = FALSE)) %>%
+    group_by(region) %>%
+    mutate(region_avg = mean(score)) %>%
+    ungroup() %>%
+    mutate(region = reorder(region, region_avg)) %>%
+    count(region, score_bin, name = "count") %>%
+    arrange(score_bin, count)
+
+score_levels = levels(happiness_waffle$score_bin)
+```
+
+The square chart (waffle chart) is created using `geom_waffle` as below:
+
+```{r visual-happiness-report-comparision, layout="l-body-outset", fig.height = 5}
+
+pal <- colorRampPalette(
+  c(
+    "#BF360C", # Dark muted color to represent saddness 
+    "white", # Middle point
+    "#FFBF00" # Yellow color represents happiness
+  )
+)
+
+ggplot(happiness_waffle, aes(fill = score_bin, values = count)) +
+  geom_waffle(color = "white", size = .3, n_rows = 6, flip = TRUE) +
+  facet_wrap(
+    ~region, nrow = 2, strip.position = "bottom", labeller = label_wrap_gen()
+  ) +
+  scale_x_discrete() +
+  scale_y_continuous(
+    labels = function(x) x * 6, # make this multiplyer the same as n_rows
+    expand = c(0, 0.2),
+    limits = c(0, 7)
+  ) +
+  scale_fill_manual(
+    name = "Yellow suggests more happiness",
+    values = pal(6),
+    labels = c("", "", "", "", "", "")
+  ) +
+  labs(
+    y = NULL,
+    title = "Happiness by World Region",
+    caption = "Figure 5 Comparision of happiness by world regions",
+  ) +
+  theme(
+    plot.title = element_text(size = 12, hjust = 0.5),
+    plot.caption = element_text(size = 10, hjust = 0.5),
+    axis.text.y = element_blank(),
+    strip.text.x = element_text(size = 6, hjust = 0.5),
+    legend.position = "bottom",
+    legend.key.size = unit(0.5, "cm"),
+    legend.title = element_text(size = 8, hjust = 0.5),
+  ) +
+  guides(fill = guide_legend(reverse = FALSE, nrow = 1, byrow = TRUE))
+```
+
+From the above visualization, we can quickly identify that North America and Western Europe is the happiest region with most countries followed by Central and Eastern Europe. The color yellow is used to represent the happiness where as dark color is used to denote the opposite.
+
+Lastly, I wanted to compare the happiness between the pre-covid year and amongst-covid year to see If there was any changes in happiness index. For this tasks, I created a dumbbell chart using `ggplot2::geom_segment` functions.
+
+The code to generate the data is below:
+
+```{r visual-happiness-report-comparision-year-data, code_folding=FALSE}
+
+happiness_covid_2019_2020 <- happiness_all %>%
+  filter(year >= 2019) %>%
+  left_join(country_region, by = c("country_name" = "country")) %>%
+  select(country = country_name, region, year, ladder = life_ladder) %>%
+  pivot_wider(
+    names_from = "year",
+    names_prefix = "year",
+    values_from = "ladder"
+  ) %>%
+  filter(!is.na(year2019) & !is.na(year2020)) %>%
+  group_by(region) %>%
+  summarize(
+    happiness_2019 = mean(year2019, na.rm = TRUE),
+    happiness_2020 = mean(year2020, na.rm = TRUE)
+  ) %>%
+  mutate(diff = happiness_2020 - happiness_2019) %>%
+  arrange(diff) %>%
+  mutate(region = factor(region, levels = region))
+
+happiness_covid_2019_2020 <- happiness_covid_2019_2020 %>%
+  pivot_longer(cols = c(happiness_2019, happiness_2020)) %>%
+  rename(happiness = value) %>%
+  mutate(year = as.factor(parse_integer(str_extract(name, "\\d*\\.?\\d+")))) %>%
+  mutate(x_pos = happiness + (diff/2)) %>%
+  select(!name)
+
+happiness_covid_2019 <- happiness_covid_2019_2020 %>% filter(year == 2019)
+happiness_covid_2020 <- happiness_covid_2019_2020 %>% filter(year == 2020)
+
+```
+
+The code to generate the dumbbell chart using `ggplot2::geom_segment` is below:
+
+```{r visual-happiness-report-comparision-year-graph, layout="l-body-outset", fig.width=8}
+
+ggplot(happiness_covid_2019_2020) +
+  geom_segment(
+    data = happiness_covid_2019,
+    x = happiness_covid_2019$happiness,
+    y = happiness_covid_2019$region,
+    xend = happiness_covid_2020$happiness,
+    yend = happiness_covid_2020$region,
+    color = "#aeb6bf",
+    size = 6,
+    # Note that I sized the segment to fit the points
+    alpha = .5
+  ) +
+  geom_point(
+    data = happiness_covid_2019_2020,
+    aes(x = happiness, y = region, color = year),
+    size = 6,
+    show.legend = TRUE
+  ) +
+  geom_text(
+    data = happiness_covid_2019,
+    aes(
+      label = paste("D: ", round(diff, 2)),
+      x = x_pos,
+      y = region
+    ),
+    color = "#4a4e4d",
+    size = 2
+  ) +
+  geom_text(
+    data = happiness_covid_2019 %>% filter(diff > 0),
+    color = "black",
+    size = 2,
+    hjust = 2,
+    aes(
+      x = happiness,
+      y = region,
+      label = round(happiness, 2)
+    )
+  ) +
+  geom_text(
+    data = happiness_covid_2020 %>% filter(diff > 0),
+    color = "black",
+    size = 2,
+    hjust = -1,
+    aes(
+      x = happiness,
+      y = region,
+      label = round(happiness, 2)
+    )
+  ) +
+  geom_text(
+    data = happiness_covid_2019 %>% filter(diff < 0),
+    color = "black",
+    size = 2,
+    hjust = -1,
+    aes(
+      x = happiness,
+      y = region,
+      label = round(happiness, 2)
+    )
+  ) +
+  geom_text(
+    data = happiness_covid_2020 %>% filter(diff < 0),
+    color = "black",
+    size = 2,
+    hjust = 2,
+    aes(
+      x = happiness,
+      y = region,
+      label = round(happiness, 2)
+    )
+  ) +
+  # color points
+  scale_color_manual(values = c("#FF7F50", "#9FE2BF")) +
+  labs(
+    x = NULL,
+    y = NULL,
+    title = "Comparision of Happiness: pre-COVID(2019) to amongst-COVID(2020)"
+  ) +
+  theme(
+    axis.text.x = element_text(size = 5, face = "bold"),
+    axis.text.y = element_text(size = 6, face = "bold"),
+    plot.title = element_text(size = 10, hjust = 0.5),
+  )
+```
+
+From the above dumbbell graph, we can see that there was an increase in some of the world regions like South Asia, Sub-Saharan Africa in-spite of COVID pandemic.
+
+
+In addition, I generated additional summaries for the dataset to gain insight on various columns and its quality.
+
+```{r numerical-summaries-airbnb-listings}
+
+listings_summary <- listings %>%
+  group_by(neighbourhood) %>%
+  summarise(
+    mean_price = mean(price),
+    median_price = median(price),
+    minimum_price = min(price),
+    maximum_price = max(price),
+    sd_price = sd(price)
+  )
+
+listings_summary %>% 
+  paged_table(options = list(rows.print = 15))
+```
+
+## 2.3 Write R programs for simulations from probability models and randomization-based experiments
+
+- I plan on developing R programs to simulate probability models and complete randomization-based experiments.
+
+## 2.4 Use source documentation and other resources to troubleshoot and extend R programs
+
+- I have been reading the source documentation and learning resources such as [R for Data Science](https://r4ds.had.co.nz/index.html), [R Manuals](https://cran.r-project.org/manuals.html) and YouTube. The Help tab on RStudio application been super useful in quickly reading the documentation and find usage information for specific functions or library.
+
+- I am collaborating with my team on troubleshooting on various issues and helping them when needed. I also ask for help on specific issues when I am stuck. I plan on collaborating more as I am learning different ways to troubleshoot and strengthen my skills.
+
+## 2.5 Write clear, efficient, and well-documented R programs.
+
+- I can knit markdown using [Rmarkdown](https://rmarkdown.rstudio.com/) package and create professional reports in R.
+
+- I plan on exploring more about the best practices in R programming such as naming convention, organizing a large project files, coding style, and writing packages.
+
+- If possible, I am also interested in doing code reviews. I beleive reviewing other's code will help us become a better programmer and improve our skiils to identify issues, learn from others and create better documentation.
+
+- I aim to further achieve this objective by writing various R scripts and work on web application that can help in write well documented and efficient R code.
+

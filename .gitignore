@@ -40,6 +40,3 @@ vignettes/*.pdf
 
 # HTML
 .DS_Store
-
-# data
-data/

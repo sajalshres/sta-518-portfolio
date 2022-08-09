@@ -1,0 +1,227 @@
+---
+title: "Data Management"
+author:
+  - name: Sajal Shrestha 
+    url: https://sajalshres.github.io
+date: "`r Sys.Date()`"
+output: distill::distill_article
+---
+
+```{r chunk-global-default, include=FALSE}
+knitr::opts_chunk$set(
+  echo = TRUE,
+  warning = FALSE,
+  message = FALSE
+)
+```
+
+```{r load_package, message=FALSE}
+library(tidyverse)
+library(httr)
+library(rmarkdown)
+```
+
+## Import Data
+
+I imported the Airbnb data set for the Chicago city in to the dataframe for my final project. Below is the code to import into the dataframe.
+
+```{r import-data-airbnb, message=FALSE}
+download_files <- function(base_url, file_names) {
+  for (file_name in file_names) {
+    dest_file <- paste("data", file_name, sep = "/")
+
+    print(paste("Downloading file:", dest_file))
+    if (!file.exists(dest_file)) {
+      httr::GET(
+        url = paste(base_url, file_name, sep = "/"),
+        httr::write_disk(paste("data", file_name, sep = "/"), overwrite = TRUE),
+        httr::progress()
+      )
+    } else {
+      print(paste("Download skipped. File aready exists:", dest_file))
+    }
+  }
+}
+
+# Set the base url
+airbnb_base_url <-
+  "http://data.insideairbnb.com/united-states/il/chicago/2022-06-10/data"
+
+# Download the files
+download_files(
+  base_url = base_airbnb_url,
+  file_names = c("listings.csv.gz", "reviews.csv.gz")
+)
+
+# Import data
+listings_raw <-
+  readr::read_csv(here::here("data", "listings.csv.gz"))
+
+reviews_raw <- readr::read_csv(here::here("data", "reviews.csv.gz"))
+```
+
+## Managing data
+
+The Airbnb dataset has more than 80 columns. I removed them using `dplyr::select` function. Also, some of the data were in unexpected format. I modified them using `dplyr::mutate` function.
+
+```{r manage-data-airbnb}
+# Manage listings data
+listings <- listings_raw %>%
+  # Isolate required columns
+  select(
+    id,
+    name,
+    description,
+    neighbourhood_cleansed,
+    latitude,
+    longitude,
+    property_type,
+    room_type,
+    accommodates,
+    bathrooms_text,
+    bedrooms,
+    beds,
+    amenities,
+    price
+  )
+  
+# Manage hosts data
+hosts <- listings_raw %>%
+  # Select all columns that starts with host
+  select(id, dplyr::starts_with("host")) %>%
+  # Rename id to listing_id
+  rename(listing_id = id)
+```
+
+
+## Cleaning Data
+
+The Airbnb dataset has some columns that were in unexpected format. I have fixed those columns using `dplyr::mutate` function Also, some of the columns had un-necessary prexis. I renamed them using `dplyr::rename_with` and `dplyr::rename` function. Lastly, I relocated some columns using `dplyr::relocate` for better readability.
+
+```{r clean-data-airbnb}
+listings <- listings %>%
+  # Convert bathrooms to number type
+  mutate(
+    bathrooms = parse_number(str_extract(bathrooms_text, "\\d*\\.?\\d+")),
+    .after = beds
+  ) %>%
+  # Convert price to number type
+  mutate(price = parse_number(price), ) %>%
+  # Remove unwanted columns
+  select(!bathrooms_text) %>%
+  # Rename neighbourhood
+  rename(neighbourhood = neighbourhood_cleansed)
+
+
+hosts <- hosts %>%
+  # Rename prefix host_
+  rename_with(.fn = ~ gsub("host_", "", .x)) %>%
+  # Remove dublicate instances
+  distinct(id, .keep_all = TRUE) %>%
+  # Modify since format to date
+  mutate(
+    since = format(as.Date(since), "%m/%d/%Y"),
+    .after = name
+  ) %>%
+  # Remove unwanted columns
+  select(
+    !c(
+      "url",
+      "thumbnail_url",
+      "picture_url",
+      "listings_count",
+      "total_listings_count"
+    )
+  ) %>%
+  # Relocate listing_id to second column
+  relocate(listing_id, .after = id)
+```
+
+
+Some of the rows had empty strings or labelled with "N/A" value. I replaced them with `NA` and dropped the data for some of the columns which had `NA`.
+
+```{r clean-data-airbnb-na-values}
+# Replace empty values with NA
+listings[listings == ""] <- NA
+hosts[hosts == ""] <- NA
+
+# Replace N/A values with NA
+listings[listings == "N/A"] <- NA
+hosts[hosts == "N/A"] <- NA
+
+# Drop rows with NA for critical columns
+listings <- listings %>% drop_na(c("id", "name"))
+hosts <- hosts %>% drop_na(c("id", "name", "neighbourhood"))
+
+```
+
+Also, I detected some noise in the dataset where the location was from wrong countries, city or state. I used `dplyr::filter` function to remove such noises.
+
+```{r clean-data-airbnb-noises}
+hosts <- hosts %>%
+  filter(
+    location == "Chicago, Illinois, United States"
+  )
+```
+
+For my final project, since I was using custom [`etl`](https://github.com/sajalshres/sta-518-project/blob/main/etl/main.R) command-line utility with scraper built using `rvest`, I modified above code to support for different location based on city:
+
+```{r clean-data-airbnb-noises-2}
+hosts <- hosts %>%
+    filter(
+      location == names(which.max(table(location)))
+    )
+```
+
+I am able to combine listings, hosts and reviews data as required:
+
+```{r manage-data-airbnb-combine}
+combined_listings <- listings %>%
+  select(id, name) %>%
+  left_join(
+    hosts %>% select(id, listing_id, name, location), 
+    by = c("id" = "listing_id"), 
+    suffix = c("", ".host")
+  )
+
+combined_listings %>% 
+  paged_table(options = list(rows.print = 15))
+```
+## Mini Project - World Happiness Report
+
+For additional analysis, I also imported excel files from the [worldhappiness.report](https://worldhappiness.report/).
+
+```{r manage-data-worldhappiness, message = FALSE}
+# Import data
+worldhappiness_2021 <- readr::read_csv(
+  here::here("data", "world_happiness_report_2021.csv")
+)
+worldhappiness_all <- readr::read_csv(
+  here::here("data", "world_happiness_report.csv")
+)
+
+worldhappiness_2021 <- worldhappiness_2021 %>%
+  rename_with(.fn = ~ tolower(.x)) %>%
+  select(!starts_with("Explained by")) %>%
+  select(!"dystopia + residual") %>%
+  rename_with(.fn = ~ gsub(" ", "_", .x))
+
+worldhappiness_all <- worldhappiness_all %>%
+  rename_with(.fn = ~ tolower(gsub(" ", "_", .x)))
+```
+
+
+```{r clean-up, echo = FALSE, message = FALSE, warning = FALSE, results = 'hide'}
+clean_up_variables = c(
+  "combined_listings",
+  "hosts",
+  "listings",
+  "listings_raw",
+  "reviews_raw",
+  "worldhappiness_2021",
+  "worldhappiness_all"
+)
+
+rm(list = clean_up_variables)
+```
+
