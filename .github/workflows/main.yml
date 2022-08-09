@@ -1,10 +1,10 @@
 # Reference: https://github.com/r-lib/actions/blob/v2/examples/shiny-deploy.yaml
-#on:
-#  push:
-#    branches: [main]
-#  pull_request:
-#    branches: [main]
-#  workflow_dispatch:
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
 
 name: deploy-portfolio
 
@@ -28,7 +28,7 @@ jobs:
       - uses: r-lib/actions/setup-renv@v2
       
       - name: Install Packages
-        run: install.packages(c("distill", "tidyverse", "devtools"))
+        run: install.packages(c("distill", "tidyverse", "devtools", "GGally", "waffle", "devtools"))
         shell: Rscript {0}
 
       - name: Build site

@@ -20,7 +20,7 @@ For example, consider below code:
 ```
 Orange %>% select(Tree, age, circumference) %>% group_by(Tree) %>% summarize(avg_circumference=mean(circumference))
 ```
-The above code is much less readable as everything is in single-line. Breaking above code into multiple lines can significantly imporve readability and at the same time identifying issues can be easier.
+The above code is much less readable as everything is in single-line. Breaking above code into multiple lines can significantly improve readability and at the same time identifying issues can be easier.
 
 ```
 Orange %>%

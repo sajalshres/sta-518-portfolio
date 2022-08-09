@@ -7,8 +7,6 @@ output: distill::distill_article
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
-## Attribution
-
 The [portfolio](https://sajalshres.github.io/sta-518-portfolio/) is developed as part of the requirement for [STA 518:  Statistical Computing and Graphics with R](https://dykesb.netlify.app/courses/sta518/) led by [Dr.Bradford Dykes](https://dykesb.netlify.app/).
 
 Thank you Dr.Dykes for teaching and guiding me all about R programming.

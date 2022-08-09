@@ -7,7 +7,7 @@ date: "`r Sys.Date()`"
 output: 
   distill::distill_article:
     toc: true
-    toc_depth: 2
+    toc_depth: 3
     toc_float: true
     highlight: breezedark
     highlight_downlit: false
@@ -78,6 +78,13 @@ listings_raw <-
 
 reviews_raw <- readr::read_csv(here::here("data", "reviews.csv.gz"))
 ```
+
+I also imported the OGR vector maps for generating spatial maps of neighbourhoods.
+
+```{r import-data-airbnb-geojson, message=TRUE, code_folding=FALSE}
+neighbourhoods_ogr <- rgdal::readOGR("data/chicago_neighbourhoods.geojson")
+```
+
 
 ### 2.1.2 Manage Data
 
@@ -227,7 +234,6 @@ worldhappiness_all <- worldhappiness_all %>%
   rename_with(.fn = ~ tolower(gsub(" ", "_", .x)))
 ```
 
-
 ```{r clean-up, echo = FALSE, message = FALSE, warning = FALSE, results = 'hide'}
 clean_up_variables = c(
   "combined_listings",
@@ -236,11 +242,18 @@ clean_up_variables = c(
   "listings_raw",
   "reviews_raw",
   "worldhappiness_2021",
-  "worldhappiness_all"
+  "worldhappiness_all",
+  "neighbourhoods_ogr"
 )
 
 rm(list = clean_up_variables)
 ```
+
+### 2.1.5 Conclusion
+
+I have met the objective of import, manage and clean data as illustrated in above sections. I have imported data from various sources such as csv, excel, geojson files to work on my objectives. I can isolate a subset of data from a large data source using base `data.frame` or `dplyr::select` as well as combine multiple data sources using `merge`, and joins in `dplyr` library. I can also restructure my data using `dplyr` functions such as `filter`, `group_by`, `rename`, `rename_with`, and `pipe`. I can create new information using `mutate` function based on existing columns and modify existing information such as converting formats, adding values etc for specific tasks.
+
+---
 
 ## 2.2 Create graphical displays and numberical summaries of data for exploratory analysis and presentations
 
@@ -417,6 +430,7 @@ neighbourhood_price %>%
   # Flip the coordinates
   coord_flip()
 ```
+
 From the above box plot graph, we have good sense of how the data is spread across. We can also observe outliers in prices for some neighbourhoods like Near North side which can skew the distribution of the data. We can also observe that the loop neighbourhood has the highest median price.
 
 For the World Happiness dataset, I was curious in finding the correlation between various variables. First, I imported the data using `reader::read_csv` function and managed the data using `dplyr` library.
@@ -709,7 +723,7 @@ ggplot(happiness_covid_2019_2020) +
 From the above dumbbell graph, we can see that there was an increase in some of the world regions like South Asia, Sub-Saharan Africa in-spite of COVID pandemic.
 
 
-In addition, I generated additional summaries for the dataset to gain insight on various columns and its quality.
+In addition, I have generated additional summaries for the dataset to gain insight on various columns and its quality.
 
 ```{r numerical-summaries-airbnb-listings}
 
@@ -727,23 +741,406 @@ listings_summary %>%
   paged_table(options = list(rows.print = 15))
 ```
 
+---
+
+### 2.2.1 Conclusion
+
+I believe I have met this objective as I have created different visualizations using the `ggplot2`, `waffle`, and `GGally` libraries. By creating the visualizations for various tasks, I am able to explore important characteristics of a data and draw conclusions from them. Likewise, I have combined multiple visualization created above into my shiny app project to create effective data project. I have also created my own theme using `ggplot2::theme` function to highlight key features of data. I have completed exploratory analysis of the data by generating the correlation data among variables and generate heat map matrix to draw conclusions. Further, I have generated numerical summaries such as mean price for each neighbourhoods using `dplyr::summarise` and `dplyr::group_by` and visualize it usign box plot for additional descriptive analysis.
+
+Mark your conclusion here.
+
+```{r visual-clean-up, echo = FALSE, message = FALSE, warning = FALSE, results = 'hide'}
+cleanup_variables = c(
+  "expensive_neighbourhoods",
+  "listings",
+  "listings_raw",
+  "listings_summary",
+  "reviews",
+  "reviews_raw",
+  "neighbourhood_price",
+  "missing_stat",
+  "missing_values_summary",
+  "top_hosts",
+  "happiness_2021",
+  "happiness_all",
+  "happiness_2021_tranformed",
+  "happiness_covid_2019_2020",
+  "happiness_covid_2019",
+  "happiness_covid_2020",
+  "happiness_waffle",
+  "country_region"
+)
+rm(list = cleanup_variables)
+```
+
+
+
 ## 2.3 Write R programs for simulations from probability models and randomization-based experiments
 
-- I plan on developing R programs to simulate probability models and complete randomization-based experiments.
+### 2.3.1 Simulations
+
+#### Data Overview
+
+```{r simulations-storms-dataset}
+storms %>% 
+  paged_table(options = list(rows.print = 15))
+```
+
+```{r simulations-data-stats}
+mean(storms$pressure)
+sd(storms$pressure)
+```
+
+#### Storm pressure simulation
+
+```{r simulations-storm-pressure-simulation}
+pressure_samp_1000 <- tibble(
+  values = rnorm(n = 1000, mean = 990, sd = 19)
+)
+```
+
+```{r simulations-storm-pressure-values}
+summary(pressure_samp_1000$values)
+```
+
+```{r simulations-storm-pressure-graph}
+ggplot(pressure_samp_1000, aes(x = values)) +
+  geom_histogram(
+    aes(y = ..count.. / sum(..count..)),
+    fill = "white",
+    color = "black",
+    binwidth = 3
+  ) +
+  stat_function(
+    fun = function(x)
+      dnorm(x, mean = 990, sd = 19) * 3,
+    color = "#0065a4",
+    size = 2,
+    alpha = 0.4
+  ) +
+  geom_vline(
+    xintercept = mean(pressure_samp_1000$values),
+    color = "#a43f00",
+    size = 2
+  ) +
+  theme_minimal() +
+  labs(y = "proportion")
+```
+
+```{r simulations-storm-pressure-boxplot}
+ggplot(pressure_samp_1000, aes(y=values)) + 
+  geom_boxplot()
+```
+
+```{r simulation-clean-up, echo = FALSE, message = FALSE, warning = FALSE, results = 'hide'}
+rm(pressure_samp_1000)
+```
+
+### 2.3.2 Bootstrapping
+
+#### Introduction
+
+Bootstrapping can be useful to draw a valid inference when the sample size is small. We can use a resampling method with replacement to create any number of resamples. For implementing bootstrapping, I came across a useful package [boot](https://www.rdocumentation.org/packages/boot/versions/1.3-28/topics/boot) that generates bootstrap replicates of a statistics applied to data.
+
+#### Load Packages
+
+```{r bootstrapping-load-package}
+library(boot)
+```
+
+#### Data Overview
+
+To implement bootstrap resampling, I've used builtin `Loblolly` dataset that contains the data about the growith of the Loblolly pine tree.
+
+```{r bootstrapping-data-overview}
+data("Loblolly", package = "datasets")
+knitr::kable(head(Loblolly))
+```
+
+```{r bootstrapping-data-summary}
+summary(Loblolly)
+```
+
+```{r bootstrapping-statistics-function}
+# A function which when applied to data returns a vector 
+# containing the statistic(s) of interest.
+statistics_function <- function(data, i){
+ d2 <- data[i,] 
+ return(cor(d2$height, d2$age))
+}
+```
+
+In the above code, I've defined a custom function `statistics_function` that accepts two parameters, namely, `data` and `i`. The `data` parameter denotes the dataset as the name suggest where as `i` parameter is the index denoting the row of the data that will be used to create bootstrap sample.
+
+```{r bootstrapping-correlation}
+set.seed(518)
+bootstrap_correlation <- boot(Loblolly, statistic = statistics_function, R = 10000)
+```
+
+Now, we apply the `boot` function which accepts dataset, statistic fucntion and number of bootstrap sample. The `seed` function is used in this context to generate reproducible results.
+
+```{r bootstrapping-correlation-output}
+bootstrap_correlation
+```
+We can observe that the correlation between two variable is 0.989 with a standard error of 0.0016.
+
+```{r bootstrapping-correlation-overview}
+summary(bootstrap_correlation)
+```
+
+Similarly, we can view the value of the `boot` object.
+
+Below, we have generated range, mean and standard deviation of bootstrap samples.
+
+```{r bootstrapping-additional-statistics-range}
+range(bootstrap_correlation$t)
+```
+
+The bootstrap correlation ranges from 0.982 to 0.995
+
+```{r bootstrapping-additional-statistics-mean}
+mean(bootstrap_correlation$t)
+```
+
+The mean for bootstrap correlation is 0.989.
+
+```{r bootstrapping-additional-statistics-sd}
+sd(bootstrap_correlation$t)
+```
+
+The standard deviation for boostrap correlation is 0.001.
+
+
+```{r bootstrapping-confidence-interval}
+boot.ci(boot.out=bootstrap_correlation,type=c('norm','basic','perc','bca'))
+```
+
+The above function call `boot.ci` demonstrates the confidence interval of 4 types: normal, basic, percentile and bca distribution.
+
+### 2.3.2 Conlusions
+
+Mark your conclusions here
+
+```{r bootstrapping-clean-up, echo = FALSE, message = FALSE, warning = FALSE, results = 'hide'}
+cleanup_variables = c(
+  "Loblolly",
+  "bootstrap_correlation"
+)
+rm(list = cleanup_variables)
+```
+
+---
 
 ## 2.4 Use source documentation and other resources to troubleshoot and extend R programs
 
-- I have been reading the source documentation and learning resources such as [R for Data Science](https://r4ds.had.co.nz/index.html), [R Manuals](https://cran.r-project.org/manuals.html) and YouTube. The Help tab on RStudio application been super useful in quickly reading the documentation and find usage information for specific functions or library.
+### 2.4.1 Troubleshoot R programs
 
-- I am collaborating with my team on troubleshooting on various issues and helping them when needed. I also ask for help on specific issues when I am stuck. I plan on collaborating more as I am learning different ways to troubleshoot and strengthen my skills.
+Coming from mindset of Python programming and having a limited knowledge of R, I faced a lot of challenges and issues when developing my projects and exploring R. Moreover, I also found identifying error message to be a time-consuming activity. I did a lot of search using Google, explored stackoverflow.com and used source documentation of libraries/packages. After a while, I got much better at detecting and fixing common errors by writing and practicing more R code.
+
+I have also been reading the source documentation and learning resources such as [R for Data Science](https://r4ds.had.co.nz/index.html), [R Manuals](https://cran.r-project.org/manuals.html) and YouTube. The Help tab on RStudio application been super useful in quickly reading the documentation and find usage information for specific functions or library.
+
+For me, the most common error was Syntax errors. I would often miss to load the library, forget about closing a bracket or misspell the words. One best practice to quickly identify the error was to break the code into multiple lines.
+
+For example, consider below code:
+
+```
+Orange %>% select(Tree, age, circumference) %>% group_by(Tree) %>% summarize(avg_circumference=mean(circumference))
+```
+The above code is much less readable as everything is in single-line. Breaking above code into multiple lines can significantly improve readability and at the same time identifying issues can be easier.
+
+```
+Orange %>%
+  select(Tree, age, circumference) %>%
+  group_by(Tree) %>%
+  summarize(avg_circumference=mean(circumference))
+```
+
+Another quick and reliable way to identify and resolve errors is to use `tryCatch` statement. Below is the snippet of code I've used in my [scrape](https://github.com/sajalshres/sta-518-project/blob/main/modules/scrape.R) function script to quickly identify if something goes wrong.
+
+```r
+tryCatch(
+  download.file(link, dest_file),
+  # handle warning
+  warning = function(warn) {
+    print(paste("Warnign: ", warn))
+  }
+  # handle error
+  error = function(error) {
+    print(paste0("Error occurred when downloading file. reason: ", error))
+    is_downloaded <<- FALSE
+  }
+)
+```
+
+I also found that collaborating with my team and friends is another great way to troubleshoot issues. I collaborated on numerous occasion with my team on troubleshooting on various issues and helping them when needed. I also ask for help on specific issues when I am stuck.
+
+### 2.4.2 Extend R programs
+
+#### Functions
+
+Functions is an excellent way of generating a reproducable piece of code that can be used numerous times in your code. I have built a user defined function that is used to search the github repositories. The function `search_github_repositories` accepts three parameters:
+
+- **query**: The search keywords.
+- **sort**: Sorts the results of your query by number of stars, forks, or help-wanted-issues
+- **order**: Determines whether the first search result returned is the highest number of matches (desc) or lowest number of matches (asc).
+
+The function makes an http request using the `httr` library to the github api endpoint. Next, the status code is checked and upon success, the response is parsed.
+
+```{r extend-r-user-function-definition}
+search_github_repositories <-
+  function(query, sort = "stars", order = "desc") {
+    # urls
+    github_api_url <- "https://api.github.com"
+    search_endpoint <- "/search/repositories"
+    
+    # build query params
+    query_params <-
+      paste(paste0("?q=", query),
+            paste0("sort=", sort),
+            paste0("order=", order),
+            sep = "&")
+    
+    print(paste0("Url is ",github_api_url, search_endpoint, query_params))
+    
+    # make http request to Github Api
+    response <-
+      httr::GET(url = paste0(github_api_url, search_endpoint, query_params))
+    
+    response_status_code <- httr::status_code(response)
+    
+    # Stop if unexpected status code
+    if (response_status_code != 200) {
+      stop(paste0("Unexpected status", response_status_code, "encountered"))
+    }
+    
+    # Parse the JSON response
+    response_parsed <- httr::content(response, as = "parsed")
+    
+    # Print stats
+    print(paste(
+      "Search for",
+      query,
+      "found",
+      response_parsed$total_count,
+      "results"
+    ))
+    
+    return(response_parsed)
+  }
+```
+
+The below code chuck demonstrate how to call the created function.
+
+```{r user-function-call}
+# Search for repositories with name sta-518
+search_response <- search_github_repositories(query = "sta-518")
+search_response$items[[1]]$full_name
+search_response$items[[1]]$owner$url
+```
+
+```{r extend-r-function-clean-up, echo = FALSE, message = FALSE, warning = FALSE, results = 'hide'}
+cleanup_variables = c(
+  "search_response"
+)
+rm(list = cleanup_variables)
+```
+
+#### Packages
+
+Packages are the awesome way of sharing and dsitributing R code that help us to extend the capabilities of R programs and collaborate with others. Throughout my journey to learn R, I've extensively used packages like `dplyr`, `tibble`, `ggplot2`, `boot` etc. I cannot imagine developing R code without support for packages as it made my life much easier and saved a lot of time. So, I wanted to create a custom package to learn how to create packages and install them.
+
+I created a package SearchGithubRepository using the code from functions artifacts. 
+
+The Github link to package is: [https://github.com/sajalshres/SearchGithubRespositories](https://github.com/sajalshres/SearchGithubRespositories) 
+
+##### Load Libraries
+
+I've installed and used `devtools` library to install custom package as it is not published yet.
+
+```{r extend-r-load-package}
+library(devtools)
+```
+
+##### Load my custom package
+
+I've used `install_github` function to install the  `SearchGithubRespositories` package.
+
+```{r extend-r-load-custom-package}
+install_github("sajalshres/SearchGithubRespositories")
+```
+
+##### Sample usage
+
+Below is the demonstration of the usage of the package:
+
+```{r extend-r-custom-package-usage}
+SearchGithubRespositories::version()
+```
+
+```{r extend-r-custom-package-usage-2}
+response <- SearchGithubRespositories::search_github_repositories(query = "sta-518")
+response$total_count
+```
+
+Similarly, we can view the help documentation using `?` operator.
+
+```{r extend-r-custom-package-usage-3}
+?SearchGithubRespositories::search_github_repositories
+```
+
+![](images/help_SearchGithubRespositories.png){width=50%}
+
+### 2.4.3 Conlusions
+
+Mark your conclusions here
+
+```{r extend-r-package-clean-up, echo = FALSE, message = FALSE, warning = FALSE, results = 'hide'}
+cleanup_variables = c(
+  "response"
+)
+rm(list = cleanup_variables)
+```
+
+---
 
 ## 2.5 Write clear, efficient, and well-documented R programs.
 
-- I can knit markdown using [Rmarkdown](https://rmarkdown.rstudio.com/) package and create professional reports in R.
+I have dedicated myself to spend good amount of time writing R code that included scripts, functions, packages, `rmarkdown` files and so on. I have developed my portfolio website using `distill` library that uses `rmarkdown` to generate html files. By making use of `rmarkdown` files, I've learned to include markdown contents, code chucks with inline code, tables, figures, output formats etc.
 
-- I plan on exploring more about the best practices in R programming such as naming convention, organizing a large project files, coding style, and writing packages.
+### 2.5.2 Naming Conventions
 
-- If possible, I am also interested in doing code reviews. I beleive reviewing other's code will help us become a better programmer and improve our skiils to identify issues, learn from others and create better documentation.
+I've learned about various naming conventions that can be used with R such as camelCase, snake_case, PascalCase etc. I've found that R doesn't have a stict naming conventions like Java, Python. But it is best to use conventions that yeilds meaningful and readable names. The `snake_case` works best for me as I find it more readable and easier for my issues. For funtion names, I prefer to use lower case with periods like test.case1.
 
-- I aim to further achieve this objective by writing various R scripts and work on web application that can help in write well documented and efficient R code.
+
+### 2.5.3 Project Structure
+
+I have also learned to structure a R project. A good content organizations can help us to quickly navigate in a complex enterprise projects and can be scaled very easily. For my final project, I've used below structure:
+
+```
+sta-518-project
+|
+|-- api           # API application to fetch raw data, analaysis and summaries.
+|-- app           # Shiny web appliation containing interactive dashboard.
+|-- data          # Contains raw and processed data
+|   |-- raw
+|   |-- processed
+|-- docs          # Contains documentation and rmarkdown notebooks.
+|-- etl           # ETL cli application to scrape and process the data for analysis.
+|-- modules       # Shared modules used by scripts and applications.
+|-- scripts       # Contains rscripts.
+```
+
+### 2.5.4 Functions and Packages
+
+Functions and packages helps to breakdown complex piece of code into a single tasks that can be reused multiple times with out duplicating them. When developing ShinyApp for my project, I've created functions and scripts that can be used to complete various tasks for analysis. To accomplish this, I've used `source` function that help to reuse function that is created in another R script.
+
+### 2.5.5 Documenting Code
+
+I believe the most important aspect of documenting your code is to introduce comments. Comments helps to summarize the piece of code, provides notes to any important decision made or explain why something is implemented the way it is. It acts as a note for self in the future and make collaborating with other much easier. 
+
+In addition, it is best to name the chuck of code when using R Markdown. The rstudio can make navigation much easier and we can generate table of content.
+
+### 2.5.6 Conlusions
+
+Mark your conclusions here
 
