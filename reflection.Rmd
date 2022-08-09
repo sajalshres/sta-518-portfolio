@@ -22,6 +22,7 @@ knitr::opts_chunk$set(
 ```
 
 ```{r load-package-and-modules, message = FALSE}
+library(here)
 library(tidyverse)
 library(rmarkdown)
 library(GGally)
@@ -1092,7 +1093,7 @@ Similarly, we can view the help documentation using `?` operator.
 
 ### 2.4.3 Conlusions
 
-Mark your conclusions here
+I conclude that I've met all the requirement for the objective as I'm able to identify common errors or issues with R programs and troubleshoot them. I also have explored on numerous ways to troubleshoot which included reading package documentations, online search, code formating, common mistakes, collaborating and using `tryCatch` statements. In addition, I've created numerous functions like `search_github_repositories` and `download_files` in my project. I also created custom package `SearchGithubRespositories` as a cool way to share and extend R programs. Lastly, I have explored and make use of various packages like `GGally`, `wally`, `plumber`, `httpr` etc to complete specific tasks in my analyses. 
 
 ```{r extend-r-package-clean-up, echo = FALSE, message = FALSE, warning = FALSE, results = 'hide'}
 cleanup_variables = c(
@@ -1114,7 +1115,7 @@ I've learned about various naming conventions that can be used with R such as ca
 
 ### 2.5.3 Project Structure
 
-I have also learned to structure a R project. A good content organizations can help us to quickly navigate in a complex enterprise projects and can be scaled very easily. For my final project, I've used below structure:
+I have also learned to structure a R project. A good content organizations can help us to quickly navigate in a complex enterprise projects and can be scaled very easily. For my final project, I've used below structure to simulate a complex application:
 
 ```
 sta-518-project
@@ -1134,6 +1135,14 @@ sta-518-project
 
 Functions and packages helps to breakdown complex piece of code into a single tasks that can be reused multiple times with out duplicating them. When developing ShinyApp for my project, I've created functions and scripts that can be used to complete various tasks for analysis. To accomplish this, I've used `source` function that help to reuse function that is created in another R script.
 
+For instance, in my shiny application, I've break-up my code into small independent code and used them as:
+
+```
+# Read modules
+source("modules/maps.R")
+source("modules/analyze.R")
+```
+
 ### 2.5.5 Documenting Code
 
 I believe the most important aspect of documenting your code is to introduce comments. Comments helps to summarize the piece of code, provides notes to any important decision made or explain why something is implemented the way it is. It acts as a note for self in the future and make collaborating with other much easier. 
@@ -1142,5 +1151,4 @@ In addition, it is best to name the chuck of code when using R Markdown. The rst
 
 ### 2.5.6 Conlusions
 
-Mark your conclusions here
-
+I believe I've achieved this objective as I am able to create complex project based workflows and create professional reports using `rmakrdown`. I also have divided my project code self-contained functions to perform analysis. Similarly, I've documented my code usign comments to provide summaries, resources and explanation for taking specific approach. 
