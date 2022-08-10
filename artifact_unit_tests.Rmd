@@ -1,0 +1,118 @@
+---
+title: "Unit Tests"
+author:
+  - name: Sajal Shrestha 
+    url: https://sajalshres.github.io
+date: "`r Sys.Date()`"
+output: distill::distill_article
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Introduction
+
+Unit test has become a vital aspect of any data engineering and software development workflow. It believe that learning to write automated test cases will be highly beneficial for data engineers when they are working in enterprise environment, especially, when the application is very critical when testing is a necessity. Further, unit tests helps to reduce bugs in application code and ensure we ship quality code with confidence. I didn't get much time to spend on the testing aspect as we have very short time to complete all the objectives and projects. However, I explored some basic concepts of performing unit tests in R using `testthat` library.
+
+```{r unit-test-load-pakcage, message=FALSE}
+library(testthat)
+```
+
+## My first unit test
+
+```{r unit-test-hello-world}
+# A simple function that returns a message
+say_hi <- function(name) {
+  if(!is.character(name)) {
+    stop("say_hi excepts name as string")
+  }
+  
+  # Generate message
+  message <- paste("Hi", name)
+  
+  # Return message
+  return(message)
+}
+
+# Positive testing
+test_that("Test that function say_hi should say hi", {
+  expect_equal(say_hi("Sajal"), "Hi Sajal")
+})
+
+# Negative testing
+test_that("Test that function say_hi fails for invalid input", {
+  expect_error(say_hi(1))
+})
+
+```
+
+## Another unit test
+
+Now, lets write another practical unit tests for a function `search_github_repositories` that I've created in the function section of my self-reflection.
+
+```{r unit-test-search_github_repositories-function}
+search_github_repositories <-
+  function(query, sort = "stars", order = "desc") {
+    # urls
+    github_api_url <- "https://api.github.com"
+    search_endpoint <- "/search/repositories"
+    
+    # build query params
+    query_params <-
+      paste(paste0("?q=", query),
+            paste0("sort=", sort),
+            paste0("order=", order),
+            sep = "&")
+    
+    print(paste0("Url is ",github_api_url, search_endpoint, query_params))
+    
+    # make http request to Github Api
+    response <-
+      httr::GET(url = paste0(github_api_url, search_endpoint, query_params))
+    
+    response_status_code <- httr::status_code(response)
+    
+    # Stop if unexpected status code
+    if (response_status_code != 200) {
+      stop(paste0("Unexpected status", response_status_code, "encountered"))
+    }
+    
+    # Parse the JSON response
+    response_parsed <- httr::content(response, as = "parsed")
+    
+    # Print stats
+    print(paste(
+      "Search for",
+      query,
+      "found",
+      response_parsed$total_count,
+      "results"
+    ))
+    
+    return(response_parsed)
+  }
+```
+
+```{r unit-test-another-unit-test}
+test_that("Test that response has correct length", {
+  search_response <- search_github_repositories(query = "sta-518")
+  expect_length(search_response, 3)
+})
+
+test_that("Test that response has expected values", {
+  # Make request
+  search_response <- search_github_repositories(query = "sta-518")
+  
+  # Tests
+  expect_equal(
+    search_response$items[[1]]$full_name,  
+    "gvsu-sta518/community"
+  )
+  expect_equal(
+    search_response$items[[1]]$owner$url, 
+    "https://api.github.com/users/gvsu-sta518"
+  )
+})
+```
+

@@ -21,24 +21,14 @@ navbar:
       href: reflection.html
     - text: "Artifacts"
       menu:
-        - text: "Final Project"
-          href: artifact_project.html
-        - text: "Data Management"
-          href: artifact_1_manage_data.html
-        - text: "Graphical Visualizations and Summaries"
-          href: artifact_2_graphical_and_numerical_summaries.html
-        - text: "Simulations"
-          href: artifact_3_simulation.html
-        - text: "Boostrapping"
-          href: artifact_4_boostrapping.html
-        - text: "Troubleshoot R Programs"
-          href: artifact_5_troubleshoot.html
-        - text: "Functions"
-          href: artifact_6_functions.html
-        - text: "Packages"
-          href: artifact_7_packages.html
-        - text: "Efficient and Well-documented Code"
-          href: artifact_8_best_practices.html
+        - text: "Airbnb Shiny Application"
+          href: artifact_airbnb_shiny_app.html
+        - text: "Airbnb Api"
+          href: artifact_airbnb_rest_api.html
+        - text: "My First Custom Package"
+          href: artifact_first_custom_package.html
+        - text: "Unit Testing"
+          href: artifact_unit_tests.html
     - text: "About"
       href: about.html
     - icon: fa fa-hand-holding-heart

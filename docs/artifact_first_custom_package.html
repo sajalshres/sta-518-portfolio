@@ -88,7 +88,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 
 
   <!--radix_placeholder_meta_tags-->
-  <title>Stats With R Portfolio: Bootstrapping</title>
+  <title>Stats With R Portfolio: My First Custom Package</title>
 
 
 
@@ -98,20 +98,20 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <meta name="article:author" content="Sajal Shrestha"/>
 
   <!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
-  <meta property="og:title" content="Stats With R Portfolio: Bootstrapping"/>
+  <meta property="og:title" content="Stats With R Portfolio: My First Custom Package"/>
   <meta property="og:type" content="article"/>
   <meta property="og:locale" content="en_US"/>
   <meta property="og:site_name" content="Stats With R Portfolio"/>
 
   <!--  https://dev.twitter.com/cards/types/summary -->
   <meta property="twitter:card" content="summary"/>
-  <meta property="twitter:title" content="Stats With R Portfolio: Bootstrapping"/>
+  <meta property="twitter:title" content="Stats With R Portfolio: My First Custom Package"/>
 
   <!--/radix_placeholder_meta_tags-->
   <!--radix_placeholder_rmarkdown_metadata-->
 
   <script type="text/json" id="radix-rmarkdown-metadata">
-  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","author","date","output"]}},"value":[{"type":"character","attributes":{},"value":["Bootstrapping"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url"]}},"value":[{"type":"character","attributes":{},"value":["Sajal Shrestha"]},{"type":"character","attributes":{},"value":["https://sajalshres.github.io"]}]}]},{"type":"character","attributes":{},"value":["2022-08-10"]},{"type":"character","attributes":{},"value":["distill::distill_article"]}]}
+  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","author","date","output"]}},"value":[{"type":"character","attributes":{},"value":["My First Custom Package"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url"]}},"value":[{"type":"character","attributes":{},"value":["Sajal Shrestha"]},{"type":"character","attributes":{},"value":["https://sajalshres.github.io"]}]}]},{"type":"character","attributes":{},"value":["2022-08-10"]},{"type":"character","attributes":{},"value":["distill::distill_article"]}]}
   </script>
   <!--/radix_placeholder_rmarkdown_metadata-->
   <!--radix_placeholder_navigation_in_header-->
@@ -2413,7 +2413,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <!--radix_placeholder_front_matter-->
 
 <script id="distill-front-matter" type="text/json">
-{"title":"Bootstrapping","authors":[{"author":"Sajal Shrestha","authorURL":"https://sajalshres.github.io","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2022-08-10T00:00:00.000+05:45","citationText":"Shrestha, 2022"}
+{"title":"My First Custom Package","authors":[{"author":"Sajal Shrestha","authorURL":"https://sajalshres.github.io","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2022-08-10T00:00:00.000+05:45","citationText":"Shrestha, 2022"}
 </script>
 
 <!--/radix_placeholder_front_matter-->
@@ -2447,15 +2447,10 @@ Artifacts
 <span class="down-arrow">&#x25BE;</span>
 </button>
 <div class="nav-dropdown-content">
-<a href="artifact_project.html">Final Project</a>
-<a href="artifact_1_manage_data.html">Data Management</a>
-<a href="artifact_2_graphical_and_numerical_summaries.html">Graphical Visualizations and Summaries</a>
-<a href="artifact_3_simulation.html">Simulations</a>
-<a href="artifact_4_boostrapping.html">Boostrapping</a>
-<a href="artifact_5_troubleshoot.html">Troubleshoot R Programs</a>
-<a href="artifact_6_functions.html">Functions</a>
-<a href="artifact_7_packages.html">Packages</a>
-<a href="artifact_8_best_practices.html">Efficient and Well-documented Code</a>
+<a href="artifact_airbnb_shiny_app.html">Airbnb Shiny Application</a>
+<a href="artifact_airbnb_rest_api.html">Airbnb Api</a>
+<a href="artifact_first_custom_package.html">My First Custom Package</a>
+<a href="artifact_unit_tests.html">Unit Testing</a>
 </div>
 </div>
 <a href="about.html">About</a>
@@ -2474,7 +2469,7 @@ Artifacts
 <!--/radix_placeholder_site_before_body-->
 
 <div class="d-title">
-<h1>Bootstrapping</h1>
+<h1>My First Custom Package</h1>
 <!--radix_placeholder_categories-->
 <!--/radix_placeholder_categories-->
 
@@ -2488,197 +2483,91 @@ class="uri">https://sajalshres.github.io</a>
 </div>
 
 <div class="d-article">
-<h2 id="introduction">Introduction</h2>
-<p>Bootstrapping can be useful to draw a valid inference when the sample
-size is small. We can use a resampling method with replacement to create
-any number of resamples. For implementing bootstrapping, I came across a
-useful package <a
-href="https://www.rdocumentation.org/packages/boot/versions/1.3-28/topics/boot">boot</a>
-that generates bootstrap replicates of a statistics applied to data.</p>
-<h2 id="load-packages">Load Packages</h2>
+<h1 id="introduction">Introduction</h1>
+<p>Packages are the awesome way of sharing and dsitributing R code that
+help us to extend the capabilities of R programs and collaborate with
+others. Throughout my journey to learn R, I’ve extensively used packages
+like <code>dplyr</code>, <code>tibble</code>, <code>ggplot2</code>,
+<code>boot</code> etc. I cannot imagine developing R code without
+support for packages as it made my life much easier and saved a lot of
+time. So, I wanted to create a custom package to learn how to create
+packages and install them.</p>
+<p>I created a package SearchGithubRepository using the code from
+functions artifacts.</p>
+<p>The Github link to package is: <a
+href="https://github.com/sajalshres/SearchGithubRespositories">https://github.com/sajalshres/SearchGithubRespositories</a></p>
+<h2 id="how-to-create-a-custom-package">How to create a custom
+package</h2>
+<p>To create a custom package, I used
+<code>usethis::create_package</code> function to create a R package:</p>
+<pre><code>usethis::create_package(&quot;SearchGithubRespositories&quot;)</code></pre>
+<p>Next I created function for package using
+<code>usethis::use_r</code>:</p>
+<pre><code>usethis::use_r(&quot;search_github_repositories&quot;)</code></pre>
+<p>The <code>use_r</code> function creates a file based function inside
+<code>/R</code> folder.</p>
+<p>After creating required functions, I added <code>DESCRIPTION</code>
+file that providdes the summary of the package such as title, version,
+author etc.</p>
+<p>Then, I create documentation for each of the functions that I’ve
+added inside <code>/R</code> folder. An example for <code>version</code>
+function is:</p>
+<pre><code>#&#39; version
+#&#39;
+#&#39; @return A message
+#&#39; @export
+#&#39;
+#&#39; @examples version()</code></pre>
+<p>Lastly, I used <code>check</code> function to see everything was
+working as expected and then installed my package using
+<code>install</code> function.</p>
+<h2 id="demonstration">Demonstration</h2>
+<h3 id="load-libraries">Load Libraries</h3>
+<p>I’ve installed and used <code>devtools</code> library to install
+custom package as it is not published yet.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span></span>
-<span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'>boot</span><span class='op'>)</span></span></code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://devtools.r-lib.org/'>devtools</a></span><span class='op'>)</span></span></code></pre>
 </div>
 </div>
-<h2 id="data-overview">Data Overview</h2>
-<p>To implement bootstrap resampling, I’ve used builtin
-<code>Loblolly</code> dataset that contains the data about the growith
-of the Loblolly pine tree.</p>
+<h3 id="load-my-custom-package">Load my custom package</h3>
+<p>I’ve used <code>install_github</code> function to install the
+<code>SearchGithubRespositories</code> package.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"Loblolly"</span>, package <span class='op'>=</span> <span class='st'>"datasets"</span><span class='op'>)</span></span>
-<span><span class='fu'>knitr</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/knitr/man/kable.html'>kable</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>Loblolly</span><span class='op'>)</span><span class='op'>)</span></span></code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://remotes.r-lib.org/reference/install_github.html'>install_github</a></span><span class='op'>(</span><span class='st'>"sajalshres/SearchGithubRespositories"</span><span class='op'>)</span></span></code></pre>
 </div>
-<table>
-<thead>
-<tr class="header">
-<th style="text-align: left;"></th>
-<th style="text-align: right;">height</th>
-<th style="text-align: right;">age</th>
-<th style="text-align: left;">Seed</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">1</td>
-<td style="text-align: right;">4.51</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: left;">301</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">15</td>
-<td style="text-align: right;">10.89</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: left;">301</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">29</td>
-<td style="text-align: right;">28.72</td>
-<td style="text-align: right;">10</td>
-<td style="text-align: left;">301</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">43</td>
-<td style="text-align: right;">41.74</td>
-<td style="text-align: right;">15</td>
-<td style="text-align: left;">301</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">57</td>
-<td style="text-align: right;">52.70</td>
-<td style="text-align: right;">20</td>
-<td style="text-align: left;">301</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">71</td>
-<td style="text-align: right;">60.92</td>
-<td style="text-align: right;">25</td>
-<td style="text-align: left;">301</td>
-</tr>
-</tbody>
-</table>
+</div>
+<h3 id="sample-usage">Sample usage</h3>
+<p>Below is the demonstration of the usage of the package:</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'>SearchGithubRespositories</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/SearchGithubRespositories/man/version.html'>version</a></span><span class='op'>(</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code>[1] &quot;Version: 0.0.1&quot;</code></pre>
 </div>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>Loblolly</span><span class='op'>)</span></span></code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>response</span> <span class='op'>&lt;-</span> <span class='fu'>SearchGithubRespositories</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/SearchGithubRespositories/man/search_github_repositories.html'>search_github_repositories</a></span><span class='op'>(</span>query <span class='op'>=</span> <span class='st'>"sta-518"</span><span class='op'>)</span></span></code></pre>
 </div>
-<pre><code>     height           age            Seed   
- Min.   : 3.46   Min.   : 3.0   329    : 6  
- 1st Qu.:10.47   1st Qu.: 5.0   327    : 6  
- Median :34.00   Median :12.5   325    : 6  
- Mean   :32.36   Mean   :13.0   307    : 6  
- 3rd Qu.:51.36   3rd Qu.:20.0   331    : 6  
- Max.   :64.10   Max.   :25.0   311    : 6  
-                                (Other):48  </code></pre>
+<pre><code>[1] &quot;Url is https://api.github.com /search/repositories ?q=sta-518&amp;sort=stars&amp;order=desc&quot;
+[1] &quot;Search for sta-518 found 141 results&quot;</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>response</span><span class='op'>$</span><span class='va'>total_count</span></span></code></pre>
 </div>
+<pre><code>[1] 141</code></pre>
+</div>
+<h3 id="view-help-text">View help text</h3>
+<p>Similarly, we can view the help documentation using <code>?</code>
+operator.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'># A function which when applied to data returns a vector containing the statistic(s) of interest.</span></span>
-<span><span class='va'>statistics_function</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>i</span><span class='op'>)</span><span class='op'>{</span></span>
-<span> <span class='va'>d2</span> <span class='op'>&lt;-</span> <span class='va'>data</span><span class='op'>[</span><span class='va'>i</span>,<span class='op'>]</span> </span>
-<span> <span class='kw'><a href='https://rdrr.io/r/base/function.html'>return</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/cor.html'>cor</a></span><span class='op'>(</span><span class='va'>d2</span><span class='op'>$</span><span class='va'>height</span>, <span class='va'>d2</span><span class='op'>$</span><span class='va'>age</span><span class='op'>)</span><span class='op'>)</span></span>
-<span><span class='op'>}</span></span></code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='op'>?</span><span class='fu'>SearchGithubRespositories</span><span class='fu'>::</span><span class='va'><a href='https://rdrr.io/pkg/SearchGithubRespositories/man/search_github_repositories.html'>search_github_repositories</a></span></span></code></pre>
 </div>
 </div>
-<p>In the above code, I’ve defined a custom function
-<code>statistics_function</code> that accepts two parameters, namely,
-<code>data</code> and <code>i</code>. The <code>data</code> parameter
-denotes the dataset as the name suggest where as <code>i</code>
-parameter is the index denoting the row of the data that will be used to
-create bootstrap sample.</p>
-<div class="layout-chunk" data-layout="l-body">
-<div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>518</span><span class='op'>)</span></span>
-<span><span class='va'>bootstrap_correlation</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/boot/man/boot.html'>boot</a></span><span class='op'>(</span><span class='va'>Loblolly</span>, statistic <span class='op'>=</span> <span class='va'>statistics_function</span>, R <span class='op'>=</span> <span class='fl'>10000</span><span class='op'>)</span></span></code></pre>
-</div>
-</div>
-<p>Now, we apply the <code>boot</code> function which accepts dataset,
-statistic fucntion and number of bootstrap sample. The <code>seed</code>
-function is used in this context to generate reproducible results.</p>
-<div class="layout-chunk" data-layout="l-body">
-<div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>bootstrap_correlation</span></span></code></pre>
-</div>
-<pre><code>
-ORDINARY NONPARAMETRIC BOOTSTRAP
-
-
-Call:
-boot(data = Loblolly, statistic = statistics_function, R = 10000)
-
-
-Bootstrap Statistics :
-     original       bias    std. error
-t1* 0.9899132 5.040578e-05 0.001676456</code></pre>
-</div>
-<p>We can observe that the correlation between two variable is 0.989
-with a standard error of 0.0016.</p>
-<div class="layout-chunk" data-layout="l-body">
-<div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>bootstrap_correlation</span><span class='op'>)</span></span></code></pre>
-</div>
-<pre><code>          Length Class          Mode     
-t0            1  -none-         numeric  
-t         10000  -none-         numeric  
-R             1  -none-         numeric  
-data          3  nfnGroupedData list     
-seed        626  -none-         numeric  
-statistic     1  -none-         function 
-sim           1  -none-         character
-call          4  -none-         call     
-stype         1  -none-         character
-strata       84  -none-         numeric  
-weights      84  -none-         numeric  </code></pre>
-</div>
-<p>Similarly, we can view the value of the <code>boot</code> object.</p>
-<p>Below, we have generated range, mean and standard deviation of
-bootstrap samples.</p>
-<div class="layout-chunk" data-layout="l-body">
-<div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://rdrr.io/r/base/range.html'>range</a></span><span class='op'>(</span><span class='va'>bootstrap_correlation</span><span class='op'>$</span><span class='va'>t</span><span class='op'>)</span></span></code></pre>
-</div>
-<pre><code>[1] 0.9820512 0.9958413</code></pre>
-</div>
-<p>The bootstrap correlation ranges from 0.982 to 0.995</p>
-<div class="layout-chunk" data-layout="l-body">
-<div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>bootstrap_correlation</span><span class='op'>$</span><span class='va'>t</span><span class='op'>)</span></span></code></pre>
-</div>
-<pre><code>[1] 0.9899636</code></pre>
-</div>
-<p>The mean for bootstrap correlation is 0.989.</p>
-<div class="layout-chunk" data-layout="l-body">
-<div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://rdrr.io/r/stats/sd.html'>sd</a></span><span class='op'>(</span><span class='va'>bootstrap_correlation</span><span class='op'>$</span><span class='va'>t</span><span class='op'>)</span></span></code></pre>
-</div>
-<pre><code>[1] 0.001676456</code></pre>
-</div>
-<p>The standard deviation for boostrap correlation is 0.001.</p>
-<div class="layout-chunk" data-layout="l-body">
-<div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://rdrr.io/pkg/boot/man/boot.ci.html'>boot.ci</a></span><span class='op'>(</span>boot.out<span class='op'>=</span><span class='va'>bootstrap_correlation</span>,type<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'norm'</span>,<span class='st'>'basic'</span>,<span class='st'>'perc'</span>,<span class='st'>'bca'</span><span class='op'>)</span><span class='op'>)</span></span></code></pre>
-</div>
-<pre><code>BOOTSTRAP CONFIDENCE INTERVAL CALCULATIONS
-Based on 10000 bootstrap replicates
-
-CALL : 
-boot.ci(boot.out = bootstrap_correlation, type = c(&quot;norm&quot;, &quot;basic&quot;, 
-    &quot;perc&quot;, &quot;bca&quot;))
-
-Intervals : 
-Level      Normal              Basic         
-95%   ( 0.9866,  0.9931 )   ( 0.9868,  0.9933 )  
-
-Level     Percentile            BCa          
-95%   ( 0.9865,  0.9930 )   ( 0.9860,  0.9927 )  
-Calculations and Intervals on Original Scale</code></pre>
-</div>
-<p>The above function call <code>boot.ci</code> demonstrates the
-confidence interval of 4 types: normal, basic, percentile and bca
-distribution.</p>
-<div class="sourceCode" id="cb8"><pre
+<p><img src="images/help_SearchGithubRespositories.png"
+style="width:50.0%" /></p>
+<div class="sourceCode" id="cb7"><pre
 class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
