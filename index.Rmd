@@ -18,8 +18,8 @@ knitr::opts_chunk$set(echo = FALSE)
 # Table of Contents:
 
 - Essays
-  - [Growth as a Data Person](growth_as_data_person.html)
-  - [Lightning Round](lightning_round.html)
+  - [Growth as a Data Person](essay_growth_as_data_person.html)
+  - [Lightning Round](essay_lightning_round.html)
 - [Self Reflection](reflection.html)
 - Supporting Artifacts
   - [Final Project](artifact_project.html)

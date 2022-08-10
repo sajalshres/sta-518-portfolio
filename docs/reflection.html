@@ -2570,10 +2570,11 @@ Conlusions</a></li>
 </nav>
 </div>
 <div class="layout-chunk" data-layout="l-body">
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rmarkdown)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(GGally)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(waffle)</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(here)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rmarkdown)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(GGally)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(waffle)</span></code></pre></div>
 </div>
 <h1 id="what-grade-did-you-earn">1. What Grade Did You Earn?</h1>
 <p>I have completed all the class activities, readings, and preparations
@@ -3370,10 +3371,10 @@ conclusions. Further, I have generated numerical summaries such as mean
 price for each neighbourhoods using <code>dplyr::summarise</code> and
 <code>dplyr::group_by</code> and visualize it usign box plot for
 additional descriptive analysis.</p>
-<p>Mark your conclusion here.</p>
 <div class="layout-chunk" data-layout="l-body">
 
 </div>
+<hr />
 <h2
 id="write-r-programs-for-simulations-from-probability-models-and-randomization-based-experiments">2.3
 Write R programs for simulations from probability models and
@@ -3389,50 +3390,133 @@ randomization-based experiments</h2>
   </script>
 </div>
 </div>
+<p>For the above dataset, we can sample random rows by generating the
+indices of the rows into the object.</p>
 <div class="layout-chunk" data-layout="l-body">
-<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(storms<span class="sc">$</span>pressure)</span></code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create indices</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>ind <span class="ot">&lt;-</span> <span class="fu">seq_len</span>(<span class="fu">nrow</span>(storms))</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Obtain a sample of 15</span></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>sample_ind <span class="ot">&lt;-</span> <span class="fu">sample</span>(ind, <span class="dv">15</span>)</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the sample results</span></span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>storms[sample_ind, ] <span class="sc">%&gt;%</span></span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">paged_table</span>(<span class="at">options =</span> <span class="fu">list</span>(<span class="at">rows.print =</span> <span class="dv">15</span>))</span></code></pre></div>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["year"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["month"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["day"],"name":[4],"type":["int"],"align":["right"]},{"label":["hour"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["lat"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["long"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["status"],"name":[8],"type":["chr"],"align":["left"]},{"label":["category"],"name":[9],"type":["ord"],"align":["right"]},{"label":["wind"],"name":[10],"type":["int"],"align":["right"]},{"label":["pressure"],"name":[11],"type":["int"],"align":["right"]},{"label":["tropicalstorm_force_diameter"],"name":[12],"type":["int"],"align":["right"]},{"label":["hurricane_force_diameter"],"name":[13],"type":["int"],"align":["right"]}],"data":[{"1":"Danielle","2":"2016","3":"6","4":"20","5":"22","6":"21.2","7":"-97.4","8":"tropical storm","9":"0","10":"35","11":"1009","12":"50","13":"0"},{"1":"Danny","2":"1985","3":"8","4":"18","5":"0","6":"35.6","7":"-83.4","8":"tropical depression","9":"-1","10":"25","11":"1011","12":"NA","13":"NA"},{"1":"Joaquin","2":"2015","3":"10","4":"2","5":"0","6":"22.9","7":"-74.4","8":"hurricane","9":"4","10":"120","11":"931","12":"290","13":"80"},{"1":"Chris","2":"2018","3":"7","4":"9","5":"18","6":"32.1","7":"-74.4","8":"tropical storm","9":"0","10":"55","11":"996","12":"120","13":"0"},{"1":"Claudette","2":"1991","3":"9","4":"11","5":"6","6":"33.9","7":"-46.1","8":"tropical storm","9":"0","10":"40","11":"1004","12":"NA","13":"NA"},{"1":"Hortense","2":"1996","3":"9","4":"8","5":"0","6":"16.1","7":"-61.2","8":"tropical storm","9":"0","10":"50","11":"996","12":"NA","13":"NA"},{"1":"Alberto","2":"2012","3":"5","4":"20","5":"6","6":"31.9","7":"-78.7","8":"tropical storm","9":"0","10":"45","11":"998","12":"60","13":"0"},{"1":"Stan","2":"2005","3":"10","4":"5","5":"0","6":"17.2","7":"-96.4","8":"tropical depression","9":"-1","10":"30","11":"1000","12":"0","13":"0"},{"1":"Mitch","2":"1998","3":"10","4":"26","5":"12","6":"16.6","7":"-82.6","8":"hurricane","9":"5","10":"145","11":"914","12":"NA","13":"NA"},{"1":"Lili","2":"1996","3":"10","4":"18","5":"18","6":"22.5","7":"-80.0","8":"hurricane","9":"1","10":"80","11":"975","12":"NA","13":"NA"},{"1":"Katia","2":"2011","3":"8","4":"29","5":"18","6":"10.6","7":"-28.2","8":"tropical depression","9":"-1","10":"30","11":"1008","12":"0","13":"0"},{"1":"Gustav","2":"1990","3":"8","4":"24","5":"12","6":"12.9","7":"-46.9","8":"tropical depression","9":"-1","10":"30","11":"1009","12":"NA","13":"NA"},{"1":"Hugo","2":"1989","3":"9","4":"11","5":"12","6":"12.8","7":"-27.3","8":"tropical depression","9":"-1","10":"30","11":"1005","12":"NA","13":"NA"},{"1":"Debby","2":"1982","3":"9","4":"18","5":"18","6":"43.5","7":"-56.1","8":"hurricane","9":"3","10":"100","11":"960","12":"NA","13":"NA"},{"1":"Arthur","2":"2020","3":"5","4":"18","5":"12","6":"34.4","7":"-75.9","8":"tropical storm","9":"0","10":"45","11":"1000","12":"110","13":"0"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[15],"max":[15]},"pages":{}}}
+  </script>
+</div>
+</div>
+<p>For the storms dataset, lets have a look at the mean and standard
+deviation.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(storms<span class="sc">$</span>pressure)</span></code></pre></div>
 <pre><code>[1] 991.9805</code></pre>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sd</span>(storms<span class="sc">$</span>pressure)</span></code></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sd</span>(storms<span class="sc">$</span>pressure)</span></code></pre></div>
 <pre><code>[1] 19.54827</code></pre>
 </div>
 <h4 id="storm-pressure-simulation">Storm pressure simulation</h4>
+<p>In the code snippet below, I have performed a simulation for the air
+pressure at storm center by generating 100 random samples of a normally
+distributted variables using <code>rnorm</code> with a mean of 990 and a
+standard deviation of 19. Also, I have generated multiple samples of
+data using <code>map</code> function.</p>
 <div class="layout-chunk" data-layout="l-body">
-<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>pressure_samp_1000 <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">values =</span> <span class="fu">rnorm</span>(<span class="at">n =</span> <span class="dv">1000</span>, <span class="at">mean =</span> <span class="dv">990</span>, <span class="at">sd =</span> <span class="dv">19</span>)</span>
-<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Set seed for consistent results</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">415</span>)</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>generate_sample_mean <span class="ot">&lt;-</span> <span class="cf">function</span>(data) {</span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>  data <span class="sc">%&gt;%</span></span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>(<span class="fu">across</span>(<span class="fu">everything</span>(), mean, <span class="at">.names =</span> <span class="st">&quot;mean_{.col}&quot;</span>))</span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(data)</span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a>generate_samples <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">n =</span> <span class="dv">100</span>) {</span>
+<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a>  samples <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb32-13"><a href="#cb32-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">normal =</span> <span class="fu">rnorm</span>(n, <span class="at">mean =</span> <span class="dv">990</span>, <span class="at">sd =</span> <span class="dv">19</span>),</span>
+<span id="cb32-14"><a href="#cb32-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">exponential =</span> <span class="fu">rexp</span>(<span class="at">n =</span> n, <span class="at">rate =</span> <span class="fl">0.2</span>),</span>
+<span id="cb32-15"><a href="#cb32-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">binomial =</span> <span class="fu">rbinom</span>(<span class="at">n =</span> n, <span class="at">size =</span> <span class="dv">100</span>, <span class="at">prob =</span> <span class="fl">0.25</span>),</span>
+<span id="cb32-16"><a href="#cb32-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">uniform =</span> <span class="fu">runif</span>(<span class="at">n =</span> n, <span class="at">min =</span> <span class="dv">10</span>, <span class="at">max =</span> <span class="dv">20</span>)</span>
+<span id="cb32-17"><a href="#cb32-17" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb32-18"><a href="#cb32-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(samples)</span>
+<span id="cb32-19"><a href="#cb32-19" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb32-20"><a href="#cb32-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-21"><a href="#cb32-21" aria-hidden="true" tabindex="-1"></a>pressure_samp_1000 <span class="ot">&lt;-</span> <span class="fu">generate_samples</span>()</span></code></pre></div>
 </div>
+<p>Lets view some of the descriptive statistics for sampled air pressure
+values:</p>
 <div class="layout-chunk" data-layout="l-body">
-<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(pressure_samp_1000<span class="sc">$</span>values)</span></code></pre></div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(pressure_samp_1000<span class="sc">$</span>normal)</span></code></pre></div>
 <pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-  928.6   977.4   990.8   990.3  1003.4  1082.7 </code></pre>
+  952.5   975.6   990.8   990.4  1004.2  1056.7 </code></pre>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(pressure_samp_1000<span class="sc">$</span>exponential)</span></code></pre></div>
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+  0.002   1.466   3.807   5.591   6.373  40.546 </code></pre>
 </div>
 <div class="layout-chunk" data-layout="l-body">
-<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(pressure_samp_1000, <span class="fu">aes</span>(<span class="at">x =</span> values)) <span class="sc">+</span></span>
-<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(</span>
-<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">y =</span> ..count.. <span class="sc">/</span> <span class="fu">sum</span>(..count..)),</span>
-<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">&quot;white&quot;</span>,</span>
-<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">&quot;black&quot;</span>,</span>
-<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">binwidth =</span> <span class="dv">3</span></span>
-<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_function</span>(</span>
-<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">fun =</span> <span class="cf">function</span>(x)</span>
-<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a>      <span class="fu">dnorm</span>(x, <span class="at">mean =</span> <span class="dv">990</span>, <span class="at">sd =</span> <span class="dv">19</span>) <span class="sc">*</span> <span class="dv">3</span>,</span>
-<span id="cb34-11"><a href="#cb34-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">&quot;#0065a4&quot;</span>,</span>
-<span id="cb34-12"><a href="#cb34-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="dv">2</span>,</span>
-<span id="cb34-13"><a href="#cb34-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">alpha =</span> <span class="fl">0.4</span></span>
-<span id="cb34-14"><a href="#cb34-14" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb34-15"><a href="#cb34-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(</span>
-<span id="cb34-16"><a href="#cb34-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">xintercept =</span> <span class="fu">mean</span>(pressure_samp_1000<span class="sc">$</span>values),</span>
-<span id="cb34-17"><a href="#cb34-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">&quot;#a43f00&quot;</span>,</span>
-<span id="cb34-18"><a href="#cb34-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="dv">2</span></span>
-<span id="cb34-19"><a href="#cb34-19" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb34-20"><a href="#cb34-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb34-21"><a href="#cb34-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">&quot;proportion&quot;</span>)</span></code></pre></div>
-<p><img src="reflection_files/figure-html5/simulations-storm-pressure-graph-1.png" width="624" /></p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> <span class="fu">map</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">1000</span>, generate_samples)</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>samples_means <span class="ot">&lt;-</span> <span class="fu">map_df</span>(samples, generate_sample_mean)</span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>restructured_means <span class="ot">&lt;-</span> samples_means <span class="sc">%&gt;%</span> </span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pivot_longer</span>(</span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a>      <span class="at">cols =</span> <span class="fu">everything</span>(),</span>
+<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a>      <span class="at">names_to =</span> <span class="st">&quot;distribution&quot;</span>,</span>
+<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a>      <span class="at">values_to =</span> <span class="st">&quot;means&quot;</span></span>
+<span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb37-11"><a href="#cb37-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-12"><a href="#cb37-12" aria-hidden="true" tabindex="-1"></a>restructured_means <span class="sc">%&gt;%</span> </span>
+<span id="cb37-13"><a href="#cb37-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> means)) <span class="sc">+</span></span>
+<span id="cb37-14"><a href="#cb37-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">y =</span> ..count.. <span class="sc">/</span> <span class="fu">sum</span>(..count..))) <span class="sc">+</span></span>
+<span id="cb37-15"><a href="#cb37-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">facet_wrap</span>(<span class="sc">~</span> distribution, <span class="at">ncol =</span> <span class="dv">2</span>, <span class="at">nrow =</span> <span class="dv">2</span>, <span class="at">scales =</span> <span class="st">&quot;free&quot;</span>) <span class="sc">+</span></span>
+<span id="cb37-16"><a href="#cb37-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">&quot;proportion&quot;</span>)</span></code></pre></div>
+<p><img src="reflection_files/figure-html5/unnamed-chunk-2-1.png" width="624" /></p>
 </div>
 <div class="layout-chunk" data-layout="l-body">
-<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(pressure_samp_1000, <span class="fu">aes</span>(<span class="at">y=</span>values)) <span class="sc">+</span> </span>
-<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>restructured_means <span class="sc">%&gt;%</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(distribution) <span class="sc">%&gt;%</span></span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean =</span> <span class="fu">mean</span>(means),</span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">sd =</span> <span class="fu">sd</span>(means)</span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>()</span></code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">distribution</th>
+<th style="text-align: right;">mean</th>
+<th style="text-align: right;">sd</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">binomial</td>
+<td style="text-align: right;">25.001550</td>
+<td style="text-align: right;">4.327238</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">exponential</td>
+<td style="text-align: right;">5.002368</td>
+<td style="text-align: right;">5.004691</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">normal</td>
+<td style="text-align: right;">989.978302</td>
+<td style="text-align: right;">18.984586</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">uniform</td>
+<td style="text-align: right;">14.998144</td>
+<td style="text-align: right;">2.887759</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(pressure_samp_1000, <span class="fu">aes</span>(<span class="at">y=</span>normal)) <span class="sc">+</span> </span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>()</span></code></pre></div>
 <p><img src="reflection_files/figure-html5/simulations-storm-pressure-boxplot-1.png" width="624" /></p>
 </div>
 <div class="layout-chunk" data-layout="l-body">
@@ -3448,15 +3532,15 @@ href="https://www.rdocumentation.org/packages/boot/versions/1.3-28/topics/boot">
 that generates bootstrap replicates of a statistics applied to data.</p>
 <h4 id="load-packages">Load Packages</h4>
 <div class="layout-chunk" data-layout="l-body">
-<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(boot)</span></code></pre></div>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(boot)</span></code></pre></div>
 </div>
 <h4 id="data-overview-1">Data Overview</h4>
 <p>To implement bootstrap resampling, I’ve used builtin
 <code>Loblolly</code> dataset that contains the data about the growith
 of the Loblolly pine tree.</p>
 <div class="layout-chunk" data-layout="l-body">
-<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">&quot;Loblolly&quot;</span>, <span class="at">package =</span> <span class="st">&quot;datasets&quot;</span>)</span>
-<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="fu">head</span>(Loblolly))</span></code></pre></div>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">&quot;Loblolly&quot;</span>, <span class="at">package =</span> <span class="st">&quot;datasets&quot;</span>)</span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="fu">head</span>(Loblolly))</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -3507,7 +3591,7 @@ of the Loblolly pine tree.</p>
 </table>
 </div>
 <div class="layout-chunk" data-layout="l-body">
-<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(Loblolly)</span></code></pre></div>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(Loblolly)</span></code></pre></div>
 <pre><code>     height           age            Seed   
  Min.   : 3.46   Min.   : 3.0   329    : 6  
  1st Qu.:10.47   1st Qu.: 5.0   327    : 6  
@@ -3518,12 +3602,12 @@ of the Loblolly pine tree.</p>
                                 (Other):48  </code></pre>
 </div>
 <div class="layout-chunk" data-layout="l-body">
-<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co"># A function which when applied to data returns a vector </span></span>
-<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="co"># containing the statistic(s) of interest.</span></span>
-<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>statistics_function <span class="ot">&lt;-</span> <span class="cf">function</span>(data, i){</span>
-<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a> d2 <span class="ot">&lt;-</span> data[i,] </span>
-<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a> <span class="fu">return</span>(<span class="fu">cor</span>(d2<span class="sc">$</span>height, d2<span class="sc">$</span>age))</span>
-<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="co"># A function which when applied to data returns a vector </span></span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a><span class="co"># containing the statistic(s) of interest.</span></span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>statistics_function <span class="ot">&lt;-</span> <span class="cf">function</span>(data, i){</span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a> d2 <span class="ot">&lt;-</span> data[i,] </span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a> <span class="fu">return</span>(<span class="fu">cor</span>(d2<span class="sc">$</span>height, d2<span class="sc">$</span>age))</span>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 </div>
 <p>In the above code, I’ve defined a custom function
 <code>statistics_function</code> that accepts two parameters, namely,
@@ -3532,14 +3616,14 @@ denotes the dataset as the name suggest where as <code>i</code>
 parameter is the index denoting the row of the data that will be used to
 create bootstrap sample.</p>
 <div class="layout-chunk" data-layout="l-body">
-<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">518</span>)</span>
-<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>bootstrap_correlation <span class="ot">&lt;-</span> <span class="fu">boot</span>(Loblolly, <span class="at">statistic =</span> statistics_function, <span class="at">R =</span> <span class="dv">10000</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">518</span>)</span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>bootstrap_correlation <span class="ot">&lt;-</span> <span class="fu">boot</span>(Loblolly, <span class="at">statistic =</span> statistics_function, <span class="at">R =</span> <span class="dv">10000</span>)</span></code></pre></div>
 </div>
 <p>Now, we apply the <code>boot</code> function which accepts dataset,
 statistic fucntion and number of bootstrap sample. The <code>seed</code>
 function is used in this context to generate reproducible results.</p>
 <div class="layout-chunk" data-layout="l-body">
-<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>bootstrap_correlation</span></code></pre></div>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>bootstrap_correlation</span></code></pre></div>
 <pre><code>
 ORDINARY NONPARAMETRIC BOOTSTRAP
 
@@ -3555,7 +3639,7 @@ t1* 0.9899132 5.040578e-05 0.001676456</code></pre>
 <p>We can observe that the correlation between two variable is 0.989
 with a standard error of 0.0016.</p>
 <div class="layout-chunk" data-layout="l-body">
-<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(bootstrap_correlation)</span></code></pre></div>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(bootstrap_correlation)</span></code></pre></div>
 <pre><code>          Length Class          Mode     
 t0            1  -none-         numeric  
 t         10000  -none-         numeric  
@@ -3573,22 +3657,22 @@ weights      84  -none-         numeric  </code></pre>
 <p>Below, we have generated range, mean and standard deviation of
 bootstrap samples.</p>
 <div class="layout-chunk" data-layout="l-body">
-<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">range</span>(bootstrap_correlation<span class="sc">$</span>t)</span></code></pre></div>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="fu">range</span>(bootstrap_correlation<span class="sc">$</span>t)</span></code></pre></div>
 <pre><code>[1] 0.9820512 0.9958413</code></pre>
 </div>
 <p>The bootstrap correlation ranges from 0.982 to 0.995</p>
 <div class="layout-chunk" data-layout="l-body">
-<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(bootstrap_correlation<span class="sc">$</span>t)</span></code></pre></div>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(bootstrap_correlation<span class="sc">$</span>t)</span></code></pre></div>
 <pre><code>[1] 0.9899636</code></pre>
 </div>
 <p>The mean for bootstrap correlation is 0.989.</p>
 <div class="layout-chunk" data-layout="l-body">
-<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sd</span>(bootstrap_correlation<span class="sc">$</span>t)</span></code></pre></div>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sd</span>(bootstrap_correlation<span class="sc">$</span>t)</span></code></pre></div>
 <pre><code>[1] 0.001676456</code></pre>
 </div>
 <p>The standard deviation for boostrap correlation is 0.001.</p>
 <div class="layout-chunk" data-layout="l-body">
-<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="fu">boot.ci</span>(<span class="at">boot.out=</span>bootstrap_correlation,<span class="at">type=</span><span class="fu">c</span>(<span class="st">&#39;norm&#39;</span>,<span class="st">&#39;basic&#39;</span>,<span class="st">&#39;perc&#39;</span>,<span class="st">&#39;bca&#39;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="fu">boot.ci</span>(<span class="at">boot.out=</span>bootstrap_correlation,<span class="at">type=</span><span class="fu">c</span>(<span class="st">&#39;norm&#39;</span>,<span class="st">&#39;basic&#39;</span>,<span class="st">&#39;perc&#39;</span>,<span class="st">&#39;bca&#39;</span>))</span></code></pre></div>
 <pre><code>BOOTSTRAP CONFIDENCE INTERVAL CALCULATIONS
 Based on 10000 bootstrap replicates
 
@@ -3608,10 +3692,19 @@ Calculations and Intervals on Original Scale</code></pre>
 confidence interval of 4 types: normal, basic, percentile and bca
 distribution.</p>
 <h3 id="conlusions">2.3.2 Conlusions</h3>
-<p>Mark your conclusions here</p>
+<p>I beleive I have fullfiled the objective as I’ve performed
+simulation, bootstrapping as well as completed all the course
+activities. As demonstrated in the above code, I can wirte R scripts to
+perform simulations in various tasks where we need to introduce some
+randomness by generating random numbers using smapling techinqiues. For
+performing simulation in R, I can use <code>rnorm</code>,
+<code>dnorm</code>, <code>rexp</code> and <code>rbinom</code>. I have
+also performed bootstrapping to implement resampling methods and draw
+conclusions on data.</p>
 <div class="layout-chunk" data-layout="l-body">
 
 </div>
+<hr />
 <h2
 id="use-source-documentation-and-other-resources-to-troubleshoot-and-extend-r-programs">2.4
 Use source documentation and other resources to troubleshoot and extend
@@ -3648,18 +3741,18 @@ use <code>tryCatch</code> statement. Below is the snippet of code I’ve
 used in my <a
 href="https://github.com/sajalshres/sta-518-project/blob/main/modules/scrape.R">scrape</a>
 function script to quickly identify if something goes wrong.</p>
-<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tryCatch</span>(</span>
-<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">download.file</span>(link, dest_file),</span>
-<span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># handle warning</span></span>
-<span id="cb56-4"><a href="#cb56-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">warning =</span> <span class="cf">function</span>(warn) {</span>
-<span id="cb56-5"><a href="#cb56-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">&quot;Warnign: &quot;</span>, warn))</span>
-<span id="cb56-6"><a href="#cb56-6" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb56-7"><a href="#cb56-7" aria-hidden="true" tabindex="-1"></a>  <span class="co"># handle error</span></span>
-<span id="cb56-8"><a href="#cb56-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">error =</span> <span class="cf">function</span>(error) {</span>
-<span id="cb56-9"><a href="#cb56-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">print</span>(<span class="fu">paste0</span>(<span class="st">&quot;Error occurred when downloading file. reason: &quot;</span>, error))</span>
-<span id="cb56-10"><a href="#cb56-10" aria-hidden="true" tabindex="-1"></a>    is_downloaded <span class="ot">&lt;&lt;-</span> <span class="cn">FALSE</span></span>
-<span id="cb56-11"><a href="#cb56-11" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb56-12"><a href="#cb56-12" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tryCatch</span>(</span>
+<span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">download.file</span>(link, dest_file),</span>
+<span id="cb60-3"><a href="#cb60-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># handle warning</span></span>
+<span id="cb60-4"><a href="#cb60-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">warning =</span> <span class="cf">function</span>(warn) {</span>
+<span id="cb60-5"><a href="#cb60-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">&quot;Warnign: &quot;</span>, warn))</span>
+<span id="cb60-6"><a href="#cb60-6" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb60-7"><a href="#cb60-7" aria-hidden="true" tabindex="-1"></a>  <span class="co"># handle error</span></span>
+<span id="cb60-8"><a href="#cb60-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">error =</span> <span class="cf">function</span>(error) {</span>
+<span id="cb60-9"><a href="#cb60-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">print</span>(<span class="fu">paste0</span>(<span class="st">&quot;Error occurred when downloading file. reason: &quot;</span>, error))</span>
+<span id="cb60-10"><a href="#cb60-10" aria-hidden="true" tabindex="-1"></a>    is_downloaded <span class="ot">&lt;&lt;-</span> <span class="cn">FALSE</span></span>
+<span id="cb60-11"><a href="#cb60-11" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb60-12"><a href="#cb60-12" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
 <p>I also found that collaborating with my team and friends is another
 great way to troubleshoot issues. I collaborated on numerous occasion
 with my team on troubleshooting on various issues and helping them when
@@ -3683,57 +3776,57 @@ matches (asc).</li>
 library to the github api endpoint. Next, the status code is checked and
 upon success, the response is parsed.</p>
 <div class="layout-chunk" data-layout="l-body">
-<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a>search_github_repositories <span class="ot">&lt;-</span></span>
-<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">function</span>(query, <span class="at">sort =</span> <span class="st">&quot;stars&quot;</span>, <span class="at">order =</span> <span class="st">&quot;desc&quot;</span>) {</span>
-<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># urls</span></span>
-<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a>    github_api_url <span class="ot">&lt;-</span> <span class="st">&quot;https://api.github.com&quot;</span></span>
-<span id="cb57-5"><a href="#cb57-5" aria-hidden="true" tabindex="-1"></a>    search_endpoint <span class="ot">&lt;-</span> <span class="st">&quot;/search/repositories&quot;</span></span>
-<span id="cb57-6"><a href="#cb57-6" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb57-7"><a href="#cb57-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># build query params</span></span>
-<span id="cb57-8"><a href="#cb57-8" aria-hidden="true" tabindex="-1"></a>    query_params <span class="ot">&lt;-</span></span>
-<span id="cb57-9"><a href="#cb57-9" aria-hidden="true" tabindex="-1"></a>      <span class="fu">paste</span>(<span class="fu">paste0</span>(<span class="st">&quot;?q=&quot;</span>, query),</span>
-<span id="cb57-10"><a href="#cb57-10" aria-hidden="true" tabindex="-1"></a>            <span class="fu">paste0</span>(<span class="st">&quot;sort=&quot;</span>, sort),</span>
-<span id="cb57-11"><a href="#cb57-11" aria-hidden="true" tabindex="-1"></a>            <span class="fu">paste0</span>(<span class="st">&quot;order=&quot;</span>, order),</span>
-<span id="cb57-12"><a href="#cb57-12" aria-hidden="true" tabindex="-1"></a>            <span class="at">sep =</span> <span class="st">&quot;&amp;&quot;</span>)</span>
-<span id="cb57-13"><a href="#cb57-13" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb57-14"><a href="#cb57-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">print</span>(<span class="fu">paste0</span>(<span class="st">&quot;Url is &quot;</span>,github_api_url, search_endpoint, query_params))</span>
-<span id="cb57-15"><a href="#cb57-15" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb57-16"><a href="#cb57-16" aria-hidden="true" tabindex="-1"></a>    <span class="co"># make http request to Github Api</span></span>
-<span id="cb57-17"><a href="#cb57-17" aria-hidden="true" tabindex="-1"></a>    response <span class="ot">&lt;-</span></span>
-<span id="cb57-18"><a href="#cb57-18" aria-hidden="true" tabindex="-1"></a>      httr<span class="sc">::</span><span class="fu">GET</span>(<span class="at">url =</span> <span class="fu">paste0</span>(github_api_url, search_endpoint, query_params))</span>
-<span id="cb57-19"><a href="#cb57-19" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb57-20"><a href="#cb57-20" aria-hidden="true" tabindex="-1"></a>    response_status_code <span class="ot">&lt;-</span> httr<span class="sc">::</span><span class="fu">status_code</span>(response)</span>
-<span id="cb57-21"><a href="#cb57-21" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb57-22"><a href="#cb57-22" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Stop if unexpected status code</span></span>
-<span id="cb57-23"><a href="#cb57-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (response_status_code <span class="sc">!=</span> <span class="dv">200</span>) {</span>
-<span id="cb57-24"><a href="#cb57-24" aria-hidden="true" tabindex="-1"></a>      <span class="fu">stop</span>(<span class="fu">paste0</span>(<span class="st">&quot;Unexpected status&quot;</span>, response_status_code, <span class="st">&quot;encountered&quot;</span>))</span>
-<span id="cb57-25"><a href="#cb57-25" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb57-26"><a href="#cb57-26" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb57-27"><a href="#cb57-27" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Parse the JSON response</span></span>
-<span id="cb57-28"><a href="#cb57-28" aria-hidden="true" tabindex="-1"></a>    response_parsed <span class="ot">&lt;-</span> httr<span class="sc">::</span><span class="fu">content</span>(response, <span class="at">as =</span> <span class="st">&quot;parsed&quot;</span>)</span>
-<span id="cb57-29"><a href="#cb57-29" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb57-30"><a href="#cb57-30" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Print stats</span></span>
-<span id="cb57-31"><a href="#cb57-31" aria-hidden="true" tabindex="-1"></a>    <span class="fu">print</span>(<span class="fu">paste</span>(</span>
-<span id="cb57-32"><a href="#cb57-32" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;Search for&quot;</span>,</span>
-<span id="cb57-33"><a href="#cb57-33" aria-hidden="true" tabindex="-1"></a>      query,</span>
-<span id="cb57-34"><a href="#cb57-34" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;found&quot;</span>,</span>
-<span id="cb57-35"><a href="#cb57-35" aria-hidden="true" tabindex="-1"></a>      response_parsed<span class="sc">$</span>total_count,</span>
-<span id="cb57-36"><a href="#cb57-36" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;results&quot;</span></span>
-<span id="cb57-37"><a href="#cb57-37" aria-hidden="true" tabindex="-1"></a>    ))</span>
-<span id="cb57-38"><a href="#cb57-38" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb57-39"><a href="#cb57-39" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(response_parsed)</span>
-<span id="cb57-40"><a href="#cb57-40" aria-hidden="true" tabindex="-1"></a>  }</span></code></pre></div>
+<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a>search_github_repositories <span class="ot">&lt;-</span></span>
+<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">function</span>(query, <span class="at">sort =</span> <span class="st">&quot;stars&quot;</span>, <span class="at">order =</span> <span class="st">&quot;desc&quot;</span>) {</span>
+<span id="cb61-3"><a href="#cb61-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># urls</span></span>
+<span id="cb61-4"><a href="#cb61-4" aria-hidden="true" tabindex="-1"></a>    github_api_url <span class="ot">&lt;-</span> <span class="st">&quot;https://api.github.com&quot;</span></span>
+<span id="cb61-5"><a href="#cb61-5" aria-hidden="true" tabindex="-1"></a>    search_endpoint <span class="ot">&lt;-</span> <span class="st">&quot;/search/repositories&quot;</span></span>
+<span id="cb61-6"><a href="#cb61-6" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb61-7"><a href="#cb61-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># build query params</span></span>
+<span id="cb61-8"><a href="#cb61-8" aria-hidden="true" tabindex="-1"></a>    query_params <span class="ot">&lt;-</span></span>
+<span id="cb61-9"><a href="#cb61-9" aria-hidden="true" tabindex="-1"></a>      <span class="fu">paste</span>(<span class="fu">paste0</span>(<span class="st">&quot;?q=&quot;</span>, query),</span>
+<span id="cb61-10"><a href="#cb61-10" aria-hidden="true" tabindex="-1"></a>            <span class="fu">paste0</span>(<span class="st">&quot;sort=&quot;</span>, sort),</span>
+<span id="cb61-11"><a href="#cb61-11" aria-hidden="true" tabindex="-1"></a>            <span class="fu">paste0</span>(<span class="st">&quot;order=&quot;</span>, order),</span>
+<span id="cb61-12"><a href="#cb61-12" aria-hidden="true" tabindex="-1"></a>            <span class="at">sep =</span> <span class="st">&quot;&amp;&quot;</span>)</span>
+<span id="cb61-13"><a href="#cb61-13" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb61-14"><a href="#cb61-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">print</span>(<span class="fu">paste0</span>(<span class="st">&quot;Url is &quot;</span>,github_api_url, search_endpoint, query_params))</span>
+<span id="cb61-15"><a href="#cb61-15" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb61-16"><a href="#cb61-16" aria-hidden="true" tabindex="-1"></a>    <span class="co"># make http request to Github Api</span></span>
+<span id="cb61-17"><a href="#cb61-17" aria-hidden="true" tabindex="-1"></a>    response <span class="ot">&lt;-</span></span>
+<span id="cb61-18"><a href="#cb61-18" aria-hidden="true" tabindex="-1"></a>      httr<span class="sc">::</span><span class="fu">GET</span>(<span class="at">url =</span> <span class="fu">paste0</span>(github_api_url, search_endpoint, query_params))</span>
+<span id="cb61-19"><a href="#cb61-19" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb61-20"><a href="#cb61-20" aria-hidden="true" tabindex="-1"></a>    response_status_code <span class="ot">&lt;-</span> httr<span class="sc">::</span><span class="fu">status_code</span>(response)</span>
+<span id="cb61-21"><a href="#cb61-21" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb61-22"><a href="#cb61-22" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Stop if unexpected status code</span></span>
+<span id="cb61-23"><a href="#cb61-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (response_status_code <span class="sc">!=</span> <span class="dv">200</span>) {</span>
+<span id="cb61-24"><a href="#cb61-24" aria-hidden="true" tabindex="-1"></a>      <span class="fu">stop</span>(<span class="fu">paste0</span>(<span class="st">&quot;Unexpected status&quot;</span>, response_status_code, <span class="st">&quot;encountered&quot;</span>))</span>
+<span id="cb61-25"><a href="#cb61-25" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb61-26"><a href="#cb61-26" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb61-27"><a href="#cb61-27" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Parse the JSON response</span></span>
+<span id="cb61-28"><a href="#cb61-28" aria-hidden="true" tabindex="-1"></a>    response_parsed <span class="ot">&lt;-</span> httr<span class="sc">::</span><span class="fu">content</span>(response, <span class="at">as =</span> <span class="st">&quot;parsed&quot;</span>)</span>
+<span id="cb61-29"><a href="#cb61-29" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb61-30"><a href="#cb61-30" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Print stats</span></span>
+<span id="cb61-31"><a href="#cb61-31" aria-hidden="true" tabindex="-1"></a>    <span class="fu">print</span>(<span class="fu">paste</span>(</span>
+<span id="cb61-32"><a href="#cb61-32" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;Search for&quot;</span>,</span>
+<span id="cb61-33"><a href="#cb61-33" aria-hidden="true" tabindex="-1"></a>      query,</span>
+<span id="cb61-34"><a href="#cb61-34" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;found&quot;</span>,</span>
+<span id="cb61-35"><a href="#cb61-35" aria-hidden="true" tabindex="-1"></a>      response_parsed<span class="sc">$</span>total_count,</span>
+<span id="cb61-36"><a href="#cb61-36" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;results&quot;</span></span>
+<span id="cb61-37"><a href="#cb61-37" aria-hidden="true" tabindex="-1"></a>    ))</span>
+<span id="cb61-38"><a href="#cb61-38" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb61-39"><a href="#cb61-39" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(response_parsed)</span>
+<span id="cb61-40"><a href="#cb61-40" aria-hidden="true" tabindex="-1"></a>  }</span></code></pre></div>
 </div>
 <p>The below code chuck demonstrate how to call the created
 function.</p>
 <div class="layout-chunk" data-layout="l-body">
-<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Search for repositories with name sta-518</span></span>
-<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a>search_response <span class="ot">&lt;-</span> <span class="fu">search_github_repositories</span>(<span class="at">query =</span> <span class="st">&quot;sta-518&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Search for repositories with name sta-518</span></span>
+<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a>search_response <span class="ot">&lt;-</span> <span class="fu">search_github_repositories</span>(<span class="at">query =</span> <span class="st">&quot;sta-518&quot;</span>)</span></code></pre></div>
 <pre><code>[1] &quot;Url is https://api.github.com/search/repositories?q=sta-518&amp;sort=stars&amp;order=desc&quot;
 [1] &quot;Search for sta-518 found 141 results&quot;</code></pre>
-<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a>search_response<span class="sc">$</span>items[[<span class="dv">1</span>]]<span class="sc">$</span>full_name</span></code></pre></div>
+<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a>search_response<span class="sc">$</span>items[[<span class="dv">1</span>]]<span class="sc">$</span>full_name</span></code></pre></div>
 <pre><code>[1] &quot;gvsu-sta518/community&quot;</code></pre>
-<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a>search_response<span class="sc">$</span>items[[<span class="dv">1</span>]]<span class="sc">$</span>owner<span class="sc">$</span>url</span></code></pre></div>
+<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a>search_response<span class="sc">$</span>items[[<span class="dv">1</span>]]<span class="sc">$</span>owner<span class="sc">$</span>url</span></code></pre></div>
 <pre><code>[1] &quot;https://api.github.com/users/gvsu-sta518&quot;</code></pre>
 </div>
 <div class="layout-chunk" data-layout="l-body">
@@ -3756,39 +3849,51 @@ href="https://github.com/sajalshres/SearchGithubRespositories">https://github.co
 <p>I’ve installed and used <code>devtools</code> library to install
 custom package as it is not published yet.</p>
 <div class="layout-chunk" data-layout="l-body">
-<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(devtools)</span></code></pre></div>
+<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(devtools)</span></code></pre></div>
 </div>
 <h5 id="load-my-custom-package">Load my custom package</h5>
 <p>I’ve used <code>install_github</code> function to install the
 <code>SearchGithubRespositories</code> package.</p>
 <div class="layout-chunk" data-layout="l-body">
-<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install_github</span>(<span class="st">&quot;sajalshres/SearchGithubRespositories&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install_github</span>(<span class="st">&quot;sajalshres/SearchGithubRespositories&quot;</span>)</span></code></pre></div>
 </div>
 <h5 id="sample-usage">Sample usage</h5>
 <p>Below is the demonstration of the usage of the package:</p>
 <div class="layout-chunk" data-layout="l-body">
-<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a>SearchGithubRespositories<span class="sc">::</span><span class="fu">version</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a>SearchGithubRespositories<span class="sc">::</span><span class="fu">version</span>()</span></code></pre></div>
 <pre><code>[1] &quot;Version: 0.0.1&quot;</code></pre>
 </div>
 <div class="layout-chunk" data-layout="l-body">
-<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a>response <span class="ot">&lt;-</span> SearchGithubRespositories<span class="sc">::</span><span class="fu">search_github_repositories</span>(<span class="at">query =</span> <span class="st">&quot;sta-518&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a>response <span class="ot">&lt;-</span> SearchGithubRespositories<span class="sc">::</span><span class="fu">search_github_repositories</span>(<span class="at">query =</span> <span class="st">&quot;sta-518&quot;</span>)</span></code></pre></div>
 <pre><code>[1] &quot;Url is https://api.github.com /search/repositories ?q=sta-518&amp;sort=stars&amp;order=desc&quot;
 [1] &quot;Search for sta-518 found 141 results&quot;</code></pre>
-<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a>response<span class="sc">$</span>total_count</span></code></pre></div>
+<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a>response<span class="sc">$</span>total_count</span></code></pre></div>
 <pre><code>[1] 141</code></pre>
 </div>
 <p>Similarly, we can view the help documentation using <code>?</code>
 operator.</p>
 <div class="layout-chunk" data-layout="l-body">
-<div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a>?SearchGithubRespositories<span class="sc">::</span>search_github_repositories</span></code></pre></div>
+<div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a>?SearchGithubRespositories<span class="sc">::</span>search_github_repositories</span></code></pre></div>
 </div>
 <p><img src="images/help_SearchGithubRespositories.png"
 style="width:50.0%" /></p>
 <h3 id="conlusions-1">2.4.3 Conlusions</h3>
-<p>Mark your conclusions here</p>
+<p>I conclude that I’ve met all the requirement for the objective as I’m
+able to identify common errors or issues with R programs and
+troubleshoot them. I also have explored on numerous ways to troubleshoot
+which included reading package documentations, online search, code
+formating, common mistakes, collaborating and using
+<code>tryCatch</code> statements. In addition, I’ve created numerous
+functions like <code>search_github_repositories</code> and
+<code>download_files</code> in my project. I also created custom package
+<code>SearchGithubRespositories</code> as a cool way to share and extend
+R programs. Lastly, I have explored and make use of various packages
+like <code>GGally</code>, <code>wally</code>, <code>plumber</code>,
+<code>httpr</code> etc to complete specific tasks in my analyses.</p>
 <div class="layout-chunk" data-layout="l-body">
 
 </div>
+<hr />
 <h2 id="write-clear-efficient-and-well-documented-r-programs.">2.5 Write
 clear, efficient, and well-documented R programs.</h2>
 <p>I have dedicated myself to spend good amount of time writing R code
@@ -3810,7 +3915,7 @@ periods like test.case1.</p>
 <p>I have also learned to structure a R project. A good content
 organizations can help us to quickly navigate in a complex enterprise
 projects and can be scaled very easily. For my final project, I’ve used
-below structure:</p>
+below structure to simulate a complex application:</p>
 <pre><code>sta-518-project
 |
 |-- api           # API application to fetch raw data, analaysis and summaries.
@@ -3829,6 +3934,11 @@ them. When developing ShinyApp for my project, I’ve created functions
 and scripts that can be used to complete various tasks for analysis. To
 accomplish this, I’ve used <code>source</code> function that help to
 reuse function that is created in another R script.</p>
+<p>For instance, in my shiny application, I’ve break-up my code into
+small independent code and used them as:</p>
+<pre><code># Read modules
+source(&quot;modules/maps.R&quot;)
+source(&quot;modules/analyze.R&quot;)</code></pre>
 <h3 id="documenting-code">2.5.5 Documenting Code</h3>
 <p>I believe the most important aspect of documenting your code is to
 introduce comments. Comments helps to summarize the piece of code,
@@ -3839,7 +3949,12 @@ and make collaborating with other much easier.</p>
 Markdown. The rstudio can make navigation much easier and we can
 generate table of content.</p>
 <h3 id="conlusions-2">2.5.6 Conlusions</h3>
-<p>Mark your conclusions here</p>
+<p>I believe I’ve achieved this objective as I am able to create complex
+project based workflows and create professional reports using
+<code>rmakrdown</code>. I also have divided my project code
+self-contained functions to perform analysis. Similarly, I’ve documented
+my code usign comments to provide summaries, resources and explanation
+for taking specific approach.</p>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
 </div>

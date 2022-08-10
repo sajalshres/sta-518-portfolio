@@ -742,13 +742,9 @@ listings_summary %>%
   paged_table(options = list(rows.print = 15))
 ```
 
----
-
 ### 2.2.1 Conclusion
 
 I believe I have met this objective as I have created different visualizations using the `ggplot2`, `waffle`, and `GGally` libraries. By creating the visualizations for various tasks, I am able to explore important characteristics of a data and draw conclusions from them. Likewise, I have combined multiple visualization created above into my shiny app project to create effective data project. I have also created my own theme using `ggplot2::theme` function to highlight key features of data. I have completed exploratory analysis of the data by generating the correlation data among variables and generate heat map matrix to draw conclusions. Further, I have generated numerical summaries such as mean price for each neighbourhoods using `dplyr::summarise` and `dplyr::group_by` and visualize it usign box plot for additional descriptive analysis.
-
-Mark your conclusion here.
 
 ```{r visual-clean-up, echo = FALSE, message = FALSE, warning = FALSE, results = 'hide'}
 cleanup_variables = c(
@@ -774,11 +770,12 @@ cleanup_variables = c(
 rm(list = cleanup_variables)
 ```
 
-
+---
 
 ## 2.3 Write R programs for simulations from probability models and randomization-based experiments
 
 ### 2.3.1 Simulations
+
 
 #### Data Overview
 
@@ -787,6 +784,21 @@ storms %>%
   paged_table(options = list(rows.print = 15))
 ```
 
+For the above dataset, we can sample random rows by generating the indices of the rows into the object.
+
+```{r simulatons-sample-data}
+# Create indices
+ind <- seq_len(nrow(storms))
+
+# Obtain a sample of 15
+sample_ind <- sample(ind, 15)
+
+# Display the sample results
+storms[sample_ind, ] %>%
+  paged_table(options = list(rows.print = 15))
+```
+For the storms dataset, lets have a look at the mean and standard deviation.
+
 ```{r simulations-data-stats}
 mean(storms$pressure)
 sd(storms$pressure)
@@ -794,47 +806,82 @@ sd(storms$pressure)
 
 #### Storm pressure simulation
 
+In the code snippet below, I have performed a simulation for the air pressure at storm center by generating 100 random samples of a normally distributted variables using `rnorm` with a mean of 990 and a standard deviation of 19. Also, I have generated multiple samples of data using `map` function.
+
 ```{r simulations-storm-pressure-simulation}
-pressure_samp_1000 <- tibble(
-  values = rnorm(n = 1000, mean = 990, sd = 19)
-)
+# Set seed for consistent results
+set.seed(415)
+
+generate_sample_mean <- function(data) {
+  data %>%
+    summarise(across(everything(), mean, .names = "mean_{.col}"))
+
+  return(data)
+}
+
+generate_samples <- function(n = 100) {
+  samples <- tibble(
+    normal = rnorm(n, mean = 990, sd = 19),
+    exponential = rexp(n = n, rate = 0.2),
+    binomial = rbinom(n = n, size = 100, prob = 0.25),
+    uniform = runif(n = n, min = 10, max = 20)
+  )
+  return(samples)
+}
+
+pressure_samp_1000 <- generate_samples()
 ```
+
+Lets view some of the descriptive statistics for sampled air pressure values:
 
 ```{r simulations-storm-pressure-values}
-summary(pressure_samp_1000$values)
+summary(pressure_samp_1000$normal)
+
+summary(pressure_samp_1000$exponential)
 ```
 
-```{r simulations-storm-pressure-graph}
-ggplot(pressure_samp_1000, aes(x = values)) +
-  geom_histogram(
-    aes(y = ..count.. / sum(..count..)),
-    fill = "white",
-    color = "black",
-    binwidth = 3
-  ) +
-  stat_function(
-    fun = function(x)
-      dnorm(x, mean = 990, sd = 19) * 3,
-    color = "#0065a4",
-    size = 2,
-    alpha = 0.4
-  ) +
-  geom_vline(
-    xintercept = mean(pressure_samp_1000$values),
-    color = "#a43f00",
-    size = 2
-  ) +
-  theme_minimal() +
-  labs(y = "proportion")
+```{r}
+samples <- map(1:1000, generate_samples)
+
+samples_means <- map_df(samples, generate_sample_mean)
+
+restructured_means <- samples_means %>% 
+    pivot_longer(
+      cols = everything(),
+      names_to = "distribution",
+      values_to = "means"
+    )
+
+restructured_means %>% 
+    ggplot(aes(x = means)) +
+    geom_histogram(aes(y = ..count.. / sum(..count..))) +
+    facet_wrap(~ distribution, ncol = 2, nrow = 2, scales = "free") +
+    labs(y = "proportion")
 ```
+
+```{r}
+restructured_means %>%
+  group_by(distribution) %>%
+  summarise(
+    mean = mean(means),
+    sd = sd(means)
+  ) %>%
+  knitr::kable()
+```
+
 
 ```{r simulations-storm-pressure-boxplot}
-ggplot(pressure_samp_1000, aes(y=values)) + 
+ggplot(pressure_samp_1000, aes(y=normal)) + 
   geom_boxplot()
 ```
 
 ```{r simulation-clean-up, echo = FALSE, message = FALSE, warning = FALSE, results = 'hide'}
-rm(pressure_samp_1000)
+clean_up_variables <- c(
+  "pressure_samp_1000",
+  "samples",
+  "samples_means"
+)
+rm(list = clean_up_variables)
 ```
 
 ### 2.3.2 Bootstrapping
@@ -920,7 +967,7 @@ The above function call `boot.ci` demonstrates the confidence interval of 4 type
 
 ### 2.3.2 Conlusions
 
-Mark your conclusions here
+I beleive I have fullfiled the objective as I've performed simulation, bootstrapping as well as completed all the course activities. As demonstrated in the above code, I can wirte R scripts to perform simulations in various tasks where we need to introduce some randomness by generating random numbers using smapling techinqiues. For performing simulation in R, I can use `rnorm`, `dnorm`, `rexp` and `rbinom`. I have also performed bootstrapping to implement resampling methods and draw conclusions on data.
 
 ```{r bootstrapping-clean-up, echo = FALSE, message = FALSE, warning = FALSE, results = 'hide'}
 cleanup_variables = c(
