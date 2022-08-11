@@ -80,10 +80,16 @@ listings_raw <-
 reviews_raw <- readr::read_csv(here::here("data", "reviews.csv.gz"))
 ```
 
-I also imported the OGR vector maps for generating spatial maps of neighbourhoods.
+I imported the OGR vector maps for generating spatial maps of neighbourhoods.
 
 ```{r import-data-airbnb-geojson, message=TRUE, code_folding=FALSE}
 neighbourhoods_ogr <- rgdal::readOGR("data/chicago_neighbourhoods.geojson")
+```
+
+I can also import excel files using `readxl:read_excel` function
+
+```{r import-data-excel-files, message=TRUE}
+amazon_novels <- readxl::read_excel(here::here("data", "AmazonBooks.xlsx"))
 ```
 
 
@@ -234,6 +240,7 @@ worldhappiness_2021 <- worldhappiness_2021 %>%
 worldhappiness_all <- worldhappiness_all %>%
   rename_with(.fn = ~ tolower(gsub(" ", "_", .x)))
 ```
+
 
 ```{r clean-up, echo = FALSE, message = FALSE, warning = FALSE, results = 'hide'}
 clean_up_variables = c(
@@ -742,6 +749,49 @@ listings_summary %>%
   paged_table(options = list(rows.print = 15))
 ```
 
+Lastly, I can implement a regression model for descriptive analysis. I created numerical summaries for the World happiness data for the quantitative variables `ladder_score` and `logged_gdp_per_capita`.
+
+```{r visual-regression-summary-1}
+summary(happiness_2021$ladder_score)
+```
+
+```{r visual-regression-summary-2}
+summary(happiness_2021$logged_gdp_per_capita)
+```
+
+Lets check if the loadder_score variable follows a normal distribution using `hist` function.
+
+```{r visual-regression-hist}
+hist(happiness_2021$ladder_score)
+```
+The above observation is roughly bell-shaped as most observation is in the middle of distribution.
+
+Also, I tested the relationship between the variable ladder_score and logged_gdp_per_capita to see if the relationship is linear.
+
+```{r visual-regression-plot-relationship}
+plot(ladder_score ~ logged_gdp_per_capita, data = happiness_2021)
+```
+The above relationship looks roughly linear.
+
+Next, I performed a linear regression analysis using linear model `lm` function.
+
+```{r visual-regression-show-summary}
+gdp_ladder_lm <- lm(ladder_score ~ logged_gdp_per_capita, data = happiness_2021)
+
+summary(gdp_ladder_lm)
+```
+
+In the above output, we can identify the min, max, first quartile, median, third quartile and max values along with coefficients.
+
+
+```{r visual-regression-plot-linear-model}
+par(mfrow=c(2,2))
+plot(gdp_ladder_lm)
+par(mfrow=c(1,1))
+```
+
+The red lines representing the mean of residuals are mostly horizontal which idicates minimal outliers or biases. The Normal Q-Q graph demonstrates the real residuals from the model we created in above section showing 1:1 line. 
+
 ### 2.2.1 Conclusion
 
 I believe I have met this objective as I have created different visualizations using the `ggplot2`, `waffle`, and `GGally` libraries. By creating the visualizations for various tasks, I am able to explore important characteristics of a data and draw conclusions from them. Likewise, I have combined multiple visualization created above into my shiny app project to create effective data project. I have also created my own theme using `ggplot2::theme` function to highlight key features of data. I have completed exploratory analysis of the data by generating the correlation data among variables and generate heat map matrix to draw conclusions. Further, I have generated numerical summaries such as mean price for each neighbourhoods using `dplyr::summarise` and `dplyr::group_by` and visualize it usign box plot for additional descriptive analysis.
@@ -809,6 +859,7 @@ sd(storms$pressure)
 In the code snippet below, I have performed a simulation for the air pressure at storm center by generating 100 random samples of a normally distributted variables using `rnorm` with a mean of 990 and a standard deviation of 19. Also, I have generated multiple samples of data using `map` function.
 
 ```{r simulations-storm-pressure-simulation}
+# https://github.com/gvsu-sta518/activity11-simulation
 # Set seed for consistent results
 set.seed(415)
 
