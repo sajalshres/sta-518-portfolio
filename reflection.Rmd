@@ -31,7 +31,7 @@ library(waffle)
 
 # 1. What Grade Did You Earn?
 
-I have completed all the class activities, readings, and preparations provided on the blackboard. As I have advanced through the course, I've learned from basic to advanced concepts of R programming. I have applied all my learning in the portfolio and final project showcasing all the required goals. Likewise, my final project follows all the major guidelines and creative constraints set collaboratively with colleagues.  I think R has a very steep learning curve, but I believe that I've made good progress and I am optimistic about being a decent R programmer as I am at the end of this course. Even though, I know that I've just scratched the surface into the world of R, I am confident that I can take any challenges/projects in future and I look forward to exploring further. Therefore, I would grade myself an **'A'**.
+I have completed all the class activities, readings, and preparations on the blackboard. As I have advanced through the course, I've learned from basic to advanced concepts of R programming. I have applied all my learning in the portfolio and final project, showcasing all the required goals. Likewise, my final project follows all the major guidelines and creative constraints collaboratively with colleagues. I think R has a very steep learning curve, but I believe I've made good progress, and I am optimistic about being a decent R programmer at the end of this course. Even though I know that I've just scratched the surface of the world of R, I am confident that I can take on any challenges/projects in the future, and I look forward to exploring further. Therefore, I would grade myself an **'A.'**
 
 # 2. How Did You Demonstrate That Grade?
 
@@ -39,7 +39,7 @@ I have completed all the class activities, readings, and preparations provided o
 
 I can import data from various sources such as text, csv, excel files and load it into the R data structure such as modern `tibble` data frame or base `data.frame`. I can manage the dataset using the functions such as `mutate()`, `select()`, `filter()`, `summarise()` and `arrange()` in the **dplyr** package.
 
-For my final project, I worked on the Airbnb dataset for multiple cities to process the property listings, neighbourhoods, and reviews. To achieve this, I created a custom scrape function: [scrape.R](https://github.com/sajalshres/sta-518-project/blob/main/modules/scrape.R) and a [etl(extract-transform-load)](https://github.com/sajalshres/sta-518-project/blob/main/etl/main.R) command line tool for managing data. For portfolio demonstration, I am using *Chicago** dataset as it is very close to Grand Rapids and plan on visiting someday.
+For my final project, I worked on the Airbnb dataset for multiple cities to process the property listings, neighbourhoods, and reviews. To achieve this, I created a custom scrape function: [scrape.R](https://github.com/sajalshres/sta-518-project/blob/main/modules/scrape.R) and an [etl(extract-transform-load)](https://github.com/sajalshres/sta-518-project/blob/main/etl/main.R) command line tool for managing data. For portfolio demonstration, I am using the **Chicago** dataset as it is very close to Grand Rapids, and I plan on visiting someday.
 
 ### 2.1.1 Import Data
 
@@ -91,7 +91,6 @@ I can also import excel files using `readxl:read_excel` function
 ```{r import-data-excel-files, message=TRUE}
 amazon_novels <- readxl::read_excel(here::here("data", "AmazonBooks.xlsx"))
 ```
-
 
 ### 2.1.2 Manage Data
 
@@ -167,7 +166,6 @@ hosts <- hosts %>%
   relocate(listing_id, .after = host_id)
 ```
 
-
 Some of the rows had empty strings or labelled with "N/A" value. I replaced them with `NA` and dropped the data for some of the columns which had `NA`.
 
 ```{r clean-data-airbnb-na-values}
@@ -241,7 +239,6 @@ worldhappiness_all <- worldhappiness_all %>%
   rename_with(.fn = ~ tolower(gsub(" ", "_", .x)))
 ```
 
-
 ```{r clean-up, echo = FALSE, message = FALSE, warning = FALSE, results = 'hide'}
 clean_up_variables = c(
   "combined_listings",
@@ -261,7 +258,7 @@ rm(list = clean_up_variables)
 
 I have met the objective of import, manage and clean data as illustrated in above sections. I have imported data from various sources such as csv, excel, geojson files to work on my objectives. I can isolate a subset of data from a large data source using base `data.frame` or `dplyr::select` as well as combine multiple data sources using `merge`, and joins in `dplyr` library. I can also restructure my data using `dplyr` functions such as `filter`, `group_by`, `rename`, `rename_with`, and `pipe`. I can create new information using `mutate` function based on existing columns and modify existing information such as converting formats, adding values etc for specific tasks.
 
----
+------------------------------------------------------------------------
 
 ## 2.2 Create graphical displays and numberical summaries of data for exploratory analysis and presentations
 
@@ -343,7 +340,7 @@ missing_stat %>%
 
 In the above visualization, We can identify that the columns `neighbourhood_group_cleansed`, `calendar_updated` and `bathrooms` are completely empty and can be discarded safely. Similarly, `neighbourhood`, `overview` and `host_about` has large portions of missing values as well.
 
-I as interesting in finding the top Airbnb hosts in Chicago that had the most listings. For achieiving this tasks, I generated the data for top hosts using `dplyr` library and generated the bar chart using `ggplot2` library as below:
+I as interesting in finding the top Airbnb hosts in Chicago that had the most listings. For achieving this tasks, I generated the data for top hosts using `dplyr` library and generated the bar chart using `ggplot2` library as below:
 
 ```{r visual-top-hosts, fig.align="center", echo = TRUE, layout="l-body-outset", fig.width = 12, fig.height = 10}
 # Generate data for top hosts
@@ -501,7 +498,7 @@ happiness_2021 %>%
 
 From the above correlation matrix graph, we can identify that happiness mostly correlates with GDP, Social Support, Life Expectancy and Freedom.
 
-Similarly, I was also interested in finding the regions that had the most happiest countries. To achieve this, I used `waffle::geom_waffle()` to generate a squate chart visualizations that helped me to identify the parts of a whole for world happiness data.
+Similarly, I was also interested in finding the regions that had the most happiest countries. To achieve this, I used `waffle::geom_waffle()` to generate a square chart visualizations that helped me to identify the parts of a whole for world happiness data.
 
 The `dplyr` library is used to generate the data as below:
 
@@ -730,7 +727,6 @@ ggplot(happiness_covid_2019_2020) +
 
 From the above dumbbell graph, we can see that there was an increase in some of the world regions like South Asia, Sub-Saharan Africa in-spite of COVID pandemic.
 
-
 In addition, I have generated additional summaries for the dataset to gain insight on various columns and its quality.
 
 ```{r numerical-summaries-airbnb-listings}
@@ -759,11 +755,12 @@ summary(happiness_2021$ladder_score)
 summary(happiness_2021$logged_gdp_per_capita)
 ```
 
-Lets check if the loadder_score variable follows a normal distribution using `hist` function.
+Lets check if the ladder_score variable follows a normal distribution using `hist` function.
 
 ```{r visual-regression-hist}
 hist(happiness_2021$ladder_score)
 ```
+
 The above observation is roughly bell-shaped as most observation is in the middle of distribution.
 
 Also, I tested the relationship between the variable ladder_score and logged_gdp_per_capita to see if the relationship is linear.
@@ -771,6 +768,7 @@ Also, I tested the relationship between the variable ladder_score and logged_gdp
 ```{r visual-regression-plot-relationship}
 plot(ladder_score ~ logged_gdp_per_capita, data = happiness_2021)
 ```
+
 The above relationship looks roughly linear.
 
 Next, I performed a linear regression analysis using linear model `lm` function.
@@ -783,18 +781,17 @@ summary(gdp_ladder_lm)
 
 In the above output, we can identify the min, max, first quartile, median, third quartile and max values along with coefficients.
 
-
 ```{r visual-regression-plot-linear-model}
 par(mfrow=c(2,2))
 plot(gdp_ladder_lm)
 par(mfrow=c(1,1))
 ```
 
-The red lines representing the mean of residuals are mostly horizontal which idicates minimal outliers or biases. The Normal Q-Q graph demonstrates the real residuals from the model we created in above section showing 1:1 line. 
+The red lines representing the mean of residuals are mostly horizontal which idicates minimal outliers or biases. The Normal Q-Q graph demonstrates the real residuals from the model we created in above section showing 1:1 line.
 
 ### 2.2.1 Conclusion
 
-I believe I have met this objective as I have created different visualizations using the `ggplot2`, `waffle`, and `GGally` libraries. By creating the visualizations for various tasks, I am able to explore important characteristics of a data and draw conclusions from them. Likewise, I have combined multiple visualization created above into my shiny app project to create effective data project. I have also created my own theme using `ggplot2::theme` function to highlight key features of data. I have completed exploratory analysis of the data by generating the correlation data among variables and generate heat map matrix to draw conclusions. Further, I have generated numerical summaries such as mean price for each neighbourhoods using `dplyr::summarise` and `dplyr::group_by` and visualize it usign box plot for additional descriptive analysis.
+I believe I have met this objective as I have created different visualizations using the `ggplot2`, `waffle`, and `GGally` libraries. By creating the visualizations for various tasks, I am able to explore important characteristics of a data and draw conclusions from them. Likewise, I have combined multiple visualization created above into my shiny app project to create effective data project. I have also created my own theme using `ggplot2::theme` function to highlight key features of data. I have completed exploratory analysis of the data by generating the correlation data among variables and generate heat map matrix to draw conclusions. Further, I have generated numerical summaries such as mean price for each neighbourhoods using `dplyr::summarise` and `dplyr::group_by` and visualize it using box plot for additional descriptive analysis.
 
 ```{r visual-clean-up, echo = FALSE, message = FALSE, warning = FALSE, results = 'hide'}
 cleanup_variables = c(
@@ -820,12 +817,11 @@ cleanup_variables = c(
 rm(list = cleanup_variables)
 ```
 
----
+------------------------------------------------------------------------
 
 ## 2.3 Write R programs for simulations from probability models and randomization-based experiments
 
 ### 2.3.1 Simulations
-
 
 #### Data Overview
 
@@ -847,6 +843,7 @@ sample_ind <- sample(ind, 15)
 storms[sample_ind, ] %>%
   paged_table(options = list(rows.print = 15))
 ```
+
 For the storms dataset, lets have a look at the mean and standard deviation.
 
 ```{r simulations-data-stats}
@@ -856,7 +853,7 @@ sd(storms$pressure)
 
 #### Storm pressure simulation
 
-In the code snippet below, I have performed a simulation for the air pressure at storm center by generating 100 random samples of a normally distributted variables using `rnorm` with a mean of 990 and a standard deviation of 19. Also, I have generated multiple samples of data using `map` function.
+In the code snippet below, I have performed a simulation for the air pressure at storm center by generating 100 random samples of a normally distributed variables using `rnorm` with a mean of 990 and a standard deviation of 19. Also, I have generated multiple samples of data using `map` function.
 
 ```{r simulations-storm-pressure-simulation}
 # https://github.com/gvsu-sta518/activity11-simulation
@@ -920,7 +917,6 @@ restructured_means %>%
   knitr::kable()
 ```
 
-
 ```{r simulations-storm-pressure-boxplot}
 ggplot(pressure_samp_1000, aes(y=normal)) + 
   geom_boxplot()
@@ -939,7 +935,7 @@ rm(list = clean_up_variables)
 
 #### Introduction
 
-Bootstrapping can be useful to draw a valid inference when the sample size is small. We can use a resampling method with replacement to create any number of resamples. For implementing bootstrapping, I came across a useful package [boot](https://www.rdocumentation.org/packages/boot/versions/1.3-28/topics/boot) that generates bootstrap replicates of a statistics applied to data.
+Bootstrapping can be useful to draw a valid inference when the sample size is small. We can use a re-sampling method with replacement to create any number of re-samples. For implementing bootstrapping, I came across a useful package [boot](https://www.rdocumentation.org/packages/boot/versions/1.3-28/topics/boot) that generates bootstrap replicates of a statistics applied to data.
 
 #### Load Packages
 
@@ -949,7 +945,7 @@ library(boot)
 
 #### Data Overview
 
-To implement bootstrap resampling, I've used builtin `Loblolly` dataset that contains the data about the growith of the Loblolly pine tree.
+To implement bootstrap re-sampling, I've used built-in `Loblolly` dataset that contains the data about the growth of the Loblolly pine tree.
 
 ```{r bootstrapping-data-overview}
 data("Loblolly", package = "datasets")
@@ -976,11 +972,12 @@ set.seed(518)
 bootstrap_correlation <- boot(Loblolly, statistic = statistics_function, R = 10000)
 ```
 
-Now, we apply the `boot` function which accepts dataset, statistic fucntion and number of bootstrap sample. The `seed` function is used in this context to generate reproducible results.
+Now, we apply the `boot` function which accepts dataset, statistic function and number of bootstrap sample. The `seed` function is used in this context to generate reproducible results.
 
 ```{r bootstrapping-correlation-output}
 bootstrap_correlation
 ```
+
 We can observe that the correlation between two variable is 0.989 with a standard error of 0.0016.
 
 ```{r bootstrapping-correlation-overview}
@@ -1007,8 +1004,7 @@ The mean for bootstrap correlation is 0.989.
 sd(bootstrap_correlation$t)
 ```
 
-The standard deviation for boostrap correlation is 0.001.
-
+The standard deviation for bootstrap correlation is 0.001.
 
 ```{r bootstrapping-confidence-interval}
 boot.ci(boot.out=bootstrap_correlation,type=c('norm','basic','perc','bca'))
@@ -1016,9 +1012,9 @@ boot.ci(boot.out=bootstrap_correlation,type=c('norm','basic','perc','bca'))
 
 The above function call `boot.ci` demonstrates the confidence interval of 4 types: normal, basic, percentile and bca distribution.
 
-### 2.3.2 Conlusions
+### 2.3.2 Conclusions
 
-I beleive I have fullfiled the objective as I've performed simulation, bootstrapping as well as completed all the course activities. As demonstrated in the above code, I can wirte R scripts to perform simulations in various tasks where we need to introduce some randomness by generating random numbers using smapling techinqiues. For performing simulation in R, I can use `rnorm`, `dnorm`, `rexp` and `rbinom`. I have also performed bootstrapping to implement resampling methods and draw conclusions on data.
+I believe I have fulfilled the objective as I've performed simulation, bootstrapping as well as completed all the course activities. As demonstrated in the above code, I can write R scripts to perform simulations in various tasks where we need to introduce some randomness by generating random numbers using sampling techniques. For performing simulation in R, I can use `rnorm`, `dnorm`, `rexp` and `rbinom`. I have also performed bootstrapping to implement re-sampling methods and draw conclusions on data.
 
 ```{r bootstrapping-clean-up, echo = FALSE, message = FALSE, warning = FALSE, results = 'hide'}
 cleanup_variables = c(
@@ -1028,7 +1024,7 @@ cleanup_variables = c(
 rm(list = cleanup_variables)
 ```
 
----
+------------------------------------------------------------------------
 
 ## 2.4 Use source documentation and other resources to troubleshoot and extend R programs
 
@@ -1042,21 +1038,18 @@ For me, the most common error was Syntax errors. I would often miss to load the 
 
 For example, consider below code:
 
-```
-Orange %>% select(Tree, age, circumference) %>% group_by(Tree) %>% summarize(avg_circumference=mean(circumference))
-```
+    Orange %>% select(Tree, age, circumference) %>% group_by(Tree) %>% summarize(avg_circumference=mean(circumference))
+
 The above code is much less readable as everything is in single-line. Breaking above code into multiple lines can significantly improve readability and at the same time identifying issues can be easier.
 
-```
-Orange %>%
-  select(Tree, age, circumference) %>%
-  group_by(Tree) %>%
-  summarize(avg_circumference=mean(circumference))
-```
+    Orange %>%
+      select(Tree, age, circumference) %>%
+      group_by(Tree) %>%
+      summarize(avg_circumference=mean(circumference))
 
 Another quick and reliable way to identify and resolve errors is to use `tryCatch` statement. Below is the snippet of code I've used in my [scrape](https://github.com/sajalshres/sta-518-project/blob/main/modules/scrape.R) function script to quickly identify if something goes wrong.
 
-```r
+``` r
 tryCatch(
   download.file(link, dest_file),
   # handle warning
@@ -1077,11 +1070,11 @@ I also found that collaborating with my team and friends is another great way to
 
 #### Functions
 
-Functions is an excellent way of generating a reproducable piece of code that can be used numerous times in your code. I have built a user defined function that is used to search the github repositories. The function `search_github_repositories` accepts three parameters:
+Functions is an excellent way of generating a reproducible piece of code that can be used numerous times in your code. I have built a user defined function that is used to search the github repositories. The function `search_github_repositories` accepts three parameters:
 
-- **query**: The search keywords.
-- **sort**: Sorts the results of your query by number of stars, forks, or help-wanted-issues
-- **order**: Determines whether the first search result returned is the highest number of matches (desc) or lowest number of matches (asc).
+-   **query**: The search keywords.
+-   **sort**: Sorts the results of your query by number of stars, forks, or help-wanted-issues
+-   **order**: Determines whether the first search result returned is the highest number of matches (desc) or lowest number of matches (asc).
 
 The function makes an http request using the `httr` library to the github api endpoint. Next, the status code is checked and upon success, the response is parsed.
 
@@ -1146,11 +1139,11 @@ rm(list = cleanup_variables)
 
 #### Packages
 
-Packages are the awesome way of sharing and dsitributing R code that help us to extend the capabilities of R programs and collaborate with others. Throughout my journey to learn R, I've extensively used packages like `dplyr`, `tibble`, `ggplot2`, `boot` etc. I cannot imagine developing R code without support for packages as it made my life much easier and saved a lot of time. So, I wanted to create a custom package to learn how to create packages and install them.
+Packages are the awesome way of sharing and distributing R code that help us to extend the capabilities of R programs and collaborate with others. Throughout my journey to learn R, I've extensively used packages like `dplyr`, `tibble`, `ggplot2`, `boot` etc. I cannot imagine developing R code without support for packages as it made my life much easier and saved a lot of time. So, I wanted to create a custom package to learn how to create packages and install them.
 
-I created a package SearchGithubRepository using the code from functions artifacts. 
+I created a package SearchGithubRepository using the code from functions artifacts.
 
-The Github link to package is: [https://github.com/sajalshres/SearchGithubRespositories](https://github.com/sajalshres/SearchGithubRespositories) 
+The Github link to package is: <https://github.com/sajalshres/SearchGithubRespositories>
 
 ##### Load Libraries
 
@@ -1162,7 +1155,7 @@ library(devtools)
 
 ##### Load my custom package
 
-I've used `install_github` function to install the  `SearchGithubRespositories` package.
+I've used `install_github` function to install the `SearchGithubRespositories` package.
 
 ```{r extend-r-load-custom-package}
 install_github("sajalshres/SearchGithubRespositories")
@@ -1187,11 +1180,11 @@ Similarly, we can view the help documentation using `?` operator.
 ?SearchGithubRespositories::search_github_repositories
 ```
 
-![](images/help_SearchGithubRespositories.png){width=50%}
+![](images/help_SearchGithubRespositories.png){width="50%"}
 
-### 2.4.3 Conlusions
+### 2.4.3 Conclusions
 
-I conclude that I've met all the requirement for the objective as I'm able to identify common errors or issues with R programs and troubleshoot them. I also have explored on numerous ways to troubleshoot which included reading package documentations, online search, code formating, common mistakes, collaborating and using `tryCatch` statements. In addition, I've created numerous functions like `search_github_repositories` and `download_files` in my project. I also created custom package `SearchGithubRespositories` as a cool way to share and extend R programs. Lastly, I have explored and make use of various packages like `GGally`, `wally`, `plumber`, `httpr` etc to complete specific tasks in my analyses. 
+I conclude that I've met all the requirement for the objective as I'm able to identify common errors or issues with R programs and troubleshoot them. I also have explored on numerous ways to troubleshoot which included reading package documentations, online search, code formatting, common mistakes, collaborating and using `tryCatch` statements. In addition, I've created numerous functions like `search_github_repositories` and `download_files` in my project. I also created custom package `SearchGithubRespositories` as a cool way to share and extend R programs. Lastly, I have explored and make use of various packages like `GGally`, `wally`, `plumber`, `httpr` etc to complete specific tasks in my analyses.
 
 ```{r extend-r-package-clean-up, echo = FALSE, message = FALSE, warning = FALSE, results = 'hide'}
 cleanup_variables = c(
@@ -1200,7 +1193,7 @@ cleanup_variables = c(
 rm(list = cleanup_variables)
 ```
 
----
+------------------------------------------------------------------------
 
 ## 2.5 Write clear, efficient, and well-documented R programs.
 
@@ -1208,26 +1201,23 @@ I have dedicated myself to spend good amount of time writing R code that include
 
 ### 2.5.2 Naming Conventions
 
-I've learned about various naming conventions that can be used with R such as camelCase, snake_case, PascalCase etc. I've found that R doesn't have a stict naming conventions like Java, Python. But it is best to use conventions that yeilds meaningful and readable names. The `snake_case` works best for me as I find it more readable and easier for my issues. For funtion names, I prefer to use lower case with periods like test.case1.
-
+I've learned about various naming conventions that can be used with R such as camelCase, snake_case, PascalCase etc. I've found that R doesn't have a strict naming conventions like Java, Python. But it is best to use conventions that yields meaningful and readable names. The `snake_case` works best for me as I find it more readable and easier for my issues. For function names, I prefer to use lower case with periods like test.case1.
 
 ### 2.5.3 Project Structure
 
 I have also learned to structure a R project. A good content organizations can help us to quickly navigate in a complex enterprise projects and can be scaled very easily. For my final project, I've used below structure to simulate a complex application:
 
-```
-sta-518-project
-|
-|-- api           # API application to fetch raw data, analaysis and summaries.
-|-- app           # Shiny web appliation containing interactive dashboard.
-|-- data          # Contains raw and processed data
-|   |-- raw
-|   |-- processed
-|-- docs          # Contains documentation and rmarkdown notebooks.
-|-- etl           # ETL cli application to scrape and process the data for analysis.
-|-- modules       # Shared modules used by scripts and applications.
-|-- scripts       # Contains rscripts.
-```
+    sta-518-project
+    |
+    |-- api           # API application to fetch raw data, analaysis and summaries.
+    |-- app           # Shiny web appliation containing interactive dashboard.
+    |-- data          # Contains raw and processed data
+    |   |-- raw
+    |   |-- processed
+    |-- docs          # Contains documentation and rmarkdown notebooks.
+    |-- etl           # ETL cli application to scrape and process the data for analysis.
+    |-- modules       # Shared modules used by scripts and applications.
+    |-- scripts       # Contains rscripts.
 
 ### 2.5.4 Functions and Packages
 
@@ -1235,18 +1225,16 @@ Functions and packages helps to breakdown complex piece of code into a single ta
 
 For instance, in my shiny application, I've break-up my code into small independent code and used them as:
 
-```
-# Read modules
-source("modules/maps.R")
-source("modules/analyze.R")
-```
+    # Read modules
+    source("modules/maps.R")
+    source("modules/analyze.R")
 
 ### 2.5.5 Documenting Code
 
-I believe the most important aspect of documenting your code is to introduce comments. Comments helps to summarize the piece of code, provides notes to any important decision made or explain why something is implemented the way it is. It acts as a note for self in the future and make collaborating with other much easier. 
+I believe the most important aspect of documenting your code is to introduce comments. Comments helps to summarize the piece of code, provides notes to any important decision made or explain why something is implemented the way it is. It acts as a note for self in the future and make collaborating with other much easier.
 
 In addition, it is best to name the chuck of code when using R Markdown. The rstudio can make navigation much easier and we can generate table of content.
 
-### 2.5.6 Conlusions
+### 2.5.6 Conclusions
 
-I believe I've achieved this objective as I am able to create complex project based workflows and create professional reports using `rmakrdown`. I also have divided my project code self-contained functions to perform analysis. Similarly, I've documented my code usign comments to provide summaries, resources and explanation for taking specific approach. 
+I believe I've achieved this objective as I am able to create complex project based workflows and create professional reports using `rmakrdown`. I also have divided my project code self-contained functions to perform analysis. Similarly, I've documented my code using comments to provide summaries, resources and explanation for taking specific approach.
