@@ -30,6 +30,10 @@ jobs:
       - name: Install Packages
         run: install.packages(c("distill", "tidyverse", "devtools", "GGally", "waffle", "devtools", "here", "testthat", "rgdal"))
         shell: Rscript {0}
+        
+      - name: Install Waffle Packages
+        run: install.packages("waffle", repos = "https://cinc.rud.is")
+        shell: Rscript {0}
 
       - name: Build site
         run: rmarkdown::render_site()
